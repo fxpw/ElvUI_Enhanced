@@ -290,6 +290,17 @@ local function BlizzardOptions()
 						end,
 						disabled = function() return not E.private.enhanced.character.enable end
 					},
+					undressButton = {
+						order = 5,
+						type = "toggle",
+						name = L["Undress Button"],
+						desc = L["Add button to Dressing Room frame with ability to undress model."],
+						get = function(info) return E.db.enhanced.general.undressButton end,
+						set = function(info, value)
+							E.db.enhanced.general.undressButton = value
+							E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end
+					},
 					paperdollBackgrounds = {
 						order = 5,
 						type = "group",
@@ -439,7 +450,7 @@ local function BlizzardOptions()
 							E.db.enhanced.general.undressButton = value
 							E:GetModule("Enhanced_UndressButtons"):ToggleState()
 						end
-					}
+					},
 				}
 			},
 			timerTracker = {

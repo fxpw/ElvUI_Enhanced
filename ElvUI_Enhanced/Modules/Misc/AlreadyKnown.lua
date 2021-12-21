@@ -73,90 +73,136 @@ local function MerchantFrame_UpdateBuybackInfo()
 end
 
 local function AuctionFrameBrowse_Update()
-	local numItems = GetNumAuctionItems("list")
 	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
+	print("112312312")
 
-	for i = 1, NUM_BROWSE_TO_DISPLAY do
-		local index = offset + i
-		if index > numItems then return end
+	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
+		-- print(i)
+		if (_G["BrowseButton"..i.."Item"] and _G["BrowseButton"..i.."ItemIconTexture"]) or _G["BrowseButton"..i].id then -- Something to do with ARL?
+			local itemLink
+			if _G["BrowseButton"..i].id then
+				itemLink = GetAuctionItemLink('list', _G["BrowseButton"..i].id)
+			else
+				itemLink = GetAuctionItemLink('list', offset + i)
+			end
 
-		local texture = _G["BrowseButton"..i.."ItemIconTexture"]
+			if itemLink and _checkIfKnown(itemLink) then
+				if _G["BrowseButton"..i].id then
+					_G["BrowseButton"..i].Icon:SetVertexColor(db.r, db.g, db.b)
+				else
+					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(db.r, db.g, db.b)
+				end
 
-		if texture and texture:IsShown() then
-			local _, _, _, _, canUse = GetAuctionItemInfo("list", index)
-
-			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("list", index)) then
-				texture:SetVertexColor(knownColor.r, knownColor.g, knownColor.b)
+				if db.monochrome then
+					if _G["BrowseButton"..i].id then
+						_G["BrowseButton"..i].Icon:SetDesaturated(true)
+					else
+						_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(true)
+					end
+				end
+			else
+				if _G["BrowseButton"..i].id then
+					_G["BrowseButton"..i].Icon:SetVertexColor(1, 1, 1)
+					_G["BrowseButton"..i].Icon:SetDesaturated(false)
+				else
+					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(1, 1, 1)
+					_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(false)
+				end
 			end
 		end
 	end
 end
 
 local function AuctionFrameBid_Update()
-	local numItems = GetNumAuctionItems("bidder")
-	local offset = FauxScrollFrame_GetOffset(BidScrollFrame)
+	-- local numItems = GetNumAuctionItems("bidder")
+	-- local offset = FauxScrollFrame_GetOffset(BidScrollFrame)
 
-	for i = 1, NUM_BIDS_TO_DISPLAY do
-		local index = offset + i
-		if index > numItems then return end
+	-- for i = 1, NUM_BIDS_TO_DISPLAY do
+	-- 	local index = offset + i
+	-- 	if index > numItems then return end
 
-		local texture = _G["BidButton"..i.."ItemIconTexture"]
+	-- 	local texture = _G["BidButton"..i.."ItemIconTexture"]
 
-		if texture and texture:IsShown() then
-			local _, _, _, _, canUse = GetAuctionItemInfo("bidder", index)
+	-- 	if texture and texture:IsShown() then
+	-- 		local _, _, _, _, canUse = GetAuctionItemInfo("bidder", index)
 
-			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("bidder", index)) then
-				texture:SetVertexColor(knownColor.r, knownColor.g, knownColor.b)
-			end
-		end
-	end
+	-- 		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("bidder", index)) then
+	-- 			texture:SetVertexColor(knownColor.r, knownColor.g, knownColor.b)
+	-- 		end
+	-- 	end
+	-- end
 end
 
 local function AuctionFrameAuctions_Update()
-	local numItems = GetNumAuctionItems("owner")
-	local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
+	-- local numItems = GetNumAuctionItems("owner")
+	-- local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
 
-	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
-		local index = offset + i
-		if index > numItems then return end
+	-- for i = 1, NUM_AUCTIONS_TO_DISPLAY do
+	-- 	local index = offset + i
+	-- 	if index > numItems then return end
 
-		local texture = _G["AuctionsButton"..i.."ItemIconTexture"]
+	-- 	local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
 
-		if texture and texture:IsShown() then
-			local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
+	-- 	if texture and texture:IsShown() then
+	-- 		local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
 
-			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
-				local r, g, b = knownColor.r, knownColor.g, knownColor.b
-				if saleStatus == 1 then
-					r, g, b = r * 0.5, g * 0.5, b * 0.5
-				end
+	-- 		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
+	-- 			local r, g, b = knownColor.r, knownColor.g, knownColor.b
+	-- 			if saleStatus == 1 then
+	-- 				r, g, b = r * 0.5, g * 0.5, b * 0.5
+	-- 			end
 
-				texture:SetVertexColor(r, g, b)
-			end
-		end
-	end
+	-- 			texture:SetVertexColor(r, g, b)
+	-- 		end
+	-- 	end
+	-- end
 end
 
 local function GuildBankFrame_Update()
 	if GuildBankFrame.mode ~= "bank" then return end
 
 	local tab = GetCurrentGuildBankTab()
+	
 
 	for i = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 		local button = _G["GuildBankColumn"..ceil((i - 0.5) / NUM_SLOTS_PER_GUILDBANK_GROUP).."Button"..fmod(i, NUM_SLOTS_PER_GUILDBANK_GROUP)]
 
 		if button and button:IsShown() then
 			local texture, _, locked = GetGuildBankItemInfo(tab, i)
-
+			
 			if texture and not locked then
 				if AK:IsAlreadyKnown(GetGuildBankItemLink(tab, i)) then
 					SetItemButtonTextureVertexColor(button, knownColor.r, knownColor.g, knownColor.b)
 				else
 					SetItemButtonTextureVertexColor(button, 1, 1, 1)
 				end
+				
 			end
 		end
 	end
+
+-- 	local numItems = GetNumAuctionItems("owner")
+-- 	-- local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
+
+-- 	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
+-- 		local index = offset + i
+-- 		if index > numItems then return end
+
+-- 		local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
+
+-- 		if texture and texture:IsShown() then
+-- 			local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
+
+-- 			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
+-- 				local r, g, b = knownColor.r, knownColor.g, knownColor.b
+-- 				if saleStatus == 1 then
+-- 					r, g, b = r * 0.5, g * 0.5, b * 0.5
+-- 				end
+
+-- 				texture:SetVertexColor(r, g, b)
+-- 			end
+-- 		end
+-- 	end
 end
 
 function AK:IsAlreadyKnown(itemLink)
@@ -182,7 +228,8 @@ function AK:IsAlreadyKnown(itemLink)
 end
 
 function AK:ADDON_LOADED(_, addon)
-	if addon == "Blizzard_AuctionUI" and not self.auctionHooked then
+	if addon == "Custom_AuctionHouseUI" and not self.auctionHooked then
+	-- print("1")
 		self:SetHooks()
 	elseif addon == "Blizzard_GuildBankUI" and not self.guildBankHooked then
 		self:SetHooks()
@@ -192,7 +239,22 @@ function AK:ADDON_LOADED(_, addon)
 		self:UnregisterEvent("ADDON_LOADED")
 	end
 end
-
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+hooksecurefunc(AuctionHouseBrowseResultsFrameMixin,"UpdateBrowseResults",AuctionFrameBrowse_Update)
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
+		--------firs hoook?
 function AK:SetHooks()
 	if not self:IsHooked("MerchantFrame_UpdateMerchantInfo") then
 		self:SecureHook("MerchantFrame_UpdateMerchantInfo", MerchantFrame_UpdateMerchantInfo)
@@ -201,11 +263,15 @@ function AK:SetHooks()
 		self:SecureHook("MerchantFrame_UpdateBuybackInfo", MerchantFrame_UpdateBuybackInfo)
 	end
 
-	if not self.auctionHooked and IsAddOnLoaded("Blizzard_AuctionUI") then
-		if not self:IsHooked("AuctionFrameBrowse_Update") then
-			self:SecureHook("AuctionFrameBrowse_Update", AuctionFrameBrowse_Update)
-		end
+	if not self.auctionHooked and IsAddOnLoaded("Custom_AuctionHouseUI") then
+		-- if not self:IsHooked("AuctionHouseBrowseResultsFrameMixin:UpdateBrowseResults") then
+			-- self:SecureHook("AuctionFrameBrowse_Update", AuctionFrameBrowse_Update)
+		-- end
+		
+		
+	
 		if not self:IsHooked("AuctionFrameBid_Update") then
+			
 			self:SecureHook("AuctionFrameBid_Update", AuctionFrameBid_Update)
 		end
 		if not self:IsHooked("AuctionFrameAuctions_Update") then
@@ -251,7 +317,7 @@ function AK:ToggleState()
 	if E.db.enhanced.general.alreadyKnown then
 		self:SetHooks()
 
-		if not (IsAddOnLoaded("Blizzard_AuctionUI") and IsAddOnLoaded("Blizzard_GuildBankUI")) then
+		if not (IsAddOnLoaded("Custom_AuctionHouseUI") and IsAddOnLoaded("Blizzard_GuildBankUI")) then
 			self:RegisterEvent("ADDON_LOADED")
 		end
 	else

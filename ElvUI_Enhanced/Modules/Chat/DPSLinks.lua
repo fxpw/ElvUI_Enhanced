@@ -59,7 +59,7 @@ function EDL:FilterLine(event, source, msg, ...)
 			for _, meter in ipairs(self.Meters) do
 				local elapsed = curTime - meter.time
 
-				if meter.src == source and meter.evt == event and elapsed < 1 then
+				if meter.src == source and meter.evt == event and elapsed < 6 then
 					local toInsert = true
 
 					for _, b in ipairs(meter.data) do

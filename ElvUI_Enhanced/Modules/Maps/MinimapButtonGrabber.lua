@@ -33,6 +33,7 @@ local ignoreButtons = {
 	["MinimapZoomIn"] = true,
 	["MinimapZoomOut"] = true,
 	["TimeManagerClockButton"] = true,
+	["QueueStatusMinimapButton"] = true,
 }
 
 local genericIgnores = {

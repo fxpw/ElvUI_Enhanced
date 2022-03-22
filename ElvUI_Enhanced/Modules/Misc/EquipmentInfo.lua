@@ -53,7 +53,7 @@ function EI:UpdatePaperDoll(unit)
 	end
 
 	local baseName = unit == "player" and "Character" or "Inspect"
-	local frame, slotID, itemID
+	local frame, slotID, itemLink
 	local _, rarity, itemLevel
 	local current, maximum, r, g, b
 
@@ -66,10 +66,10 @@ function EI:UpdatePaperDoll(unit)
 			frame.ItemLevel:SetText()
 
 			if E.db.enhanced.equipment.itemlevel.enable then
-				itemID = GetInventoryItemID(unit, slotID)
+				itemLink = GetInventoryItemLink(unit, slotID)
 
-				if itemID then
-					_, _, rarity, itemLevel = GetItemInfo(itemID)
+				if itemLink then
+					_, _, rarity, itemLevel = GetItemInfo(itemLink)
 
 					if itemLevel then
 						frame.ItemLevel:SetText(itemLevel)

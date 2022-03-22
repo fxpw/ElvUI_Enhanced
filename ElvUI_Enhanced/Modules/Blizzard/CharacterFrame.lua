@@ -7,9 +7,10 @@ local select, next, ipairs, pairs, tonumber, getmetatable = select, next, ipairs
 local abs, floor, max, min = math.abs, math.floor, math.max, math.min
 local find, format, gmatch, lower, sub, trim = string.find, string.format, string.gmatch, string.lower, string.sub, string.trim
 local tconcat, tinsert, tremove, sort, wipe = table.concat, table.insert, table.remove, table.sort, table.wipe
-
+local  gsub = string.gsub
 local CreateFrame = CreateFrame
 local GetActiveTalentGroup = GetActiveTalentGroup
+local GearManagerDialog = GearManagerDialog
 local GetAttackPowerForStat = GetAttackPowerForStat
 local GetBlockChance = GetBlockChance
 local GetCombatRating = GetCombatRating
@@ -42,6 +43,7 @@ local GetUnitPowerModifier = GetUnitPowerModifier
 local HasPetUI = HasPetUI
 local IsTitleKnown = IsTitleKnown
 local PlaySound = PlaySound
+local SetCVar = SetCVar
 local SetPortraitTexture = SetPortraitTexture
 local UnitAttackSpeed = UnitAttackSpeed
 local UnitClass = UnitClass
@@ -179,9 +181,30 @@ local PAPERDOLL_SIDEBARS = {
 	}
 }
 
+V.enhanced.character.player.ITEM_LEVEL = nil
+V.enhanced.character.player.STRENGTHEN = false
+
 local PAPERDOLL_STATINFO = {
-	["ITEM_LEVEL"] = {
-		updateFunc = function(statFrame, unit) module:ItemLevel(statFrame, unit) end
+	["STRENGTHEN1"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 1) end
+	},
+	["STRENGTHEN2"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 2) end
+	},
+	["STRENGTHEN3"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 3) end
+	},
+	["STRENGTHEN4"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 4) end
+	},
+	["STRENGTHEN5"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 5) end
+	},
+	["STRENGTHEN6"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 6) end
+	},
+	["STRENGTHEN7"] = {
+		updateFunc = function(statFrame, unit) module:StrengthenStat(statFrame, unit, 7) end
 	},
 
 	["STRENGTH"] = {
@@ -214,13 +237,13 @@ local PAPERDOLL_STATINFO = {
 		updateFunc = function(statFrame, unit) PaperDollFrame_SetAttackSpeed(statFrame, unit) end
 	},
 	["HITCHANCE"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetRating(statFrame, CR_HIT_MELEE) end
+		updateFunc = function(statFrame) PaperDollFrame_SetRating(statFrame, CR_HIT_MELEE) end
 	},
 	["CRITCHANCE"] = {
 		updateFunc = function(statFrame, unit) module:SetMeleeCritChance(statFrame, unit) end
 	},
 	["EXPERTISE"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetExpertise(statFrame, unit) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetExpertise(statFrame, unit) end
 	},
 
 	["RANGED_COMBAT1"] = {
@@ -245,27 +268,27 @@ local PAPERDOLL_STATINFO = {
 		updateFunc2 = function(statFrame) CharacterSpellBonusDamage_OnEnter(statFrame) end
 	},
 	["SPELL_COMBAT2"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetSpellBonusHealing(statFrame, unit) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetSpellBonusHealing(statFrame, unit) end
 	},
 	["SPELL_COMBAT3"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetRating(statFrame, CR_HIT_SPELL) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetRating(statFrame, CR_HIT_SPELL) end
 	},
 	["SPELL_COMBAT4"] = {
 		updateFunc = function(statFrame, unit) PaperDollFrame_SetSpellCritChance(statFrame, unit) end,
 		updateFunc2 = function(statFrame) CharacterSpellCritChance_OnEnter(statFrame) end
 	},
 	["SPELL_COMBAT5"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetSpellHaste(statFrame, unit) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetSpellHaste(statFrame, unit) end
 	},
 	["SPELL_COMBAT6"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetManaRegen(statFrame, unit) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetManaRegen(statFrame, unit) end
 	},
 
 	["DEFENSES1"] = {
 		updateFunc = function(statFrame, unit) PaperDollFrame_SetArmor(statFrame, unit) end
 	},
 	["DEFENSES2"] = {
-		updateFunc = function(statFrame, unit) if unit ~= "player" then statFrame:Hide() return end PaperDollFrame_SetDefense(statFrame, unit) end
+		updateFunc = function(statFrame, unit) PaperDollFrame_SetDefense(statFrame, unit) end
 	},
 	["DEFENSES3"] = {
 		updateFunc = function(statFrame, unit) module:SetDodge(statFrame, unit) end
@@ -294,14 +317,20 @@ local PAPERDOLL_STATINFO = {
 	},
 	["SHADOW"] = {
 		updateFunc = function(statFrame, unit) module:SetResistance(statFrame, unit, 5) end
-	}
+	},
 }
 
 local PAPERDOLL_STATCATEGORIES = {
-	["ITEM_LEVEL"] = {
+	["STRENGTHEN"] = {
 		id = 1,
 		stats = {
-			"ITEM_LEVEL"
+			"STRENGTHEN1",
+			"STRENGTHEN2",
+			"STRENGTHEN3",
+			"STRENGTHEN4",
+			"STRENGTHEN5",
+			"STRENGTHEN6",
+			"STRENGTHEN7",
 		}
 	},
 	["BASE_STATS"] = {
@@ -367,11 +396,11 @@ local PAPERDOLL_STATCATEGORIES = {
 			"NATURE",
 			"SHADOW"
 		}
-	}
+	},
 }
 
 local PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
-	"ITEM_LEVEL",
+	"STRENGTHEN",
 	"BASE_STATS",
 	"MELEE_COMBAT",
 	"RANGED_COMBAT",
@@ -383,7 +412,7 @@ local PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 	"BASE_STATS",
 	"MELEE_COMBAT",
---	"RANGED_COMBAT",
+	"RANGED_COMBAT",
 	"SPELL_COMBAT",
 	"DEFENSES",
 	"RESISTANCE"
@@ -391,60 +420,99 @@ local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 
 local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 
-do
+
+-- do
 	local locale = GetLocale()
+	local classTextFormat =
+	locale == "deDE" and "Stufe %s %s%s %s" or
+	locale == "ruRU" and "%2$s%4$s (%3$s)|r %1$s-го уровня" or
+	locale == "frFR" and "%2$s%4$s %3$s|r de niveau %1$s" or
+	locale == "koKR" and "%s 레벨 %s%s %s|r" or
+	locale == "zhCN" and "等级%s %s%s %s|r" or
+	locale == "zhTW" and "等級%s%s%s%s|r" or
+	locale == "esES" and "%2$s%4$s %3$s|r de nivel %1$s" or
+	locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
+	"Level %s %s%s %s|r"
 
-	if locale == "deDE" then
-		_PLAYER_LEVEL = "Stufe %s, |c%s%s-%s|r"
-		_PLAYER_LEVEL_NO_SPEC = "Stufe %s, |c%s%s|r"
-	elseif locale == "esES" or locale == "esMX" then
-		_PLAYER_LEVEL = "|c%2$s%4$s %3$s|r de nivel %1$s"
-		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r de nivel %1$s"
-	elseif locale == "frFR" then
-		_PLAYER_LEVEL = "|c%2$s%4$s %3$s|r de niveau %1$s"
-		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r de niveau %1$s"
-	elseif locale == "koKR" then
-		_PLAYER_LEVEL = "%s 레벨 |c%s%s %s|r"
-		_PLAYER_LEVEL_NO_SPEC = "%s 레벨 |c%s%s|r"
-	elseif locale == "ruRU" then
-		_PLAYER_LEVEL = "|c%2$s%4$s (%3$s)|r %1$s-го уровня"
-		_PLAYER_LEVEL_NO_SPEC = "|c%2$s%3$s|r %1$s-го уровня"
-	elseif locale == "zhCN" then
-		_PLAYER_LEVEL = "等级%s |c%s%s %s|r"
-		_PLAYER_LEVEL_NO_SPEC = "等级%s |c%s%s|r"
-	elseif locale == "zhTW" then
-		_PLAYER_LEVEL = "等級%s|c%s%s%s|r"
-		_PLAYER_LEVEL_NO_SPEC = "等級%s|c%s%s|r"
-	else
-		_PLAYER_LEVEL = "Level %s |c%s%s %s|r"
-		_PLAYER_LEVEL_NO_SPEC = "Level %s |c%s%s|r"
-	end
-end
-
-function module:PaperDollFrame_SetLevel()
-	local _, specName = E:GetTalentSpecInfo()
-	local classColor = RAID_CLASS_COLORS[E.myclass]
-	local classColorString = format("FF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
-
-	if specName == NONE then
-		CharacterLevelText:SetFormattedText(_PLAYER_LEVEL_NO_SPEC, E.mylevel, classColorString, E.myLocalizedClass)
-	else
-		CharacterLevelText:SetFormattedText(_PLAYER_LEVEL, E.mylevel, classColorString, specName, E.myLocalizedClass)
-	end
-
-	if CharacterLevelText:GetWidth() > 205 then
-		if PaperDollSidebarTab1:IsVisible() then
-			CharacterLevelText:Point("TOP", CharacterNameText, "BOTTOM", -10, -6)
+	function module:PaperDollFrame_SetLevel()
+		local _, specName = E:GetTalentSpecInfo()
+		local classDisplayName, class = UnitClass("player")
+		local classColor = RAID_CLASS_COLORS[class]
+		local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
+	
+		if specName == NONE then
+			CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
 		else
-			CharacterLevelText:Point("TOP", CharacterNameText, "BOTTOM", 10, -6)
+			CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
 		end
-	else
-		CharacterLevelText:Point("TOP", CharacterNameText, "BOTTOM", 0, -6)
+	
+		if CharacterLevelText:GetWidth() > 210 then
+			if ElvUI_PaperDollSidebarTab1:IsVisible() then
+				CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", -10, -16)
+			else
+				CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 10, -16)
+			end
+		else
+			CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 0, -16)
+		end
 	end
-end
+	
+	local function PlusButton_OnShow(self)
+		self:GetParent().Value:SetPoint("RIGHT", -22, 0)
+	end
+	
+	local function PlusButton_OnHide(self)
+		self:GetParent().Value:SetPoint("RIGHT", -3, 0)
+	end
+	
+	local function PlusButton_OnEnable(self)
+		self.Texture:SetVertexColor(1, 1, 1)
+	end
+	
+	local function PlusButton_OnDisable(self)
+		self.Texture:SetVertexColor(0.6, 0.6, 0.6)
+	end
+	
+	local function StatFrame_OnEnter()
+		PaperDollStatTooltip("player")
+	end
+	
+	function module:CharacterStatFrame(button)
+		button:Size(187, 15)
+	
+		button.Label = button:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormalSmall")
+		button.Label:SetJustifyH("LEFT")
+		button.Label:SetSize(122, 0)
+		button.Label:SetPoint("LEFT", 7, 0)
+	
+		button.Value = button:CreateFontString("$parentStatText", "OVERLAY", "GameFontHighlightSmall")
+		button.Value:SetJustifyH("RIGHT")
+		button.Value:SetPoint("RIGHT", -3, 0)
+	
+		button.Plus = CreateFrame("Button", nil, button)
+		button.Plus:Hide()
+		button.Plus:Size(19)
+		button.Plus:SetPoint("RIGHT", -3, 0)
+	
+		button.Plus.Texture = button.Plus:CreateTexture()
+		button.Plus.Texture:SetAllPoints()
+		button.Plus.Texture:SetTexture(E.Media.Textures.Plus)
+	
+		button.Plus:SetScript("OnClick", CharacterStrengthenButton_OnClick)
+		button.Plus:SetScript("OnShow", PlusButton_OnShow)
+		button.Plus:SetScript("OnHide", PlusButton_OnHide)
+		button.Plus:SetScript("OnEnter", CharacterStrengthenButton_OnEnter)
+		button.Plus:SetScript("OnLeave", GameTooltip_Hide)
+		button.Plus:SetScript("OnEnable", PlusButton_OnEnable)
+		button.Plus:SetScript("OnDisable", PlusButton_OnDisable)
+	
+		button:SetScript("OnEnter", StatFrame_OnEnter)
+		button:SetScript("OnLeave", GameTooltip_Hide)
+	end
 
 function module:PaperDollSidebarTab(button)
 	button:Size(33, 35)
+
 	button:SetTemplate("Default")
 
 	button.Icon = button:CreateTexture(nil, "ARTWORK")
@@ -454,7 +522,7 @@ function module:PaperDollSidebarTab(button)
 	button.Icon:SetTexCoord(tcoords[1], tcoords[2], tcoords[3], tcoords[4])
 
 	button.Hider = button:CreateTexture(nil, "OVERLAY")
-	button.Hider:SetTexture(0, 0, 0, 0.8)
+	button.Hider:SetTexture(0.4, 0.4, 0.4, 0.4)
 	button.Hider:SetInside()
 
 	button.Highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -541,29 +609,28 @@ local StatCategoryFrames = {}
 local titanGrip
 local qualityColors = {}
 
-do
-	for i = 0, 7 do
-		qualityColors[i] = {GetItemQualityColor(i)}
-	end
+-- do
+-- 	for i = 0, 7 do
+-- 		qualityColors[i] = {GetItemQualityColor(i)}
+-- 	end
 
-	if E.myclass == "WARRIOR" then
-		local GetTalentInfo = GetTalentInfo
+-- 	if E.myclass == "WARRIOR" then
+-- 		local GetTalentInfo = GetTalentInfo
 
-		local titanGripCheck = CreateFrame("Frame")
-		titanGripCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
-		titanGripCheck:RegisterEvent("SPELL_UPDATE_USABLE")
-		titanGripCheck:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
-		titanGripCheck:RegisterEvent("CHARACTER_POINTS_CHANGED")
-		titanGripCheck:SetScript("OnEvent", function(self, event, ...)
-			titanGrip = select(5, GetTalentInfo(2, 27)) == 1
+-- 		local titanGripCheck = CreateFrame("Frame")
+-- 		titanGripCheck:RegisterEvent("PLAYER_ENTERING_WORLD")
+-- 		titanGripCheck:RegisterEvent("SPELL_UPDATE_USABLE")
+-- 		titanGripCheck:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+-- 		titanGripCheck:RegisterEvent("CHARACTER_POINTS_CHANGED")
+-- 		titanGripCheck:SetScript("OnEvent", function(self, event, ...)
+-- 			titanGrip = select(5, GetTalentInfo(2, 27)) == 1
 
-			if event == "PLAYER_ENTERING_WORLD" or event == "SPELL_UPDATE_USABLE" then
-				self:UnregisterEvent(event)
-			end
-		end)
-	end
-end
-
+-- 			if event == "PLAYER_ENTERING_WORLD" or event == "SPELL_UPDATE_USABLE" then
+-- 				self:UnregisterEvent(event)
+-- 			end
+-- 		end)
+-- 	end
+-- end
 --[[
 local function OnEvent(event, bagID, slotID)
 	if event == "ITEM_UNLOCKED" then
@@ -574,7 +641,6 @@ local function OnEvent(event, bagID, slotID)
 		end
 	end
 end
-
 local slots = {
 	["HeadSlot"] = "INVTYPE_HEAD",
 	["NeckSlot"] = "INVTYPE_NECK",
@@ -635,7 +701,6 @@ local function GetAverageItemLevel()
 			end
 		end
 	end
-
 	local hasMainHandBag, maxBagItemLevel, countBagOffhand
 	local hasTwoHandBag = bagsTable["INVTYPE_2HWEAPON"]
 
@@ -656,7 +721,6 @@ local function GetAverageItemLevel()
 							maxLocItemLevel = maxBagItemLevel
 						end
 					end
-
 					maxBagItemLevel = maxLocItemLevel ~= 0 and maxLocItemLevel
 				else
 					maxBagItemLevel = bagsTable[itemEquipLoc]
@@ -719,16 +783,13 @@ local function GetAverageItemLevel()
 			end
 		end
 	end
-
 	wipe(bagsTable)
 
 	if hasMainHandBag then
 		totalItemLevel = totalItemLevel + hasMainHandBag
 	end
-
 	return (totalItemLevel / 17), (totalEquippedItemLevel / items)
 end
-
 local function GetItemLevelColor(unit)
 	if not unit then unit = "player" end
 
@@ -759,40 +820,40 @@ local function GetItemLevelColor(unit)
 end
 ]]
 
-local function GetAverageItemLevel()
-	local items = 16
-	local ilvl = 0
-	local colorCount, sumR, sumG, sumB = 0, 0, 0, 0
+-- local function GetAverageItemLevel()
+-- 	local items = 16
+-- 	local ilvl = 0
+-- 	local colorCount, sumR, sumG, sumB = 0, 0, 0, 0
 
-	for slotID = 1, 18 do
-		if slotID ~= INVSLOT_BODY then
-			local itemLink = GetInventoryItemLink("player", slotID)
+-- 	for slotID = 1, 18 do
+-- 		if slotID ~= INVSLOT_BODY then
+-- 			local itemLink = GetInventoryItemLink("player", slotID)
 
-			if itemLink then
-				local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
+-- 			if itemLink then
+-- 				local _, _, quality, itemLevel, _, _, _, _, itemEquipLoc = GetItemInfo(itemLink)
 
-				if itemLevel then
-					ilvl = ilvl + itemLevel
+-- 				if itemLevel then
+-- 					ilvl = ilvl + itemLevel
 
-					colorCount = colorCount + 1
-					sumR = sumR + qualityColors[quality][1]
-					sumG = sumG + qualityColors[quality][2]
-					sumB = sumB + qualityColors[quality][3]
+-- 					colorCount = colorCount + 1
+-- 					sumR = sumR + qualityColors[quality][1]
+-- 					sumG = sumG + qualityColors[quality][2]
+-- 					sumB = sumB + qualityColors[quality][3]
 
-					if slotID == INVSLOT_MAINHAND and (itemEquipLoc ~= "INVTYPE_2HWEAPON" or titanGrip) then
-						items = 17
-					end
-				end
-			end
-		end
-	end
+-- 					if slotID == INVSLOT_MAINHAND and (itemEquipLoc ~= "INVTYPE_2HWEAPON" or titanGrip) then
+-- 						items = 17
+-- 					end
+-- 				end
+-- 			end
+-- 		end
+-- 	end
 
-	if colorCount == 0 then
-		return ilvl / items, 1, 1, 1
-	else
-		return ilvl / items, (sumR / colorCount), (sumG / colorCount), (sumB / colorCount)
-	end
-end
+-- 	if colorCount == 0 then
+-- 		return ilvl / items, 1, 1, 1
+-- 	else
+-- 		return ilvl / items, (sumR / colorCount), (sumG / colorCount), (sumB / colorCount)
+-- 	end
+-- end
 
 function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	statFrame.Label:SetFormattedText(STAT_FORMAT, label)
@@ -803,50 +864,50 @@ function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	end
 end
 
-function module:ItemLevel(statFrame, unit)
-	if not self.Initialized then return end
+local StrengthenStats = {SPELL_STAT1_NAME, SPELL_STAT2_NAME, SPELL_STAT3_NAME, SPELL_STAT4_NAME, SPELL_STAT5_NAME, PAPERDOLLFRAME_UPS_SPELL_POWER, ATTACK_POWER}
+local StrengthenData = {}
 
-	if GearScore_GetScore then
-		if not self.gearScore or not GS_PlayerIsInCombat then
-			local gearScore = GearScore_GetScore(E.myname, "player")
+local EventHandlerFrame = CreateFrame("Frame")
+EventHandlerFrame:RegisterEvent("CHAT_MSG_ADDON")
+EventHandlerFrame:SetScript("OnEvent", function(_, _, opcode, msg)
+	if opcode == "UPS_INFO" then
+		local total, maximum, current = strsplit(":", msg)
 
-			if not gearScore then
-				if GS_Data and GS_Data[E.myrealm] then
-					gearScore = GS_Data[E.myrealm].Players[E.myname].GearScore
-				end
+		current = tonumber(current)
+
+		StrengthenData.Total = total
+		StrengthenData.Maximum = maximum
+		StrengthenData.Current = current
+	elseif opcode == "BONUS_STATS" then
+		local splitstat = {strsplit(";", msg)}
+
+		for i = 1, #StrengthenStats do
+			StrengthenData[i] = {splitstat[i] / 2, splitstat[i]}
+			if i == 3 then
+				StrengthenData[i] = {splitstat[i] / 3, splitstat[i]}
+			elseif i == 7 then
+				StrengthenData[i] = {splitstat[i] / 4, splitstat[i]}
 			end
-
-			if gearScore then
-				local r, b, g = GearScore_GetQuality(gearScore)
-
-				self.gearScore = gearScore
-				self.gearScoreR = r
-				self.gearScoreG = g
-				self.gearScoreB = b
-
-				statFrame.Label:SetText(gearScore)
-				statFrame.Label:SetTextColor(r, g, b)
-
-				return
-			end
-		else
-			statFrame.Label:SetText(self.gearScore)
-			statFrame.Label:SetTextColor(self.gearScoreR, self.gearScoreG, self.gearScoreB)
-			return
 		end
 	end
+end)
 
---	local avgItemLevel, avgItemLevelEquipped = GetAverageItemLevel()
---	if avgItemLevelEquipped == avgItemLevel then
---		statFrame.Label:SetFormattedText("%.2f", avgItemLevelEquipped)
---	else
---		statFrame.Label:SetFormattedText("%.2f / %.2f", avgItemLevelEquipped, avgItemLevel)
---	end
---	statFrame.Label:SetTextColor(GetItemLevelColor())
+function module:StrengthenStat(statFrame, unit, statIndex)
+	statFrame.Label:SetText(StrengthenStats[statIndex])
 
-	local avgItemLevel, r, g, b = GetAverageItemLevel()
-	statFrame.Label:SetFormattedText("%.1f", avgItemLevel)
-	statFrame.Label:SetTextColor(r, g, b)
+	if StrengthenData[statIndex] then
+		statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+	else
+		statFrame.Value:SetText(0)
+	end
+
+	if StrengthenData.Current == 0 then
+		statFrame.Plus:Disable()
+	else
+		statFrame.Plus:Enable()
+	end
+
+	statFrame.Plus:Show()
 end
 
 function module:SetStat(statFrame, unit, statIndex)
@@ -939,15 +1000,15 @@ function module:SetStat(statFrame, unit, statIndex)
 		if statIndex == 1 then
 			local attackPower = effectiveStat - 20
 			statFrame.tooltip2 = format(statFrame.tooltip2, attackPower)
-		elseif statIndex == 2 then
-			local newLineIndex = find(statFrame.tooltip2, "|n") + 1
-			statFrame.tooltip2 = sub(statFrame.tooltip2, 1, newLineIndex)
-			statFrame.tooltip2 = format(statFrame.tooltip2, GetCritChanceFromAgility("pet"))
 		elseif statIndex == 3 then
 			local expectedHealthGain = (((stat - posBuff - negBuff) - 20) * 10 + 20) * GetUnitHealthModifier("pet")
 			local realHealthGain = ((effectiveStat - 20) * 10 + 20) * GetUnitHealthModifier("pet")
 			local healthGain = (realHealthGain - expectedHealthGain) * GetUnitMaxHealthModifier("pet")
 			statFrame.tooltip2 = format(statFrame.tooltip2, healthGain)
+		elseif statIndex == 2 then
+			local newLineIndex = find(statFrame.tooltip2, "|n") + 1
+			statFrame.tooltip2 = sub(statFrame.tooltip2, 1, newLineIndex)
+			statFrame.tooltip2 = format(statFrame.tooltip2, GetCritChanceFromAgility("pet"))
 		elseif statIndex == 4 then
 			if UnitHasMana("pet") then
 				local manaGain = ((effectiveStat - 20) * 15 + 20) * GetUnitPowerModifier("pet")
@@ -967,13 +1028,21 @@ function module:SetStat(statFrame, unit, statIndex)
 	statFrame:Show()
 end
 
+local ResistanceNames = {
+	[6] = STRING_SCHOOL_ARCANE,
+	[2] = STRING_SCHOOL_FIRE,
+	[4] = STRING_SCHOOL_FROST,
+	[3] = STRING_SCHOOL_NATURE,
+	[5] = STRING_SCHOOL_SHADOW
+}
+
 function module:SetResistance(statFrame, unit, resistanceIndex)
 	local base, resistance, positive, negative = UnitResistance(unit, resistanceIndex)
 	local petBonus = ComputePetBonus("PET_BONUS_RES", resistance)
-	local resistanceNameShort = _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"]
+	-- local resistanceNameShort = _G["SPELL_SCHOOL"..resistanceIndex.."_CAP"]
 	local resistanceName = _G["RESISTANCE"..resistanceIndex.."_NAME"]
-	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex + 1)..":14:14:2:2:16:16:2:14:2:14|t"
-	statFrame.Label:SetText(resistanceIconCode.." "..format(STAT_FORMAT, resistanceNameShort))
+	local resistanceIconCode = "|TInterface\\PaperDollInfoFrame\\SpellSchoolIcon"..(resistanceIndex + 1)..":16:16:2:2:16:16:2:14:2:14|t"
+	statFrame.Label:SetText(resistanceIconCode.." "..format(STAT_FORMAT, ResistanceNames[resistanceIndex]))
 	local text = _G[statFrame:GetName().."StatText"]
 	PaperDollFormatStat(resistanceName, base, positive, negative, statFrame, text)
 	statFrame.tooltip = resistanceIconCode.." "..HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, resistanceName).." "..resistance..FONT_COLOR_CODE_CLOSE
@@ -1009,6 +1078,9 @@ function module:SetResistance(statFrame, unit, resistanceIndex)
 	end
 	statFrame.tooltip2 = format(RESISTANCE_TOOLTIP_SUBTEXT, _G["RESISTANCE_TYPE"..resistanceIndex], unitLevel, resistanceLevel)
 
+	if unitLevel == 80 then
+		statFrame.tooltip2 = statFrame.tooltip2 .. "\n" .. format(RESISTANCE_TOOLTIP_SUBTEXT2, 100 / ((((unitLevel * 675.5) / 83) + unitLevel) / resistance + 1));
+	end
 	if petBonus > 0 then
 		statFrame.tooltip2 = statFrame.tooltip2.."\n"..format(PET_BONUS_TOOLTIP_RESISTANCE, petBonus)
 	end
@@ -1167,8 +1239,7 @@ end
 local function PaperDollFrame_CollapseStatCategory(categoryFrame)
 	if not categoryFrame.collapsed then
 		categoryFrame.collapsed = true
-		--categoryFrame.Toolbar:SetTemplate("NoBackdrop")
-		categoryFrame.Toolbar:SetAlpha(0.4)
+		categoryFrame.Toolbar.Background:Hide()
 		local index = 1
 		while categoryFrame.Stats[index] do
 			categoryFrame.Stats[index]:Hide()
@@ -1182,13 +1253,19 @@ end
 local function PaperDollFrame_ExpandStatCategory(categoryFrame)
 	if categoryFrame.collapsed then
 		categoryFrame.collapsed = false
-		--categoryFrame.Toolbar:SetTemplate("Default", true)
-		categoryFrame.Toolbar:SetAlpha(1)
+		categoryFrame.Toolbar.Background:Show()
 		module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 		module:PaperDollFrame_UpdateStatScrollChildHeight()
 	end
 end
 
+local function StrengthenCategory_OnEnter(self)
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetText(PAPERDOLLFRAME_UPS_TOOLTIP_1, 1, 1, 1)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_2, StrengthenData.Total or 0), 1, .82, 0, 1)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, StrengthenData.Maximum or 0), 1, .82, 0, 1)
+	GameTooltip:Show()
+end
 local function PaperDollFrame_QueuedUpdate(self)
 	module:PaperDollFrame_UpdateStats()
 	self:SetScript("OnUpdate", nil)
@@ -1202,26 +1279,25 @@ end
 function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	if not categoryFrame.Category then categoryFrame:Hide() return end
 
-	local category = categoryFrame.Category
-	local categoryInfo = PAPERDOLL_STATCATEGORIES[category]
-
-	if category == "ITEM_LEVEL" then
-		if PersonalGearScore then
-			categoryFrame.NameText:SetText("Gear Score")
-		else
-			categoryFrame.NameText:SetText(L["Item Level"])
-		end
-	elseif category == "RESISTANCE" then
+	local categoryInfo = PAPERDOLL_STATCATEGORIES[categoryFrame.Category]
+	if categoryInfo == PAPERDOLL_STATCATEGORIES["RESISTANCE"] then
 		categoryFrame.NameText:SetText(L["Resistance"])
-	elseif category == "DEFENSES" then
-		categoryFrame.NameText:SetText(DEFENSE)
+	elseif categoryInfo == PAPERDOLL_STATCATEGORIES["STRENGTHEN"] then
+		categoryFrame.NameText:SetFormattedText(PAPERDOLLFRAME_UPS_AVAILABLE, StrengthenData.Current or 0)
+		categoryFrame.Toolbar:SetScript("OnEnter", StrengthenCategory_OnEnter)
+		categoryFrame.Toolbar:SetScript("OnLeave", GameTooltip_Hide)
 	else
-		categoryFrame.NameText:SetText(_G["PLAYERSTAT_"..category])
+		categoryFrame.NameText:SetText(_G["PLAYERSTAT_"..categoryFrame.Category])
+	end
+
+	if categoryInfo ~= PAPERDOLL_STATCATEGORIES["STRENGTHEN"] then
+		categoryFrame.Toolbar:SetScript("OnEnter", nil)
+		categoryFrame.Toolbar:SetScript("OnLeave", nil)
 	end
 
 	if categoryFrame.collapsed then return end
 
-	local totalHeight = categoryFrame.NameText:GetHeight() + 10
+	local totalHeight = 25
 	local numVisible = 0
 	if categoryInfo then
 		local prevStatFrame = nil
@@ -1230,7 +1306,8 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 			if statInfo then
 				local statFrame = categoryFrame.Stats[numVisible + 1]
 				if not statFrame then
-					statFrame = CreateFrame("Frame", "$parentStat"..numVisible + 1, categoryFrame, "CharacterStatFrameTemplate")
+					statFrame = CreateFrame("Button", "$parentStat"..numVisible + 1, categoryFrame)
+					module:CharacterStatFrame(statFrame)
 					if prevStatFrame then
 						statFrame:SetPoint("TOPLEFT", prevStatFrame, "BOTTOMLEFT")
 						statFrame:SetPoint("TOPRIGHT", prevStatFrame, "BOTTOMRIGHT")
@@ -1239,34 +1316,8 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 				end
 				statFrame:Show()
 
-				if stat == "ITEM_LEVEL" then
-					statFrame:Height(30)
-					local label = statFrame.Label
-					label:Width(187)
-					label:ClearAllPoints()
-					label:SetPoint("CENTER")
-					label:FontTemplate(nil, 20, "NONE")
-					label:SetJustifyH("CENTER")
-					statFrame.Value:SetText("")
-
-					if statFrame.leftGrad then
-						statFrame.leftGrad:Show()
-						statFrame.rightGrad:Show()
-					end
-				elseif statFrame:GetHeight() > 22 then
-					statFrame:Height(15)
-					local label = statFrame.Label
-					label:Width(122)
-					label:ClearAllPoints()
-					label:Point("LEFT", 7, 0)
-					label:FontTemplate(nil, nil, "NONE")
-					label:SetJustifyH("LEFT")
-					label:SetTextColor(1, 0.82, 0)
-
-					if statFrame.leftGrad then
-						statFrame.leftGrad:Hide()
-						statFrame.rightGrad:Hide()
-					end
+				if stat ~= "STRENGTHEN" and statFrame.Plus:IsShown() then
+					statFrame.Plus:Hide()
 				end
 
 				if statInfo.updateFunc2 then
@@ -1284,6 +1335,8 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 
 				if statFrame:IsShown() then
 					numVisible = numVisible + 1
+					statFrame:SetID(numVisible)
+
 					totalHeight = totalHeight + statFrame:GetHeight()
 					prevStatFrame = statFrame
 
@@ -1296,20 +1349,13 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	end
 
 	for index = 1, numVisible do
-		if index % 2 == 0 or categoryInfo == PAPERDOLL_STATCATEGORIES["ITEM_LEVEL"] then
+		if index % 2 == 0 then
 			local statFrame = categoryFrame.Stats[index]
-			if not statFrame.leftGrad then
-				statFrame.leftGrad = statFrame:CreateTexture(nil, "BACKGROUND")
-				statFrame.leftGrad:Size(80, statFrame:GetHeight())
-				statFrame.leftGrad:SetPoint("LEFT", statFrame, "CENTER")
-				statFrame.leftGrad:SetTexture(E.media.blankTex)
-				statFrame.leftGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0.35, 0.8,0.8,0.8,0)
-
-				statFrame.rightGrad = statFrame:CreateTexture(nil, "BACKGROUND")
-				statFrame.rightGrad:Size(80, statFrame:GetHeight())
-				statFrame.rightGrad:SetPoint("RIGHT", statFrame, "CENTER")
-				statFrame.rightGrad:SetTexture(E.media.blankTex)
-				statFrame.rightGrad:SetGradientAlpha("Horizontal", 0.8,0.8,0.8,0, 0.8,0.8,0.8,0.35)
+			if not statFrame.Background then
+				statFrame.Background = statFrame:CreateTexture(nil, "BACKGROUND")
+				statFrame.Background:SetAllPoints()
+				statFrame.Background:SetTexture(E.Media.Textures.Highlight)
+				statFrame.Background:SetAlpha(0.3)
 			end
 		end
 	end
@@ -1337,11 +1383,11 @@ function module:PaperDollFrame_UpdateStatScrollChildHeight()
 	local totalHeight = 0
 	while CharacterStatsPane.Categories[index] do
 		if CharacterStatsPane.Categories[index]:IsShown() then
-			totalHeight = totalHeight + CharacterStatsPane.Categories[index]:GetHeight() + 4
+			totalHeight = totalHeight + CharacterStatsPane.Categories[index]:GetHeight() + 1
 		end
 		index = index + 1
 	end
-	CharacterStatsPaneScrollChild:Height(totalHeight + 10 -(CharacterStatsPane.initialOffsetY or 0))
+	CharacterStatsPaneScrollChild:Height(totalHeight + 10)
 end
 
 local function FindCategoryById(id)
@@ -1350,6 +1396,7 @@ local function FindCategoryById(id)
 			return categoryName
 		end
 	end
+	return nil
 end
 
 function module:PaperDoll_InitStatCategories(defaultOrder, orderData, collapsedData, unit)
@@ -1358,7 +1405,8 @@ function module:PaperDoll_InitStatCategories(defaultOrder, orderData, collapsedD
 	local orderString = orderData
 	local savedOrder = {}
 	if orderString and orderString ~= "" then
-		for i in gmatch(orderString, "(%d+),?") do
+		for i in gmatch(orderString, "%d+,?") do
+			i = gsub(i, ",", "")
 			i = tonumber(i)
 			if i then
 				local categoryName = FindCategoryById(i)
@@ -1425,9 +1473,7 @@ function module:PaperDoll_InitStatCategories(defaultOrder, orderData, collapsedD
 	self:PaperDollFrame_UpdateStats()
 end
 
-local function PaperDoll_SaveStatCategoryOrder()
-	local activeSpec = GetActiveTalentGroup()
-
+function PaperDoll_SaveStatCategoryOrder()
 	if CharacterStatsPane.defaultOrder and #CharacterStatsPane.defaultOrder == #StatCategoryFrames then
 		local same = true
 		for index = 1, #StatCategoryFrames do
@@ -1437,30 +1483,28 @@ local function PaperDoll_SaveStatCategoryOrder()
 			end
 		end
 		if same then
-			if activeSpec == 1 then
-				E.private.enhanced.character[CharacterStatsPane.unit].orderName = ""
-			else
-				E.private.enhanced.character[CharacterStatsPane.unit].orderName2 = ""
-			end
+			E.private.enhanced.character[CharacterStatsPane.unit].orderName = ""
 			return
 		end
 	end
 
-	local order = {}
-
+	local string = ""
 	for index = 1, #StatCategoryFrames do
-		order[index] = PAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id
+		if index ~= #StatCategoryFrames then
+			string = string..PAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id..","
+		else
+			string = string..PAPERDOLL_STATCATEGORIES[StatCategoryFrames[index].Category].id
+		end
 	end
-
-	if activeSpec == 1 then
-		E.private.enhanced.character[CharacterStatsPane.unit].orderName = tconcat(order, ",")
-	else
-		E.private.enhanced.character[CharacterStatsPane.unit].orderName2 = tconcat(order, ",")
-	end    
+	E.private.enhanced.character[CharacterStatsPane.unit].orderName = string
 end
 
 function module:PaperDoll_UpdateCategoryPositions()
-	local prevFrame
+	local prevFrame = nil
+	for index = 1, #StatCategoryFrames do
+		local frame = StatCategoryFrames[index]
+		frame:ClearAllPoints()
+	end
 
 	for index = 1, #StatCategoryFrames do
 		local frame = StatCategoryFrames[index]
@@ -1472,11 +1516,10 @@ function module:PaperDoll_UpdateCategoryPositions()
 			xOffset = -STATCATEGORY_MOVING_INDENT
 		end
 
-		frame:ClearAllPoints()
 		if prevFrame then
-			frame:Point("TOPLEFT", prevFrame, "BOTTOMLEFT", 0 + xOffset, -4)
+			frame:Point("TOPLEFT", prevFrame, "BOTTOMLEFT", 0 + xOffset, -1)
 		else
-			frame:Point("TOPLEFT", 1 + xOffset, -4 + (CharacterStatsPane.initialOffsetY or 0))
+			frame:Point("TOPLEFT", xOffset, 0)
 		end
 		prevFrame = frame
 	end
@@ -1486,7 +1529,9 @@ local function StatCategory_OnDragUpdate(self)
 	local _, cursorY = GetCursorPosition()
 	cursorY = cursorY * GetScreenHeightScale()
 
-	local myIndex, insertIndex, closestPos
+	local myIndex = nil
+	local insertIndex = nil
+	local closestPos
 
 	for index = 1, #StatCategoryFrames + 1 do
 		if StatCategoryFrames[index] == self then
@@ -1556,7 +1601,7 @@ end
 
 function module:PaperDollFrame_UpdateSidebarTabs()
 	for i = 1, #PAPERDOLL_SIDEBARS do
-		local tab = _G["PaperDollSidebarTab"..i]
+		local tab = _G["ElvUI_PaperDollSidebarTab"..i]
 		if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
 			tab.Hider:Hide()
 			tab.Highlight:Hide()
@@ -1570,31 +1615,26 @@ end
 function module:PaperDollFrame_SetSidebar(button, index)
 	if not _G[PAPERDOLL_SIDEBARS[index].frame]:IsShown() then
 		for i = 1, #PAPERDOLL_SIDEBARS do
-			if _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
+			if i ~= index and _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
 				if E.db.enhanced.character.animations then
-					UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
-
-					_G[PAPERDOLL_SIDEBARS[i].frame].fadeInfo.finishedFunc = function()
-						_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
-					end
+					E:UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
 				else
 					_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
 				end
 
-				_G["PaperDollSidebarTab"..i].Hider:Show()
-				_G["PaperDollSidebarTab"..i].Highlight:Show()
+				_G["ElvUI_PaperDollSidebarTab"..i].Hider:Show()
+				_G["ElvUI_PaperDollSidebarTab"..i].Highlight:Show()
 			end
 		end
 
 		_G[PAPERDOLL_SIDEBARS[index].frame]:Show()
 		if E.db.enhanced.character.animations then
-			UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
+			E:UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
 		end
 		PaperDollFrame.currentSideBar = _G[PAPERDOLL_SIDEBARS[index].frame]
-		PaperDollFrame.currentSideBarID = index
 
-		_G["PaperDollSidebarTab"..index].Hider:Hide()
-		_G["PaperDollSidebarTab"..index].Highlight:Hide()
+		_G["ElvUI_PaperDollSidebarTab"..index].Hider:Hide()
+		_G["ElvUI_PaperDollSidebarTab"..index].Highlight:Hide()
 	end
 end
 
@@ -1614,16 +1654,8 @@ function module:PaperDollTitlesPane_UpdateScrollFrame()
 			button.text:SetText(playerTitle.name)
 			button.titleId = playerTitle.id
 
-			local highlight = button:GetHighlightTexture()
-			highlight:SetTexture(E.Media.Textures.Highlight)
-			highlight:SetInside()
-			highlight:SetVertexColor(1, 1, 1, 0.35)
-
 			if PaperDollTitlesPane.selected == playerTitle.id then
 				button.Check:SetAlpha(1)
-				button.SelectedBar:SetTexture(E.Media.Textures.Highlight)
-				button.SelectedBar:SetVertexColor(1, 0.80, 0.10, 0.3)
-				button.SelectedBar:SetInside()
 				button.SelectedBar:Show()
 			else
 				button.Check:SetAlpha(0)
@@ -1631,7 +1663,8 @@ function module:PaperDollTitlesPane_UpdateScrollFrame()
 			end
 
 			if (i + scrollOffset) % 2 == 0 then
-				button.Stripe:SetTexture(0.9, 0.9, 1, 0.1)
+				button.Stripe:SetTexture(0.9, 0.9, 1)
+				button.Stripe:SetAlpha(0.1)
 				button.Stripe:Show()
 			else
 				button.Stripe:Hide()
@@ -2091,12 +2124,12 @@ local function Animation_OnMouseWheel(self, delta, stepSize)
 	end
 
 	local minVal, maxVal = 0, self.range
-	stepSize = stepSize or self.stepSize or self.buttonHeight or self.scrollBar.scrollStep
+	stepSize = (stepSize or self.stepSize or self.buttonHeight or self.scrollBar.scrollStep) * self.times
 
 	if delta == 1 then
-		SetScrollValue(self, max(minVal, self.scrollBar:GetValue() - (stepSize * self.times)))
+		SetScrollValue(self, max(minVal, self.scrollBar:GetValue() - stepSize))
 	else
-		SetScrollValue(self, min(maxVal, self.scrollBar:GetValue() + (stepSize * self.times)))
+		SetScrollValue(self, min(maxVal, self.scrollBar:GetValue() + stepSize))
 	end
 end
 
@@ -2131,97 +2164,71 @@ local function CreateSmoothScrollAnimation(scrollBar, hybridScroll)
 	end
 end
 
+local function PaneFadeFinishedFunc(frame)
+	if frame.fadeInfo.mode == "OUT" then
+		frame:Hide()
+	end
+end
+
+local function PaneFadeInfo(frame)
+	frame.FadeObject = {
+		finishedFuncKeep = true,
+		finishedArg1 = frame,
+		finishedFunc = PaneFadeFinishedFunc
+	}
+end
+
 function module:Initialize()
 	if not E.private.enhanced.character.enable then return end
 
-	self.skinEnabled = (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) and true or false
-
-	if PersonalGearScore then
-		PersonalGearScore:Hide()
-	end
-	if GearScore2 then
-		GearScore2:Hide()
-	end
-
+	-- Hide frames
 	PlayerTitleFrame:Kill()
 	PlayerTitlePickerFrame:Kill()
 	CharacterAttributesFrame:Kill()
 	CharacterResistanceFrame:Kill()
 	GearManagerToggleButton:Kill()
 
-	SetCVar("equipmentManager", 1)
+	PaperDollSidebarTabs:Kill()
+	PaperDollFrameStrengthenFrame:SetAlpha(0)
 
-	if self.skinEnabled then
-		CharacterNameFrame:ClearAllPoints()
-		CharacterNameFrame:Point("CENTER", CharacterFrame.backdrop, 6, 200)
-		CharacterFrameCloseButton:Point("CENTER", CharacterFrame.backdrop, "TOPRIGHT", -12, -13)
-
-		CharacterFrame.backdrop:ClearAllPoints()
-		CharacterFrame.backdrop:Point("TOPLEFT", 11, -12)
-		CharacterFrame.backdrop:Size(341, 424)
-
-		S:SetUIPanelWindowInfo(CharacterFrame, "width")
-
-		S:SetBackdropHitRect(PaperDollFrame, CharacterFrame.backdrop)
-		S:SetBackdropHitRect(PetPaperDollFrame, CharacterFrame.backdrop)
-		S:SetBackdropHitRect(PetPaperDollFrameCompanionFrame, CharacterFrame.backdrop)
-		S:SetBackdropHitRect(PetPaperDollFramePetFrame, CharacterFrame.backdrop)
+	for i = 1, PaperDollFrameStrengthenFrame:GetNumChildren() do
+		local frame = select(i, PaperDollFrameStrengthenFrame:GetChildren())
+		if frame then
+			frame:Kill()
+		end
 	end
 
-	local expandButton = CreateFrame("Button", "CharacterFrameExpandButton", CharacterFrame)
-	expandButton:Point("BOTTOMLEFT", CharacterFrame, 325, 85)
-	expandButton:SetFrameLevel(CharacterFrame:GetFrameLevel() + 5)
-	S:HandleNextPrevButton(expandButton)
-	expandButton:Size(19)
+--[[
+	PaperDollFrameStrengthenFrame.StrengthenTittle = setmetatable({}, {
+		__index = PaperDollFrameStrengthenFrame.StrengthenTittle,
+		__newindex = function(table, key, value)
+			rawset(table, key, key ~= "Current" and value or nil)
+		end,
+	})
+]]
 
-	expandButton:SetScript("OnClick", function(self)
-		if CharacterFrame.Expanded then
-			E.private.enhanced.character.collapsed = true
-			module:CharacterFrame_Collapse()
-			PlaySound("igCharacterInfoClose")
-		else
-			E.private.enhanced.character.collapsed = false
-			module:CharacterFrame_Expand()
-			PlaySound("igCharacterInfoOpen")
-		end
-		if GameTooltip:GetOwner() == self then
-			self:GetScript("OnEnter")(self)
-		end
-	end)
+	SendServerMessage("GET_ALL_STRENGTHENING_STATS")
 
-	expandButton:SetScript("OnEnter", function(self)
-		S.SetModifiedBackdrop(self)
-		GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-		if CharacterFrame.Expanded then
-			GameTooltip:SetText(self.collapseTooltip)
-		else
-			GameTooltip:SetText(self.expandTooltip)
-		end
-	end)
-	expandButton:SetScript("OnLeave", function(self)
-		S.SetOriginalBackdrop(self)
-		GameTooltip_Hide()
-	end)
+	-- New frames
+	SetCVar("equipmentManager", 1)
 
-do -- CharacterFrame
-	local sidebarTabs = CreateFrame("Frame", "PaperDollSidebarTabs", PaperDollFrame)
-	sidebarTabs:Hide()
-	sidebarTabs:Size(168, 35)
-	sidebarTabs:Point("BOTTOMRIGHT", CharacterFrame.backdrop, "TOPRIGHT", -18, -59)
+	local sidebarTabs = CreateFrame("Frame", "ElvUI_PaperDollSidebarTabs", PaperDollFrame)
+	sidebarTabs:SetSize(168, 35)
+	sidebarTabs:Point("BOTTOMRIGHT", CharacterFrame, "TOPRIGHT", -4, -48)
 
-	local sidebarTabs3 = CreateFrame("Button", "PaperDollSidebarTab3", sidebarTabs)
+	local sidebarTabs3 = CreateFrame("Button", "ElvUI_PaperDollSidebarTab3", sidebarTabs)
 	sidebarTabs3:SetID(3)
 	sidebarTabs3:Point("BOTTOMRIGHT", -30, 0)
 	self:PaperDollSidebarTab(sidebarTabs3)
 
-	local sidebarTabs2 = CreateFrame("Button", "PaperDollSidebarTab2", sidebarTabs)
+	local sidebarTabs2 = CreateFrame("Button", "ElvUI_PaperDollSidebarTab2", sidebarTabs)
 	sidebarTabs2:SetID(2)
-	sidebarTabs2:Point("RIGHT", "PaperDollSidebarTab3", "LEFT", -5, 0)
+	sidebarTabs2:Point("RIGHT", ElvUI_PaperDollSidebarTab3, "LEFT", -4, 0)
 	self:PaperDollSidebarTab(sidebarTabs2)
 
-	local sidebarTabs1 = CreateFrame("Button", "PaperDollSidebarTab1", sidebarTabs)
+	local sidebarTabs1 = CreateFrame("Button", "ElvUI_PaperDollSidebarTab1", sidebarTabs)
 	sidebarTabs1:SetID(1)
-	sidebarTabs1:Point("RIGHT", "PaperDollSidebarTab2", "LEFT", -5, 0)
+	sidebarTabs1:Point("RIGHT", ElvUI_PaperDollSidebarTab2, "LEFT", -4, 0)
 	self:PaperDollSidebarTab(sidebarTabs1)
 
 	sidebarTabs1:RegisterEvent("UNIT_PORTRAIT_UPDATE")
@@ -2230,8 +2237,9 @@ do -- CharacterFrame
 	local tcoords = PAPERDOLL_SIDEBARS[1].texCoords
 	sidebarTabs1.Icon:SetTexCoord(tcoords[1], tcoords[2], tcoords[3], tcoords[4])
 
-	sidebarTabs1:SetScript("OnEvent", function(self, event, unit)
+	sidebarTabs1:SetScript("OnEvent", function(self, event, ...)
 		if event == "UNIT_PORTRAIT_UPDATE" then
+			local unit = ...
 			if not unit or unit == "player" then
 				SetPortraitTexture(self.Icon, "player")
 			end
@@ -2242,34 +2250,32 @@ do -- CharacterFrame
 
 	local titlePane = CreateFrame("ScrollFrame", "PaperDollTitlesPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	titlePane:Hide()
-	titlePane:Size(169, 350)
-	titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+	titlePane:SetSize(239, 363)
+	PaneFadeInfo(titlePane)
 
 	titlePane.scrollBar = CreateFrame("Slider", "$parentScrollBar", titlePane, "HybridScrollBarTemplate")
-	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 3, -19)
-	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 3, 17)
+	titlePane.scrollBar:Width(20)
+	titlePane.scrollBar:ClearAllPoints()
+	titlePane.scrollBar:Point("TOPLEFT", titlePane, "TOPRIGHT", 3, -16)
+	titlePane.scrollBar:Point("BOTTOMLEFT", titlePane, "BOTTOMRIGHT", 3, 16)
 	S:HandleScrollBar(titlePane.scrollBar)
 
 	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
 
-	titlePane:SetScript("OnShow", function(self)
-		module:PaperDollTitlesPane_Update()
-	end)
-
 	titlePane.scrollBar.Show = function(self)
-		titlePane:Width(169)
-		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+		titlePane:Width(239)
+		titlePane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, titlePane.buttons do
-			button:Width(169)
+			button:Width(239)
 		end
 		getmetatable(self).__index.Show(self)
 	end
 
 	titlePane.scrollBar.Hide = function(self)
-		titlePane:Width(190)
-		titlePane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
+		titlePane:Width(257)
+		titlePane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, titlePane.buttons do
-			button:Width(190)
+			button:Width(257)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2280,61 +2286,41 @@ do -- CharacterFrame
 	titlePane.update = self.PaperDollTitlesPane_UpdateScrollFrame
 	HybridScrollFrame_CreateButtons(PaperDollTitlesPane, "PlayerTitleButtonTemplate2", 2, -4)
 
-	local statsPane = CreateFrame("ScrollFrame", "CharacterStatsPane", CharacterFrame, "UIPanelScrollFrameTemplate")
-	statsPane:Hide()
-	statsPane:Size(169, 350)
-	statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+	local statsPane = CreateFrame("ScrollFrame", "CharacterStatsPane", PaperDollFrame, "UIPanelScrollFrameTemplate")
+	statsPane:SetSize(239, 363)
+	PaneFadeInfo(statsPane)
 	statsPane.Categories = {}
 
 	statsPane.scrollBar = CharacterStatsPaneScrollBar
-	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 3, -19)
-	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 3, 17)
+	CharacterStatsPaneScrollBar:ClearAllPoints()
+	CharacterStatsPaneScrollBar:Point("TOPLEFT", CharacterStatsPane, "TOPRIGHT", 3, -16)
+	CharacterStatsPaneScrollBar:Point("BOTTOMLEFT", CharacterStatsPane, "BOTTOMRIGHT", 3, 16)
 	S:HandleScrollBar(CharacterStatsPaneScrollBar)
 
 	CharacterStatsPaneScrollBar.scrollStep = 50
 	CharacterStatsPane.scrollBarHideable = 1
-
-	statsPane:SetScript("OnMouseWheel", function(self, value, scrollBar)
-		scrollBar = scrollBar or self.scrollBar
-		local scrollStep = scrollBar.scrollStep or scrollBar:GetHeight() / 2
-
-		if value > 0 then
-			scrollBar:SetValue(scrollBar:GetValue() - scrollStep)
-		else
-			scrollBar:SetValue(scrollBar:GetValue() + scrollStep)
-		end
-	end)
-
-	CharacterStatsPaneScrollBarScrollUpButton:SetScript("OnClick", function(self)
-		local parent = self:GetParent()
-		local scrollStep = parent.scrollStep or (parent:GetHeight() / 2)
-		parent:SetValue(parent:GetValue() - scrollStep)
-		PlaySound("UChatScrollButton")
-	end)
-	CharacterStatsPaneScrollBarScrollDownButton:SetScript("OnClick", function(self)
-		local parent = self:GetParent()
-		local scrollStep = parent.scrollStep or (parent:GetHeight() / 2)
-		parent:SetValue(parent:GetValue() + scrollStep)
-		PlaySound("UChatScrollButton")
-	end)
+	ScrollFrame_OnLoad(statsPane)
+	ScrollFrame_OnScrollRangeChanged(statsPane)
 
 	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
-	statsPaneScrollChild:Size(169, 0)
+	statsPaneScrollChild:SetSize(239, 0)
 	statsPaneScrollChild:Point("TOPLEFT")
 
 	for i = 1, 8 do
 		local button = CreateFrame("Frame", "CharacterStatsPaneCategory"..i, statsPaneScrollChild)
-		button:Size(169, 0)
+		button:Width(239)
 
 		button.Toolbar = CreateFrame("Button", nil, button)
 		button.Toolbar:RegisterForDrag("LeftButton")
-		button.Toolbar:Size(150, 18)
+		button.Toolbar:Size(186, 24)
 		button.Toolbar:Point("TOP")
-		button.Toolbar:SetTemplate("Default", true)
-		button.Toolbar:HookScript("OnEnter", S.SetModifiedBackdrop)
-		button.Toolbar:HookScript("OnLeave", S.SetOriginalBackdrop)
+
+		button.Toolbar.Background = button.Toolbar:CreateTexture(nil, "BACKGROUND")
+		button.Toolbar.Background:SetAllPoints()
+		button.Toolbar.Background:SetTexture(E.Media.Textures.Highlight)
+		button.Toolbar.Background:SetAlpha(0.3)
 
 		button.Toolbar:SetScript("OnClick", function(self)
 			if self:GetParent().collapsed then
@@ -2356,9 +2342,10 @@ do -- CharacterFrame
 		button.NameText:Point("CENTER")
 
 		button.Stats = {}
-		button.Stats[1] = CreateFrame("Frame", "$parentStat1", button, "CharacterStatFrameTemplate")
-		button.Stats[1]:Point("TOPLEFT", 0, -23)
+		button.Stats[1] = CreateFrame("Button", "$parentStat1", button)
+		button.Stats[1]:Point("TOPLEFT", 0, -25)
 		button.Stats[1]:Point("RIGHT", -4, 0)
+		module:CharacterStatFrame(button.Stats[1])
 
 		statsPane.Categories[i] = button
 	end
@@ -2366,34 +2353,45 @@ do -- CharacterFrame
 	statsPane:SetScrollChild(statsPaneScrollChild)
 
 	CharacterStatsPaneScrollBar.Show = function(self)
-		statsPane:Width(169)
-		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+		statsPane:Width(239)
+		statsPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, statsPane.Categories do
-			button:Width(169)
-			button.Toolbar:Width(132)
+			button:Width(239)
+			button.Toolbar:Width(186 - 18)
 		end
 		getmetatable(self).__index.Show(self)
 	end
 
 	CharacterStatsPaneScrollBar.Hide = function(self)
-		statsPane:Width(190)
-		statsPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
+		statsPane:Width(257)
+		statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, statsPane.Categories do
-			button:Width(190)
-			button.Toolbar:Width(150)
+			button:Width(257)
+			button.Toolbar:Width(186)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
 
+	statsPane:Width(239)
+	statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
+	for _, button in next, statsPane.Categories do
+		button:Width(239)
+	end
+
+	statsPane:SetScript("OnShow", function(self)
+		module:PaperDollTitlesPane_Update()
+	end)
+
 	local equipmentManagerPane = CreateFrame("ScrollFrame", "PaperDollEquipmentManagerPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	equipmentManagerPane:Hide()
-	equipmentManagerPane:Size(169, 350)
-	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+	equipmentManagerPane:SetSize(239, 363)
+	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
+	PaneFadeInfo(equipmentManagerPane)
 
 	equipmentManagerPane.EquipSet = CreateFrame("Button", "$parentEquipSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.EquipSet:SetText(EQUIPSET_EQUIP)
-	equipmentManagerPane.EquipSet:Size(93, 22)
-	equipmentManagerPane.EquipSet:Point("TOPLEFT")
+	equipmentManagerPane.EquipSet:SetSize(79, 22)
+	equipmentManagerPane.EquipSet:Point("TOP", -38, 0)
 	S:HandleButton(equipmentManagerPane.EquipSet)
 
 	equipmentManagerPane.EquipSet:SetScript("OnClick", function()
@@ -2406,39 +2404,35 @@ do -- CharacterFrame
 
 	equipmentManagerPane.SaveSet = CreateFrame("Button", "$parentSaveSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.SaveSet:SetText(SAVE)
-	equipmentManagerPane.SaveSet:Size(94, 22)
-	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 3, 0)
+	equipmentManagerPane.SaveSet:SetSize(79, 22)
+	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 4, 0)
 	S:HandleButton(equipmentManagerPane.SaveSet)
 
 	equipmentManagerPane.SaveSet:SetScript("OnClick", GearManagerDialogSaveSet_OnClick)
 
 	equipmentManagerPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", equipmentManagerPane, "HybridScrollBarTemplate")
-	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 3, -19)
-	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 3, 17)
+	equipmentManagerPane.scrollBar:Width(20)
+	equipmentManagerPane.scrollBar:ClearAllPoints()
+	equipmentManagerPane.scrollBar:Point("TOPLEFT", equipmentManagerPane, "TOPRIGHT", 3, -16)
+	equipmentManagerPane.scrollBar:Point("BOTTOMLEFT", equipmentManagerPane, "BOTTOMRIGHT", 3, 16)
 	S:HandleScrollBar(equipmentManagerPane.scrollBar)
 
 	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
 	equipmentManagerPane.scrollBar.Show = function(self)
-		equipmentManagerPane.EquipSet:Width(83)
-		equipmentManagerPane.SaveSet:Width(83)
-
-		equipmentManagerPane:Width(169)
-		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
+		equipmentManagerPane:Width(239)
+		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, equipmentManagerPane.buttons do
-			button:Width(169)
+			button:Width(239)
 		end
 		getmetatable(self).__index.Show(self)
 	end
 
 	equipmentManagerPane.scrollBar.Hide = function(self)
-		equipmentManagerPane.EquipSet:Width(93)
-		equipmentManagerPane.SaveSet:Width(94)
-
-		equipmentManagerPane:Width(190)
-		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
+		equipmentManagerPane:Width(257)
+		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, equipmentManagerPane.buttons do
-			button:Width(190)
+			button:Width(257)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2515,293 +2509,63 @@ do -- CharacterFrame
 
 	GearManagerDialogPopup:SetParent(PaperDollFrame)
 	GearManagerDialogPopup:ClearAllPoints()
-	GearManagerDialogPopup:Point("BOTTOMLEFT", CharacterFrame.backdrop, "BOTTOMRIGHT", -6, -8)
+	GearManagerDialogPopup:SetPoint("LEFT", CharacterFrame, "RIGHT")
 
-	CharacterModelFrame:Size(237, 324)
-
-	if not E.private.enhanced.character.player.orderName2 then
-		E.private.enhanced.character.player.orderName2 = E.private.enhanced.character.player.orderName
-		E.private.enhanced.character.player.collapsedName2 = table.copy(E.private.enhanced.character.player.collapsedName)
-	end
-
-	local activeSpec = GetActiveTalentGroup()
-	if activeSpec == 1 then
-		self:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
-	else
-		self:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName2, E.private.enhanced.character.player.collapsedName2, "player")
-	end
+	self:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
 
 	PaperDollFrame:RegisterEvent("PLAYER_TALENT_UPDATE")
-	PaperDollFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+	PaperDollFrame:HookScript("OnEvent", function(self, event, ...)
+		if not self:IsVisible() then return end
 
-	PaperDollFrame:SetScript("OnEvent", function(self, event, unit)
-		if event == "PLAYER_ENTERING_WORLD" or (event == "UNIT_MODEL_CHANGED" and unit == "player") then
-			CharacterModelFrame:SetUnit("player")
-			return
-		elseif event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and unit == "player") then
+		local unit = ...
+		if event == "KNOWN_TITLES_UPDATE" or (event == "UNIT_NAME_UPDATE" and unit == "player") then
 			if PaperDollTitlesPane:IsShown() then
 				module:PaperDollTitlesPane_Update()
 			end
 		end
 
-		if not self:IsVisible() then return end
-
 		if unit == "player" then
 			if event == "UNIT_LEVEL" then
 				module:PaperDollFrame_SetLevel()
-			elseif event == "UNIT_DAMAGE" or event == "PLAYER_DAMAGE_DONE_MODS" or event == "UNIT_ATTACK_SPEED" or event == "UNIT_RANGEDDAMAGE" or event == "UNIT_ATTACK" or event == "UNIT_STATS" or event == "UNIT_RANGED_ATTACK_POWER" or event == "UNIT_RESISTANCES" then
-				self:SetScript("OnUpdate", PaperDollFrame_QueuedUpdate)
+			elseif event == "UNIT_DAMAGE" or event == "PLAYER_DAMAGE_DONE_MODS" or event == "UNIT_ATTACK_SPEED" or event == "UNIT_RANGEDDAMAGE" or event == "UNIT_ATTACK" or event == "UNIT_STATS" or event == "UNIT_RANGED_ATTACK_POWER" then
+				module:PaperDollFrame_UpdateStats()
+			elseif event == "UNIT_RESISTANCES" then
+				module:PaperDollFrame_UpdateStats()
 			end
 		end
 
 		if event == "COMBAT_RATING_UPDATE" then
-			self:SetScript("OnUpdate", PaperDollFrame_QueuedUpdate)
+			module:PaperDollFrame_UpdateStats()
 		elseif event == "PLAYER_TALENT_UPDATE" then
 			module:PaperDollFrame_SetLevel()
-		elseif event == "ACTIVE_TALENT_GROUP_CHANGED" then
-			if GetActiveTalentGroup() == 1 then
-				module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
-			else
-				module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName2, E.private.enhanced.character.player.collapsedName2, "player")
-			end
 		end
 	end)
 
-	PaperDollFrame:SetScript("OnShow", function()
+	PaperDollFrame:HookScript("OnShow", function()
+		module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
+
 		module:PaperDollFrame_SetLevel()
-
-		if UnitHasRelicSlot("player") then
-			CharacterAmmoSlot:Hide()
-		else
-			CharacterAmmoSlot:Show()
-		end
-
-		if PaperDollFrame.currentSideBarID == 2 then
-			module:PaperDollTitlesPane_Update()
-		end
-
-		if GetActiveTalentGroup() == 1 then
-			module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
-		else
-			module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName2, E.private.enhanced.character.player.collapsedName2, "player")
-		end
-
-		if E.private.enhanced.character.collapsed then
-			module:CharacterFrame_Collapse()
-		else
-			module:CharacterFrame_Expand()
-		end
-
-		CharacterFrameExpandButton:Show()
-		CharacterFrameExpandButton.collapseTooltip = L["Hide Character Information"]
-		CharacterFrameExpandButton.expandTooltip = L["Show Character Information"]
 	end)
 
-	PaperDollFrame:SetScript("OnHide", function(self)
-		module:CharacterFrame_Collapse()
-		CharacterFrameExpandButton:Hide()
-		if MOVING_STAT_CATEGORY then
-			PaperDollStatCategory_OnDragStop(MOVING_STAT_CATEGORY)
-		end
-	end)
-end
+	self:PaperDollFrame_UpdateSidebarTabs()
 
-do -- PetFrame
-	PetNameText:ClearAllPoints()
-	PetNameText:Point("CENTER", CharacterFrame.backdrop, 0, 200)
-
-	PetLevelText:ClearAllPoints()
-	PetLevelText:Point("TOP", CharacterFrame.backdrop, 0, -20)
-
-	PetPaperDollCloseButton:Kill()
+	PetNameText:Point("CENTER", CharacterFrame, 6, 200)
+	PetLevelText:Point("TOP", CharacterFrame, 0, -20)
 	PetAttributesFrame:Kill()
 	PetResistanceFrame:Kill()
 
-	PetModelFrame:Size(325, 324)
-	PetModelFrame:Point("TOPLEFT", 19, -76)
+	PetModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 27, -80)
 
-	PetModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 23, -80)
-
-	PetPaperDollFrameExpBar:Width(297)
-	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", 20, 88)
-
-	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
-
-	PetPaperDollFrame:SetScript("OnEvent", function(self, event, unit)
-		if event == "PET_UI_UPDATE" or event == "PET_UI_CLOSE" or event == "PET_BAR_UPDATE"
-		or (event == "UNIT_PET" and unit == "player")
-		or (event == "UNIT_NAME_UPDATE" and unit == "pet") then
-			PetPaperDollFrame_UpdateTabs()
-
-			if self:IsVisible() then
-				self:SetScript("OnUpdate", PetPaperDollFrame_QueuedUpdate)
-			end
-		elseif event == "UNIT_PET_EXPERIENCE" then
-			PetExpBar_Update()
-		elseif event == "COMPANION_UPDATE" then
-			if not PetPaperDollFrameCompanionFrame.idMount then
-				PetPaperDollFrameCompanionFrame.idMount = GetCompanionInfo("MOUNT", 1)
-			end
-			if not PetPaperDollFrameCompanionFrame.idCritter then
-				PetPaperDollFrameCompanionFrame.idCritter = GetCompanionInfo("CRITTER", 1)
-			end
-
-			if PetPaperDollFrameCompanionFrame:IsVisible() then
-				module:PetPaperDollCompanionPane_Update()
-			end
-		elseif event == "COMPANION_LEARNED" then
-			if not CharacterFrame:IsVisible() then
-				SetButtonPulse(CharacterMicroButton, 60, 1)
-			end
-			if not PetPaperDollFrame:IsVisible() then
-				SetButtonPulse(CharacterFrameTab2, 60, 1)
-			end
-
-			if self:IsVisible() then
-				PetPaperDollFrame_UpdateTabs()
-				module:PetPaperDollCompanionPane_Update()
-			end
-		elseif event == "COMPANION_UNLEARNED" then
-			if self:IsVisible() then
-				PetPaperDollFrame_UpdateTabs()
-				module:PetPaperDollCompanionPane_Update()
-			end
-		elseif event == "SPELL_UPDATE_COOLDOWN" then
-			if PetPaperDollFrameCompanionFrame:IsVisible() then
-				PetPaperDollFrame_UpdateCompanionCooldowns()
-			end
-		elseif ((event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE") and unit == "player") then
-			module:PetPaperDollCompanionPane_Update()
-		elseif event == "PET_SPELL_POWER_UPDATE" then
-			if self:IsVisible() then
-				self:SetScript("OnUpdate", PetPaperDollFrame_QueuedUpdate)
-			end
-		elseif unit == "pet" then
-			if self:IsVisible() then
-				self:SetScript("OnUpdate", PetPaperDollFrame_QueuedUpdate)
-			end
-		end
-	end)
+	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", PetPaperDollFramePetFrame, "BOTTOMLEFT", 25, 88)
+	PetPaperDollFrameExpBar:Width(285)
 
 	PetPaperDollFramePetFrame:HookScript("OnShow", function()
-		if E.private.enhanced.character.collapsed then
-			module:CharacterFrame_Collapse()
-		else
-			module:CharacterFrame_Expand()
-		end
-
-		CharacterFrameExpandButton:Show()
-		CharacterFrameExpandButton.collapseTooltip = L["Hide Pet Information"]
-		CharacterFrameExpandButton.expandTooltip = L["Show Pet Information"]
-
 		module:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
 		module:PaperDollFrame_UpdateStats()
 	end)
 
-	PetPaperDollFramePetFrame:HookScript("OnHide", function()
-		if PaperDollFrame:IsShown() then return end
-
-		module:CharacterFrame_Collapse()
-		CharacterFrameExpandButton:Hide()
-	end)
-end
-
-do -- CompanionFrame
-	CompanionModelFrame:Size(325, 352)
-	CompanionModelFrame:Point("TOPLEFT", 19, -76)
-
-	CompanionModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 23, -80)
-
-	CompanionSelectedName:ClearAllPoints()
-	CompanionSelectedName:Point("BOTTOM", CompanionModelFrame, "BOTTOM", 0, 10)
-	CompanionSelectedName:SetParent(CompanionModelFrame)
-	CompanionSelectedName:SetTextColor(1, 1, 1)
-
-	CompanionPageNumber:Kill()
-	CompanionSummonButton:Kill()
-	for i = 1, 12 do
-		_G["CompanionButton"..i]:Kill()
-		_G["CompanionButton"..i].Disable = E.noop
-		_G["CompanionButton"..i].Enable = E.noop
-	end
-	CompanionPrevPageButton:Kill()
-	CompanionNextPageButton:Kill()
-
-	local companionPane = CreateFrame("ScrollFrame", "PetPaperDollCompanionPane", PetPaperDollFrameCompanionFrame, "HybridScrollFrameTemplate")
-	companionPane:Hide()
-	companionPane:Size(169, 350)
-	companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
-
-	companionPane.text = companionPane:CreateFontString(nil, "OVERLAY")
-	companionPane.text:Size(169, 20)
-	companionPane.text:Point("BOTTOM", PetPaperDollCompanionPane, "TOP", 0, 7)
-	companionPane.text:FontTemplate()
-
-	companionPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", companionPane, "HybridScrollBarTemplate")
-	companionPane.scrollBar:Point("TOPLEFT", companionPane, "TOPRIGHT", 3, -19)
-	companionPane.scrollBar:Point("BOTTOMLEFT", companionPane, "BOTTOMRIGHT", 3, 17)
-	S:HandleScrollBar(companionPane.scrollBar)
-
-	CreateSmoothScrollAnimation(companionPane.scrollBar, true)
-
-	companionPane.scrollBar.Show = function(self)
-		companionPane:Width(169)
-		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -29, -64)
-		for _, button in next, companionPane.buttons do
-			button:Width(169)
-		end
-		getmetatable(self).__index.Show(self)
-	end
-
-	companionPane.scrollBar.Hide = function(self)
-		companionPane:Width(190)
-		companionPane:Point("TOPRIGHT", CharacterFrame.backdrop, -8, -64)
-		for _, button in next, companionPane.buttons do
-			button:Width(190)
-		end
-		getmetatable(self).__index.Hide(self)
-	end
-
-	companionPane.update = self.PetPaperDollCompanionPane_Update
-	HybridScrollFrame_CreateButtons(companionPane, "CompanionButtonTemplate2", 2)
-
-	PetPaperDollFrameCompanionFrame:HookScript("OnShow", function(self)
-		if not CharacterFrame.Expanded then
-			module:CharacterFrame_Expand(true)
-		end
-		module:PetPaperDollCompanionPane_Update()
-	end)
-
-	PetPaperDollFrameCompanionFrame:HookScript("OnHide", function(self)
-		if PaperDollFrame:IsShown() or PetPaperDollFramePetFrame:IsShown() then return end
-		module:CharacterFrame_Collapse(true)
-	end)
-end
-
-	hooksecurefunc("PetPaperDollFrame_SetTab", function(id)
-		if id == 1 and HasPetUI() then
-			PetPaperDollCompanionPane:Hide()
-		elseif (id == 2 and GetNumCompanions("CRITTER") > 0)
-		or (id == 3 and GetNumCompanions("MOUNT") > 0)
-		then
-			PetPaperDollCompanionPane:Show()
-			module:PetPaperDollCompanionPane_Update()
-		end
-	end)
-
-	self.Initialized = true
-
-	self:UpdateCharacterModelFrame()
-	self:UpdatePetModelFrame()
-	self:UpdateCompanionModelFrame()
-
-	self:RegisterEvent("ADDON_LOADED", function(event, addon)
-		if addon == "Blizzard_InspectUI" then
-			module:UnregisterEvent(event)
-			module:SecureHook("InspectFrame_UpdateTalentTab", "UpdateInspectModelFrame")
-		end
-	end)
+	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 end
 
 local function InitializeCallback()

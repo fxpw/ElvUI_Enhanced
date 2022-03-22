@@ -2046,4 +2046,17 @@ function EE:GetOptions()
 --	E.Options.args.enhanced.args.loseControlGroup.order = 8
 --	E.Options.args.enhanced.args.interruptGroup.order = 9
 --	E.Options.args.enhanced.args.unitframesGroup.order = 10
+	local enhanced = E.Options.args.enhanced
+	if enhanced then
+		enhanced.args.blizzardGroup.args.deathRecap = nil
+		enhanced.args.blizzardGroup.args.characterFrame.args.modelFrames = nil
+		enhanced.args.blizzardGroup.args.characterFrame.args.paperdollBackgrounds = nil
+		enhanced.args.blizzardGroup.args.dressingRoom = nil
+		enhanced.args.blizzardGroup.args.timerTracker = nil
+	end
+	E:GetModule("Enhanced_TimerTracker").Initialize = E.noop
+	E:GetModule("Enhanced_ModelFrames").Initialize = E.noop
+	local EB = E:GetModule("Enhanced_Blizzard")
+	EB.DressUpFrame = E.noop
+	EB.DeathRecap = E.noop
 end

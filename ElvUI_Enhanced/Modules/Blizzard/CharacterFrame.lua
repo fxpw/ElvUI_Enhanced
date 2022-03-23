@@ -1151,8 +1151,15 @@ function module:SetResilience(statFrame, unit)
 	local lowestRatingBonus = GetCombatRatingBonus(lowestRating)
 
 	module:SetLabelAndText(statFrame, STAT_RESILIENCE, minResilience)
+	
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_RESILIENCE).." "..minResilience..FONT_COLOR_CODE_CLOSE
 	statFrame.tooltip2 = format(RESILIENCE_TOOLTIP, lowestRatingBonus, min(lowestRatingBonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxRatingBonus), lowestRatingBonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER)
+	local onslaughtRating = GetOnslaughtRating();
+	if onslaughtRating < 0 then
+		statFrame.tooltip2 = statFrame.tooltip2 .. "\n\n" .. format(CR_ONSLAUGHT_RATING_INCREASE_TOOLTIP, onslaughtRating, onslaughtRating);
+	else
+		statFrame.tooltip2 = statFrame.tooltip2 .. "\n\n" .. format(CR_ONSLAUGHT_RATING_REDUSE_TOOLTIP, onslaughtRating, onslaughtRating);
+	end
 	statFrame:Show()
 end
 

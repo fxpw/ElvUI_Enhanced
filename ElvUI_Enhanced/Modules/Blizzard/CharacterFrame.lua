@@ -478,7 +478,7 @@ local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 	end
 	
 	function module:CharacterStatFrame(button)
-		button:Size(187, 15)
+		button:Size(SCROLL_WIDTH_SIRUS_STATS, 15)
 	
 		button.Label = button:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormalSmall")
 		button.Label:SetJustifyH("LEFT")
@@ -2187,7 +2187,8 @@ end
 
 function module:Initialize()
 	if not E.private.enhanced.character.enable then return end
-
+	SCROLL_WIDTH_SIRUS_STATS = 130
+	SCROLL_WIDTH_SIRUS_STATS_CHILD = 200
 	-- Hide frames
 	PlayerTitleFrame:Kill()
 	PlayerTitlePickerFrame:Kill()
@@ -2203,6 +2204,17 @@ function module:Initialize()
 		if frame then
 			frame:Kill()
 		end
+	end
+	local server = "Algalon x4 - 3.3.5a"
+	if GetRealmName() == server then
+		PaperDollFrameStatsFrameLeftCategory:Kill()
+		PaperDollFrameStatsFrameRightCategory:Kill()
+		PaperDollFrameStatsFrameItemLevelCategory:Kill()
+		SCROLL_WIDTH_SIRUS_STATS = 90
+		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190
+	else
+		SCROLL_WIDTH_SIRUS_STATS = 168
+		SCROLL_WIDTH_SIRUS_STATS_CHILD = 239
 	end
 
 --[[
@@ -2220,7 +2232,7 @@ function module:Initialize()
 	SetCVar("equipmentManager", 1)
 
 	local sidebarTabs = CreateFrame("Frame", "ElvUI_PaperDollSidebarTabs", PaperDollFrame)
-	sidebarTabs:SetSize(168, 35)
+	sidebarTabs:SetSize(SCROLL_WIDTH_SIRUS_STATS, 35)
 	sidebarTabs:Point("BOTTOMRIGHT", CharacterFrame, "TOPRIGHT", -4, -48)
 
 	local sidebarTabs3 = CreateFrame("Button", "ElvUI_PaperDollSidebarTab3", sidebarTabs)
@@ -2257,7 +2269,7 @@ function module:Initialize()
 
 	local titlePane = CreateFrame("ScrollFrame", "PaperDollTitlesPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	titlePane:Hide()
-	titlePane:SetSize(239, 363)
+	titlePane:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 363)
 	PaneFadeInfo(titlePane)
 
 	titlePane.scrollBar = CreateFrame("Slider", "$parentScrollBar", titlePane, "HybridScrollBarTemplate")
@@ -2270,10 +2282,10 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(titlePane.scrollBar, true)
 
 	titlePane.scrollBar.Show = function(self)
-		titlePane:Width(239)
+		titlePane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		titlePane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, titlePane.buttons do
-			button:Width(239)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		end
 		getmetatable(self).__index.Show(self)
 	end
@@ -2294,7 +2306,7 @@ function module:Initialize()
 	HybridScrollFrame_CreateButtons(PaperDollTitlesPane, "PlayerTitleButtonTemplate2", 2, -4)
 
 	local statsPane = CreateFrame("ScrollFrame", "CharacterStatsPane", PaperDollFrame, "UIPanelScrollFrameTemplate")
-	statsPane:SetSize(239, 363)
+	statsPane:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 363)
 	PaneFadeInfo(statsPane)
 	statsPane.Categories = {}
 
@@ -2312,12 +2324,12 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
-	statsPaneScrollChild:SetSize(239, 0)
+	statsPaneScrollChild:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 0)
 	statsPaneScrollChild:Point("TOPLEFT")
 
 	for i = 1, 8 do
 		local button = CreateFrame("Frame", "CharacterStatsPaneCategory"..i, statsPaneScrollChild)
-		button:Width(239)
+		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 
 		button.Toolbar = CreateFrame("Button", nil, button)
 		button.Toolbar:RegisterForDrag("LeftButton")
@@ -2360,10 +2372,10 @@ function module:Initialize()
 	statsPane:SetScrollChild(statsPaneScrollChild)
 
 	CharacterStatsPaneScrollBar.Show = function(self)
-		statsPane:Width(239)
+		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, statsPane.Categories do
-			button:Width(239)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 			button.Toolbar:Width(186 - 18)
 		end
 		getmetatable(self).__index.Show(self)
@@ -2379,10 +2391,10 @@ function module:Initialize()
 		getmetatable(self).__index.Hide(self)
 	end
 
-	statsPane:Width(239)
+	statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 	statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 	for _, button in next, statsPane.Categories do
-		button:Width(239)
+		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 	end
 
 	statsPane:SetScript("OnShow", function(self)
@@ -2391,7 +2403,7 @@ function module:Initialize()
 
 	local equipmentManagerPane = CreateFrame("ScrollFrame", "PaperDollEquipmentManagerPane", PaperDollFrame, "HybridScrollFrameTemplate")
 	equipmentManagerPane:Hide()
-	equipmentManagerPane:SetSize(239, 363)
+	equipmentManagerPane:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 363)
 	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 	PaneFadeInfo(equipmentManagerPane)
 
@@ -2427,10 +2439,10 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(equipmentManagerPane.scrollBar, true)
 
 	equipmentManagerPane.scrollBar.Show = function(self)
-		equipmentManagerPane:Width(239)
+		equipmentManagerPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 		for _, button in next, equipmentManagerPane.buttons do
-			button:Width(239)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		end
 		getmetatable(self).__index.Show(self)
 	end

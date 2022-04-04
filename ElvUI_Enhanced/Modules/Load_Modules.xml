@@ -1,7 +1,8 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Include file="Misc\Load_Misc.xml"/>
 	<Include file="Blizzard\Load_Blizzard.xml"/>
 	<Include file="Maps\Load_Maps.xml"/>
-	<Include file="Misc\Load_Misc.xml"/>
+
 	<Include file="Chat\Load_Chat.xml"/>
 	<Include file="Tooltip\Load_Tooltip.xml"/>
 	<Include file="Actionbars\Load_Actionbars.xml"/>

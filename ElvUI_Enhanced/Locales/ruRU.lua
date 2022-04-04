@@ -52,12 +52,12 @@ L["Decline Duel"] = "Отклонять дуэли"
 L["Declined duel request from "] = "Отклонять дуэль от "
 
 -- Enhanced Character Frame / Paperdoll Backgrounds
-L["Character Background"] = "Персонаж фон"
-L["Enhanced Character Frame"] = "Улучшенная фрейм персонажа"
+L["Character Background"] = "Фон персонажа"
+L["Enhanced Character Frame"] = "Улучшенный фрейм персонажа"
 L["Enhanced Model Frames"] = "Enhanced Model Frames"
 L["Inspect Background"] = "Проверять фон"
 L["Paperdoll Backgrounds"] = "Фоны всплывающего окна"
-L["Pet Background"] = "Пет фон"
+L["Pet Background"] = "Фон пета"
 
 -- Equipment
 L["Damaged Only"] = "Только поврежденные"
@@ -71,27 +71,27 @@ L["Add button to Dressing Room frame with ability to undress model."] = true
 L["Add button to Trainer frame with ability to train all available skills in one click."] = true
 L["Alt-Click Merchant"] = "Alt-Click Торговец"
 L["Already Known"] = "Уже известно"
-L["Animated Achievement Bars"] = "Анимированные достижения баров"
+L["Animated Achievement Bars"] = "Анимированные бары достижений"
 L["Automatically change your watched faction on the reputation bar to the faction you got reputation points for."] = "Автоматическое изменение фракции на панели репутации на ту, очки репутации которой вы получили."
 L["Automatically release body when killed inside a battleground."] = "Автоматически покидать тело после смерти на полях боя."
 L["Automatically select the quest reward with the highest vendor sell value."] = "Автоматически выберает награду квеста с наивысшим значением продажи торговцу"
 L["Change color of item icons which already known."] = "Измените цвет значков предмета, которые уже известны."
 L["Changes the transparency of all the movers."] = "Изменяет прозрачность фиксаторов"
-L["Display quest levels at Quest Log."] = "Показать уровни квеста в журнале квеста."
+L["Display quest levels at Quest Log."] = "Показать уровни квеста в журнале"
 L["Hide Zone Text"] = "Скрыть текст зоны"
-L["Holding Alt key while buying something from vendor will now buy an entire stack."] = "Держа Alt, покупая что-то у продавца, теперь купит весь стек."
+L["Holding Alt key while buying something from vendor will now buy an entire stack."] = "Держи Alt, покупая что-то у продавца, чтобы купить весь стек."
 L["Mover Transparency"] = "Прозрачность фиксаторов"
 L["PvP Autorelease"] = "Автовыход из тела"
 L["Select Quest Reward"] = "Выберить Награду задания"
 L["Show Quest Level"] = "Показать уровень квеста"
 L["Track Reputation"] = "Отслеживание репутации"
-L["Train All Button"] = "Выучить все кнопка"
-L["Undress Button"] = "Раздеть кнопка"
+L["Train All Button"] = "Кнопка выучить все"
+L["Undress Button"] = "Кнопка для раздевания"
 L["Undress"] = "Раздеть"
 
 -- HD Models Portrait Fix
 L["Debug"] = true
-L["List of models with broken portrait camera. Separete each model name with ';' simbol"] = "Список моделей со сломанной портретной камерой .Отделить каждое название модели с ';' символом"
+L["List of models with broken portrait camera. Separete each model name with ';' simbol"] = "Список моделей со сломанной портретной камерой. Отделять каждое название модели символом ';'"
 L["Models to fix"] = "Модели для исправления"
 L["Portrait HD Fix"] = "Портрет HD Fix."
 L["Print to chat model names of units with enabled 3D portraits."] = "Печатает в чате модели имен юнитов с включенными 3D-портретами."
@@ -122,7 +122,7 @@ L["Hook DBM"] = true
 -- Tooltip
 L["Check Player"] = "Проверьте игрока"
 L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."] = true
-L["Colorize the tooltip border based on item quality."] = "Окрашивать бордюр тултипа в цвет качества предмета"
+L["Colorize the tooltip border based on item quality."] = "Окрашивать край тултипа в цвет качества предмета"
 L["Icecrown Citadel"] = true
 L["Item Border Color"] = "Цвет рамки предметов"
 L["Progress Info"] = "Прогресс"
@@ -137,7 +137,7 @@ L["Trial of the Crusader"] = true
 L["Ulduar"] = true
 
 -- Movers
-L["Loss Control"] = "Потери контроля"
+L["Loss Control"] = "Потеря контоля"
 L["Player Portrait"] = "Портрет игрока"
 L["Target Portrait"] = "Портрет цели"
 
@@ -147,7 +147,7 @@ L["Disarm"] = "Разоружение"
 L["Lose Control"] = "Иконка потери контроля"
 L["PvE"] = "Рейдовые"
 L["Root"] = "Удержание на месте"
-L["Silence"] = "Молчание"
+L["Silence"] = "Безмолвие"
 L["Snare"] = "Замедление"
 
 -- Unitframes
@@ -195,8 +195,8 @@ L["ALT_KEY"] = "ALT"
 
 L["%d mails\nShift-Click to remove empty mails."] = true
 L["Addon |cffFFD100%s|r was merged into |cffFFD100ElvUI_Enhanced|r.\nPlease remove it to avoid conflicts."] = true
-L["Cache Unit Guilds / NPC Titles"] = "Кэшить Гильдии юнита / NPC титулы"
-L["Check Achievements"] = "Провить достижения"
+L["Cache Unit Guilds / NPC Titles"] = "Кэшировать Гильдии / NPC титулы"
+L["Check Achievements"] = "Проверять достижения"
 L["Collected"] = true
 L["Collection completed."] = true
 L["Collection stopped, inventory is full."] = true
@@ -216,8 +216,8 @@ L["Guild"] = "Гильдия"
 L["Inside Minimap"] = "Внутри миникарты"
 L["Key Press Animation"] = "Анимация нажатия"
 L["Map"] = "Карта"
-L["Minimap Button Grabber"] = "Минимап-кнопки сбор"
-L["NPC"] = "НИП"
+L["Minimap Button Grabber"] = "Собирать значки на миникарте"
+L["NPC"] = "NPC"
 L["Overlay Color"] = true
 L["Reaction Color"] = true
 L["Reported by %s"] = true
@@ -228,7 +228,7 @@ L["Set the width of Error Frame. Too narrow frame may cause messages to be split
 L["Show Everywhere"] = "Показать везде"
 L["Show on Arena."] = "Показать на арене."
 L["Show on Battleground."] = "Показать на поле битвы."
-L["Smooth Animations"] = "Гладкие анимации"
+L["Smooth Animations"] = "Плавные анимации"
 L["Take All"] = "Взять все"
 L["Take All Mail"] = "Возьми всю почту"
 L["Take Cash"] = "Принимать наличные"

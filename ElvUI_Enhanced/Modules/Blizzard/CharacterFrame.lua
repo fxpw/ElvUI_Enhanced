@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local module = E:NewModule("Enhanced_CharacterFrame", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
-
+local EI = E:GetModule("Enhanced_EquipmentInfo")
 local _G = _G
 local select, next, ipairs, pairs, tonumber, getmetatable = select, next, ipairs, pairs, tonumber, getmetatable
 local abs, floor, max, min = math.abs, math.floor, math.max, math.min
@@ -180,6 +180,11 @@ local PAPERDOLL_SIDEBARS = {
 		texCoords = {0.01562500, 0.53125000, 0.46875000, 0.60546875}
 	}
 }
+
+
+
+
+
 
 V.enhanced.character.player.ITEM_LEVEL = nil
 V.enhanced.character.player.STRENGTHEN = false
@@ -420,6 +425,26 @@ local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 
 local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 
+-- local txframe = CreateFrame('Frame')
+-- local tx = txframe:CreateTexture()
+
+-----------armory
+-- function module:TextureExists(path)
+-- 	if not path or path == '' then
+-- 		return print('Path not valid or defined.', 'error')
+-- 	end
+-- 	tx:SetTexture('?')
+-- 	tx:SetTexture(path)
+
+-- 	return (tx:GetTexture() ~= '?')
+-- end
+-- local classBGText = {
+-- 	["SHAMAN"] = [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\SHAMAN]]
+-- }
+-- local ruclass,myUnitClass = UnitClass("Player")
+
+
+-----------armory
 
 -- do
 	local locale = GetLocale()
@@ -641,7 +666,7 @@ local function OnEvent(event, bagID, slotID)
 		end
 	end
 end
-local slots = {
+local module.slots = {
 	["HeadSlot"] = "INVTYPE_HEAD",
 	["NeckSlot"] = "INVTYPE_NECK",
 	["ShoulderSlot"] = "INVTYPE_SHOULDER",
@@ -704,7 +729,7 @@ local function GetAverageItemLevel()
 	local hasMainHandBag, maxBagItemLevel, countBagOffhand
 	local hasTwoHandBag = bagsTable["INVTYPE_2HWEAPON"]
 
-	for slotName, itemLoc in pairs(slots) do
+	for slotName, itemLoc in pairs(module.slots) do
 		slotID = GetInventorySlotInfo(slotName)
 		itemLink = GetInventoryItemLink("player", slotID)
 
@@ -795,7 +820,7 @@ local function GetItemLevelColor(unit)
 
 	local i = 0
 	local sumR, sumG, sumB = 0, 0, 0
-	for slotName in pairs(slots) do
+	for slotName in pairs(module.slots) do
 		local slotID = GetInventorySlotInfo(slotName)
 		if GetInventoryItemTexture(unit, slotID) then
 			local itemLink = GetInventoryItemLink(unit, slotID)
@@ -854,6 +879,28 @@ end
 -- 		return ilvl / items, (sumR / colorCount), (sumG / colorCount), (sumB / colorCount)
 -- 	end
 -- end
+
+
+
+-- local GradientTexture =  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	statFrame.Label:SetFormattedText(STAT_FORMAT, label)
@@ -1273,15 +1320,15 @@ local function StrengthenCategory_OnEnter(self)
 	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, StrengthenData.Maximum or 0), 1, .82, 0, 1)
 	GameTooltip:Show()
 end
-local function PaperDollFrame_QueuedUpdate(self)
-	module:PaperDollFrame_UpdateStats()
-	self:SetScript("OnUpdate", nil)
-end
+-- local function PaperDollFrame_QueuedUpdate(self)
+-- 	module:PaperDollFrame_UpdateStats()
+-- 	self:SetScript("OnUpdate", nil)
+-- end
 
-local function PetPaperDollFrame_QueuedUpdate(self)
-	PetPaperDollFrame_Update()
-	self:SetScript("OnUpdate", nil)
-end
+-- local function PetPaperDollFrame_QueuedUpdate(self)
+-- 	PetPaperDollFrame_Update()
+-- 	self:SetScript("OnUpdate", nil)
+-- end
 
 function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	if not categoryFrame.Category then categoryFrame:Hide() return end
@@ -2216,7 +2263,9 @@ function module:Initialize()
 		SCROLL_WIDTH_SIRUS_STATS = 168
 		SCROLL_WIDTH_SIRUS_STATS_CHILD = 239
 	end
-
+	-- if E.db.enhanced.character.SocetsEnable then
+	-- 	module:SocOnInit()
+	-- end
 --[[
 	PaperDollFrameStrengthenFrame.StrengthenTittle = setmetatable({}, {
 		__index = PaperDollFrameStrengthenFrame.StrengthenTittle,
@@ -2533,6 +2582,7 @@ function module:Initialize()
 	self:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
 
 	PaperDollFrame:RegisterEvent("PLAYER_TALENT_UPDATE")
+	-- PaperDollFrame:RegisterEvent("PLAYER_TALENT_UPDATE")
 	PaperDollFrame:HookScript("OnEvent", function(self, event, ...)
 		if not self:IsVisible() then return end
 
@@ -2541,6 +2591,7 @@ function module:Initialize()
 			if PaperDollTitlesPane:IsShown() then
 				module:PaperDollTitlesPane_Update()
 			end
+		
 		end
 
 		if unit == "player" then
@@ -2564,7 +2615,9 @@ function module:Initialize()
 		module:PaperDoll_InitStatCategories(PAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.player.orderName, E.private.enhanced.character.player.collapsedName, "player")
 
 		module:PaperDollFrame_SetLevel()
+
 	end)
+
 
 	self:PaperDollFrame_UpdateSidebarTabs()
 
@@ -2585,6 +2638,7 @@ function module:Initialize()
 	end)
 
 	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
+
 end
 
 local function InitializeCallback()

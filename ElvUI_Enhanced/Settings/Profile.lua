@@ -33,13 +33,13 @@ P.enhanced = {
 			fontSize = 12,
 			fontOutline = "NONE"
 		},
-		takeAllMail = false
+		-- takeAllMail = false
 	},
 	chat = {
 		dpsLinks = false,
 	},
 	character = {
-		animations = false,
+		animations = true,
 		characterBackground = false,
 		petBackground = false,
 		inspectBackground = false,
@@ -47,10 +47,43 @@ P.enhanced = {
 		desaturateCharacter = false,
 		desaturatePet = false,
 		desaturateInspect = false,
-		desaturateCompanion = false
+		desaturateCompanion = false,
+		selectedBGTexture = "HIDE",
+		customTexture = "",
+		GemsEnable = true,
+		GemsEnableScal = true,
+		GemsSize = 20,
+		------------------
+		ArmoryConfigBackgroundValues = {
+			BackgroundValues = {
+				['HIDE'] = HIDE,
+				['CUSTOM'] = CUSTOM,
+				['Space'] = 'Space',
+				-- ['TheEmpire'] = 'The Empire',
+				['Castle'] = 'Castle',
+				['Alliance-text'] = FACTION_ALLIANCE,
+				['Horde-text'] = FACTION_HORDE,
+				['Arena-bliz'] = ARENA,
+				['CLASS'] = CLASS,
+				-- ['FXPW'] = "FXPW",
+				-- ['Covenant'] = L["Covenant"],
+				-- ['Covenant2'] = L["Covenant"]..' 2',
+			},
+			BlizzardBackdropList = {
+				['Arena-bliz'] = [[Interface\PVPFrame\PvpBg-NagrandArena-ToastBG]]
+			},
+			-- Covenants = {
+			-- 	[0] = 'None',
+			-- 	[1] = 'Kyrian',
+			-- 	[2] = 'Venthyr',
+			-- 	[3] = 'NightFae',
+			-- 	[4] = 'Necrolord',
+			-- },
+		}
+		------------------
 	},
 	equipment = {
-		enable = false,
+		enable = true,
 		font = "Homespun",
 		fontSize = 10,
 		fontOutline = "MONOCHROMEOUTLINE",

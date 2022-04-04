@@ -1,9 +1,17 @@
 local E, L, V, P, G = unpack(ElvUI)
 local EI = E:NewModule("Enhanced_EquipmentInfo", "AceHook-3.0", "AceEvent-3.0")
-
+local S = E:GetModule("Skins")
 local _G = _G
 local format = string.format
 local pairs = pairs
+
+local find = string.find
+local gmatch = gmatch
+local gsub = gsub
+local match = string.match
+local utf8upper = string.utf8upper
+local utf8lower = string.utf8lower
+local utf8sub = string.utf8sub
 
 local GetInventoryItemDurability = GetInventoryItemDurability
 local GetInventoryItemID = GetInventoryItemID
@@ -19,8 +27,8 @@ local slots = {
 	["ShoulderSlot"] = true,
 	["BackSlot"] = false,
 	["ChestSlot"] = true,
---	["ShirtSlot"] = false,
---	["TabardSlot"] = false,
+	["ShirtSlot"] = false,
+	["TabardSlot"] = false,
 	["WristSlot"] = true,
 	["HandsSlot"] = true,
 	["WaistSlot"] = true,
@@ -126,8 +134,7 @@ function EI:UpdateInfoText(name)
 
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
-
-		if frame then
+		if frame and frame.ItemLevel  then
 			frame.ItemLevel:ClearAllPoints()
 			frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
 			frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
@@ -235,7 +242,9 @@ end
 
 function EI:Initialize()
 	if not E.db.enhanced.equipment.enable then return end
-
+	-- ItemSocketingFrame:HookScript("OnHide",function()
+	-- 	C_Timer.After(0.05,update)
+	-- end)
 	self:ToggleState(true)
 end
 

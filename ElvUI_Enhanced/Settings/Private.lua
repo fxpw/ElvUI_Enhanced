@@ -7,7 +7,7 @@ V.enhanced = {
 		keyPressAnimation = false
 	},
 	character = {
-		enable = false,
+		enable = true,
 		modelFrames = false,
 		collapsed = false,
 		player = {

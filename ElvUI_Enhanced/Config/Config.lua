@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local EE = E:GetModule("ElvUI_Enhanced")
-
+local Gems = E:GetModule("CharacterFrame_Gems_BG")
 local function GeneralOptions()
 	local M = E:GetModule("Enhanced_Misc")
 
@@ -194,7 +194,7 @@ end
 local function BlizzardOptions()
 	local B = E:GetModule("Enhanced_Blizzard")
 	local WF = E:GetModule("Enhanced_WatchFrame")
-	local TAM = E:GetModule("Enhanced_TakeAllMail")
+	-- local TAM = E:GetModule("Enhanced_TakeAllMail")
 	local CHAR = E:GetModule("Enhanced_CharacterFrame")
 
 	local choices = {
@@ -233,22 +233,22 @@ local function BlizzardOptions()
 						type = "toggle",
 						name = L["Death Recap Frame"]
 					},
-					takeAllMail = {
-						order = 3,
-						type = "toggle",
-						name = L["Take All Mail"],
-						get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
-						set = function(info, value)
-							E.db.enhanced.blizzard.takeAllMail = value
-							if value and not TAM.initialized then
-								TAM:Initialize()
-							elseif not value then
-								E:StaticPopup_Show("CONFIG_RL")
-							end
-						end
-					},
+					-- takeAllMail = {
+					-- 	order = 3,
+					-- 	type = "toggle",
+					-- 	name = L["Take All Mail"],
+					-- 	get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
+					-- 	set = function(info, value)
+					-- 		E.db.enhanced.blizzard.takeAllMail = value
+					-- 		if value and not TAM.initialized then
+					-- 			TAM:Initialize()
+					-- 		elseif not value then
+					-- 			E:StaticPopup_Show("CONFIG_RL")
+					-- 		end
+					-- 	end
+					-- },
 					animatedAchievementBars = {
-						order = 4,
+						order = 3,
 						type = "toggle",
 						name = L["Animated Achievement Bars"]
 					}
@@ -301,111 +301,187 @@ local function BlizzardOptions()
 							E:GetModule("Enhanced_UndressButtons"):ToggleState()
 						end
 					},
-					paperdollBackgrounds = {
-						order = 5,
-						type = "group",
-						name = L["Paperdoll Backgrounds"],
-						guiInline = true,
-						get = function(info) return E.db.enhanced.character[info[#info]] end,
-						disabled = function() return not E.private.enhanced.character.enable end,
-						args = {
-							characterBackground = {
-								order = 1,
-								type = "toggle",
-								name = L["Character Background"],
-								set = function(info, value)
-									E.db.enhanced.character.characterBackground = value
-									CHAR:UpdateCharacterModelFrame()
-								end
-							},
-							desaturateCharacter = {
-								order = 2,
-								type = "toggle",
-								name = L["Desaturate"],
-								get = function(info) return E.db.enhanced.character.desaturateCharacter end,
-								set = function(info, value)
-									E.db.enhanced.character.desaturateCharacter = value
-									CHAR:UpdateCharacterModelFrame()
-								end,
-								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.characterBackground end
-							},
-							spacer = {
-								order = 3,
-								type = "description",
-								name = " "
-							},
-							petBackground = {
-								order = 4,
-								type = "toggle",
-								name = L["Pet Background"],
-								set = function(info, value)
-									E.db.enhanced.character.petBackground = value
-									CHAR:UpdatePetModelFrame()
-								end
-							},
-							desaturatePet = {
-								order = 5,
-								type = "toggle",
-								name = L["Desaturate"],
-								get = function(info) return E.db.enhanced.character.desaturatePet end,
-								set = function(info, value)
-									E.db.enhanced.character.desaturatePet = value
-									CHAR:UpdatePetModelFrame()
-								end,
-								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.petBackground end
-							},
-							spacer2 = {
-								order = 6,
-								type = "description",
-								name = " "
-							},
-							inspectBackground = {
-								order = 6,
-								type = "toggle",
-								name = L["Inspect Background"],
-								set = function(info, value)
-									E.db.enhanced.character.inspectBackground = value
-									CHAR:UpdateInspectModelFrame()
-								end
-							},
-							desaturateInspect = {
-								order = 8,
-								type = "toggle",
-								name = L["Desaturate"],
-								get = function(info) return E.db.enhanced.character.desaturateInspect end,
-								set = function(info, value)
-									E.db.enhanced.character.desaturateInspect = value
-									CHAR:UpdateInspectModelFrame()
-								end,
-								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
-							},
-							spacer3 = {
-								order = 9,
-								type = "description",
-								name = " "
-							},
-							companionBackground = {
-								order = 10,
-								type = "toggle",
-								name = L["Companion Background"],
-								set = function(info, value)
-									E.db.enhanced.character.companionBackground = value
-									CHAR:UpdateCompanionModelFrame()
-								end
-							},
-							desaturateCompanion = {
-								order = 11,
-								type = "toggle",
-								name = L["Desaturate"],
-								get = function(info) return E.db.enhanced.character.desaturateCompanion end,
-								set = function(info, value)
-									E.db.enhanced.character.desaturateCompanion = value
-									CHAR:UpdateCompanionModelFrame()
-								end,
-								disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.companionBackground end
-							}
-						}
-					}
+					spacer1 = {
+						order = 6,
+						type = "description",
+						name = ""
+					},
+					-- backgroundTexture = {
+					-- 	type = 'group',
+					-- 	name = L["Backdrop"],
+					-- 	order = 7,
+					-- 	args = {
+
+					selectedBGTexture = {
+						type = 'select',
+						name = L["Select Image"],
+						order = 7,
+						get = function(info) return E.db.enhanced.character.selectedBGTexture end,
+						set = function(_, value) E.db.enhanced.character.selectedBGTexture = value; Gems:UpdateCharacterBG() end,
+						values = function() return E.db.enhanced.character.ArmoryConfigBackgroundValues.BackgroundValues end,
+					},
+					customTexture = {
+						type = 'input',
+						name = L["Custom Texture"],
+						order = 8,
+						get = function(info) return E.db.enhanced.character.customTexture end,
+						set = function(_, value) E.db.enhanced.character.customTexture = value; Gems:UpdateCharacterBG() end,
+						width = 'double',
+						hidden = function() return E.db.enhanced.character.selectedBGTexture ~= 'CUSTOM' end
+					},
+					spacer2 = {
+						order = 9,
+						type = "description",
+						name = ""
+					},
+					GemsEnable = {
+						order = 10,
+						type = "toggle",
+						name = "Отображать камни",
+						desc = "Добавляет камни на фрейм осмотра персонажа",
+						get = function(info) return E.db.enhanced.character.GemsEnable end,
+						set = function(info, value)
+							E.db.enhanced.character.GemsEnable = value
+							E:StaticPopup_Show("PRIVATE_RL")
+							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end
+					},
+					GemsEnableScal = {
+						order = 11,
+						type = "toggle",
+						name = "Скалирование",
+						desc = "Размер регулируется от размера слота с предметом",
+						get = function(info) return E.db.enhanced.character.GemsEnableScal end,
+						set = function(info, value)
+							E.db.enhanced.character.GemsEnableScal = value
+							E:StaticPopup_Show("PRIVATE_RL")
+							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end,
+						disabled = function() return not E.db.enhanced.character.GemsEnable  end
+					},
+					GemsSize = {
+						order = 12,
+						type = "range",
+						min = 10, max = 30, step = 1,
+						name = "Размер иконки",
+						get = function(info) return E.db.enhanced.character.GemsSize end,
+						set = function(info, value)
+							E.db.enhanced.character.GemsSize = value
+							E:StaticPopup_Show("PRIVATE_RL")
+							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end,
+						disabled = function() return E.db.enhanced.character.GemsEnableScal   end
+					},
+
+
+						-- }
+					-- },
+
+					-- paperdollBackgrounds = {
+					-- 	order = 5,
+					-- 	type = "group",
+					-- 	name = L["Paperdoll Backgrounds"],
+					-- 	guiInline = true,
+					-- 	get = function(info) return E.db.enhanced.character[info[#info]] end,
+					-- 	disabled = function() return not E.private.enhanced.character.enable end,
+					-- 	args = {
+					-- 		characterBackground = {
+					-- 			order = 1,
+					-- 			type = "toggle",
+					-- 			name = L["Character Background"],
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.characterBackground = value
+					-- 				CHAR:UpdateCharacterModelFrame()
+					-- 			end
+					-- 		},
+					-- 		desaturateCharacter = {
+					-- 			order = 2,
+					-- 			type = "toggle",
+					-- 			name = L["Desaturate"],
+					-- 			get = function(info) return E.db.enhanced.character.desaturateCharacter end,
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.desaturateCharacter = value
+					-- 				CHAR:UpdateCharacterModelFrame()
+					-- 			end,
+					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.characterBackground end
+					-- 		},
+					-- 		spacer = {
+					-- 			order = 3,
+					-- 			type = "description",
+					-- 			name = " "
+					-- 		},
+					-- 		petBackground = {
+					-- 			order = 4,
+					-- 			type = "toggle",
+					-- 			name = L["Pet Background"],
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.petBackground = value
+					-- 				CHAR:UpdatePetModelFrame()
+					-- 			end
+					-- 		},
+					-- 		desaturatePet = {
+					-- 			order = 5,
+					-- 			type = "toggle",
+					-- 			name = L["Desaturate"],
+					-- 			get = function(info) return E.db.enhanced.character.desaturatePet end,
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.desaturatePet = value
+					-- 				CHAR:UpdatePetModelFrame()
+					-- 			end,
+					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.petBackground end
+					-- 		},
+					-- 		spacer2 = {
+					-- 			order = 6,
+					-- 			type = "description",
+					-- 			name = " "
+					-- 		},
+					-- 		inspectBackground = {
+					-- 			order = 6,
+					-- 			type = "toggle",
+					-- 			name = L["Inspect Background"],
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.inspectBackground = value
+					-- 				CHAR:UpdateInspectModelFrame()
+					-- 			end
+					-- 		},
+					-- 		desaturateInspect = {
+					-- 			order = 8,
+					-- 			type = "toggle",
+					-- 			name = L["Desaturate"],
+					-- 			get = function(info) return E.db.enhanced.character.desaturateInspect end,
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.desaturateInspect = value
+					-- 				CHAR:UpdateInspectModelFrame()
+					-- 			end,
+					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
+					-- 		},
+					-- 		spacer3 = {
+					-- 			order = 9,
+					-- 			type = "description",
+					-- 			name = " "
+					-- 		},
+					-- 		companionBackground = {
+					-- 			order = 10,
+					-- 			type = "toggle",
+					-- 			name = L["Companion Background"],
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.companionBackground = value
+					-- 				CHAR:UpdateCompanionModelFrame()
+					-- 			end
+					-- 		},
+					-- 		desaturateCompanion = {
+					-- 			order = 11,
+					-- 			type = "toggle",
+					-- 			name = L["Desaturate"],
+					-- 			get = function(info) return E.db.enhanced.character.desaturateCompanion end,
+					-- 			set = function(info, value)
+					-- 				E.db.enhanced.character.desaturateCompanion = value
+					-- 				CHAR:UpdateCompanionModelFrame()
+					-- 			end,
+					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.companionBackground end
+					-- 		}
+					-- 	}
+					-- }
 				}
 			},
 			dressingRoom = {

@@ -362,7 +362,7 @@ local function CheckForNeedUpdateCharacter()
 			end
 		end
 	end
-	HideUIPanel(CharacterFrame)
+	-- HideUIPanel(CharacterFrame)
 	HideUIPanel(ItemSocketingFrame)
 	Gems:UpdateGearTextures("Character")
 end

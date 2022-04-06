@@ -603,8 +603,8 @@ function Gems:Initialize()
 
 	PaperDollFrame:HookScript("OnShow", function()
 
-		CharacterHandsSlot:ClearAllPoints()
-		CharacterHandsSlot:SetPoint("TOPRIGHT", 0, -15)
+		-- CharacterHandsSlot:ClearAllPoints()
+		-- CharacterHandsSlot:SetPoint("TOPRIGHT", 0, -15)
 
 		CharacterModelFrame:ClearAllPoints()
 		CharacterModelFrame:SetPoint('TOPLEFT', CharacterHeadSlot, 0, 5)

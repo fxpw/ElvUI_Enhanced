@@ -142,6 +142,7 @@ local STAT_FORMAT = STAT_FORMAT
 local STAT_PARRY = STAT_PARRY
 local STAT_RESILIENCE = STAT_RESILIENCE
 
+
 -- GLOBALS: CharacterAmmoSlot, CharacterAttributesFrame, CharacterDamageFrame_OnEnter, CharacterFrame, CharacterFrameCloseButton, CharacterFrameExpandButton, CharacterFrameTab2
 -- GLOBALS: CharacterLevelText, CharacterMicroButton, CharacterModelFrame, CharacterNameFrame, CharacterNameText, CharacterResistanceFrame, CharacterSpellBonusDamage_OnEnter
 -- GLOBALS: CharacterStatsPane, CharacterStatsPaneScrollBar, CharacterStatsPaneScrollBarScrollDownButton, CharacterStatsPaneScrollBarScrollUpButton, CharacterStatsPaneScrollChild
@@ -2340,10 +2341,10 @@ function module:Initialize()
 	end
 
 	titlePane.scrollBar.Hide = function(self)
-		titlePane:Width(257)
+		titlePane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		titlePane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, titlePane.buttons do
-			button:Width(257)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
@@ -2431,10 +2432,10 @@ function module:Initialize()
 	end
 
 	CharacterStatsPaneScrollBar.Hide = function(self)
-		statsPane:Width(257)
+		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, statsPane.Categories do
-			button:Width(257)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 			button.Toolbar:Width(186)
 		end
 		getmetatable(self).__index.Hide(self)
@@ -2497,10 +2498,10 @@ function module:Initialize()
 	end
 
 	equipmentManagerPane.scrollBar.Hide = function(self)
-		equipmentManagerPane:Width(257)
+		equipmentManagerPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 		for _, button in next, equipmentManagerPane.buttons do
-			button:Width(257)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		end
 		getmetatable(self).__index.Hide(self)
 	end

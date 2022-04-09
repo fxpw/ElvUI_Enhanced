@@ -316,18 +316,19 @@ local function BlizzardOptions()
 						type = 'select',
 						name = L["Select Image"],
 						order = 7,
-						get = function(info) return E.db.enhanced.character.selectedBGTexture end,
-						set = function(_, value) E.db.enhanced.character.selectedBGTexture = value; Gems:UpdateCharacterBG() end,
-						values = function() return E.db.enhanced.character.ArmoryConfigBackgroundValues.BackgroundValues end,
+						get = function(info) return E.private.enhanced.character.selectedBGTexture end,
+						set = function(_, value) E.private.enhanced.character.selectedBGTexture = value; Gems:UpdateCharacterBG() end,
+						values = function() return E.private.enhanced.character.ArmoryConfigBackgroundValues.BackgroundValues end,
+						disabled = function() return not E.private.enhanced.character.enable end
 					},
 					customTexture = {
 						type = 'input',
 						name = L["Custom Texture"],
 						order = 8,
-						get = function(info) return E.db.enhanced.character.customTexture end,
-						set = function(_, value) E.db.enhanced.character.customTexture = value; Gems:UpdateCharacterBG() end,
+						get = function(info) return E.private.enhanced.character.customTexture end,
+						set = function(_, value) E.private.enhanced.character.customTexture = value; Gems:UpdateCharacterBG() end,
 						width = 'double',
-						hidden = function() return E.db.enhanced.character.selectedBGTexture ~= 'CUSTOM' end
+						hidden = function() return E.private.enhanced.character.selectedBGTexture ~= 'CUSTOM' end
 					},
 					spacer2 = {
 						order = 9,
@@ -339,9 +340,10 @@ local function BlizzardOptions()
 						type = "toggle",
 						name = "Отображать камни",
 						desc = "Добавляет камни на фрейм осмотра персонажа",
-						get = function(info) return E.db.enhanced.character.GemsEnable end,
+						get = function(info) return E.private.enhanced.character.GemsEnable end,
+						disabled = function() return not E.private.enhanced.character.enable end,
 						set = function(info, value)
-							E.db.enhanced.character.GemsEnable = value
+							E.private.enhanced.character.GemsEnable = value
 							E:StaticPopup_Show("PRIVATE_RL")
 							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
 						end
@@ -351,26 +353,26 @@ local function BlizzardOptions()
 						type = "toggle",
 						name = "Скалирование",
 						desc = "Размер регулируется от размера слота с предметом",
-						get = function(info) return E.db.enhanced.character.GemsEnableScal end,
+						get = function(info) return E.private.enhanced.character.GemsEnableScal end,
 						set = function(info, value)
-							E.db.enhanced.character.GemsEnableScal = value
+							E.private.enhanced.character.GemsEnableScal = value
 							E:StaticPopup_Show("PRIVATE_RL")
 							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
 						end,
-						disabled = function() return not E.db.enhanced.character.GemsEnable  end
+						disabled = function() return not E.private.enhanced.character.GemsEnable or not E.private.enhanced.character.enable  end
 					},
 					GemsSize = {
 						order = 12,
 						type = "range",
 						min = 10, max = 30, step = 1,
 						name = "Размер иконки",
-						get = function(info) return E.db.enhanced.character.GemsSize end,
+						get = function(info) return E.private.enhanced.character.GemsSize end,
 						set = function(info, value)
-							E.db.enhanced.character.GemsSize = value
+							E.private.enhanced.character.GemsSize = value
 							E:StaticPopup_Show("PRIVATE_RL")
 							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
 						end,
-						disabled = function() return E.db.enhanced.character.GemsEnableScal   end
+						disabled = function() return E.private.enhanced.character.GemsEnableScal or not E.private.enhanced.character.enable   end
 					},
 
 

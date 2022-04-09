@@ -412,10 +412,10 @@ end
 
 function Gems:UpdateSize(frame,i)
 	local gemsize
-	if E.db.enhanced.character.GemsEnableScal == true then
+	if E.private.enhanced.character.GemsEnableScal == true then
 		gemsize = frame:GetHeight()/3
 	else
-		gemsize = E.db.enhanced.character.GemsSize
+		gemsize = E.private.enhanced.character.GemsSize
 	end
 	frame.Gems["Gem"..i]:Size(gemsize,gemsize)
 
@@ -434,7 +434,7 @@ end
 local function GemsOnInitInspect()
 	if initInspect == false then
 
-		if E.db.enhanced.character.GemsEnable == true then
+		if E.private.enhanced.character.GemsEnable == true then
 			for slotName, durability in pairs(Gems.Slots) do
 
 				local frame = _G[format("%s%s", "Inspect", slotName)]
@@ -488,7 +488,7 @@ end
 
 local function GemsOnInitCharacter()
 
-	if E.db.enhanced.character.GemsEnable == true then
+	if E.private.enhanced.character.GemsEnable == true then
 		if initCharacter == false then
 			for slotName, durability in pairs(Gems.Slots) do
 
@@ -543,26 +543,26 @@ end
 ------------------------ bg
 --------------------------
 function Gems:UpdateCharacterBG()
-	if E.db.enhanced.character.selectedBGTexture == 'HIDE' then
+	if E.private.enhanced.character.selectedBGTexture == 'HIDE' then
 		CharacterModelFrameBackgroundOverlay:SetTexture(nil)
-	elseif E.db.enhanced.character.selectedBGTexture == 'CUSTOM' then
-		CharacterModelFrameBackgroundOverlay:SetTexture(E.db.enhanced.character.customTexture)
-	elseif E.db.enhanced.character.selectedBGTexture == 'CLASS' then
+	elseif E.private.enhanced.character.selectedBGTexture == 'CUSTOM' then
+		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.customTexture)
+	elseif E.private.enhanced.character.selectedBGTexture == 'CLASS' then
 		CharacterModelFrameBackgroundOverlay:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.myclass)
 	else
-		CharacterModelFrameBackgroundOverlay:SetTexture(E.db.enhanced.character.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.db.enhanced.character.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.db.enhanced.character.selectedBGTexture)
+		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.selectedBGTexture)
 	end
 end
 
 function Gems:UpdateInspectBG()
-	if E.db.enhanced.character.selectedBGTexture == 'HIDE' then
+	if E.private.enhanced.character.selectedBGTexture == 'HIDE' then
 		InspectModelFrameBackgroundOverlay:SetTexture(nil)
-	elseif E.db.enhanced.character.selectedBGTexture == 'CUSTOM' then
-		InspectModelFrameBackgroundOverlay:SetTexture(E.db.enhanced.character.customTexture)
-	elseif E.db.enhanced.character.selectedBGTexture == 'CLASS' then
+	elseif E.private.enhanced.character.selectedBGTexture == 'CUSTOM' then
+		InspectModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.customTexture)
+	elseif E.private.enhanced.character.selectedBGTexture == 'CLASS' then
 		InspectModelFrameBackgroundOverlay:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.myclass)
 	else
-		InspectModelFrameBackgroundOverlay:SetTexture(E.db.enhanced.character.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.db.enhanced.character.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.db.enhanced.character.selectedBGTexture)
+		InspectModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.selectedBGTexture)
 	end
 end
 --------------------------
@@ -570,97 +570,99 @@ end
 --------------------------
 
 function Gems:Initialize()
-	if E.db.enhanced.character.GemsEnable == true then
-		ToggleCharacter("PaperDollFrame")
-		HideUIPanel(CharacterFrame)
-		HideUIPanel(ItemSocketingFrame)
-		-- print("ИНИЦИАЦИЯ ЗАПУЩЕНА")
-		C_Timer:After(0.55, GemsOnInitCharacter)
+	if E.private.enhanced.character.enable then
+		if E.private.enhanced.character.GemsEnable then
+			ToggleCharacter("PaperDollFrame")
+			HideUIPanel(CharacterFrame)
+			HideUIPanel(ItemSocketingFrame)
+			-- print("ИНИЦИАЦИЯ ЗАПУЩЕНА")
+			C_Timer:After(0.55, GemsOnInitCharacter)
 
-		local f = CreateFrame("Frame",nil,UIParent)
+			local f = CreateFrame("Frame",nil,UIParent)
 
-		f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
-		f:RegisterEvent("UNIT_INVENTORY_CHANGED")
+			f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+			f:RegisterEvent("UNIT_INVENTORY_CHANGED")
 
-		f:SetScript("OnEvent", function(self, event, unit)
+			f:SetScript("OnEvent", function(self, event, unit)
 
-			if (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
+				if (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
 
-				if  E.db.enhanced.character.GemsEnable == true then
-					C_Timer:After(0.55, CheckForNeedUpdateCharacter)
+					if  E.private.enhanced.character.GemsEnable then
+						C_Timer:After(0.55, CheckForNeedUpdateCharacter)
+					end
+
+					Gems:UpdateCharacterBG()
+
+				elseif  event == "UNIT_INVENTORY_CHANGED" and unit ~= "player" then
+					C_Timer:After(0.55, CheckForNeedUpdateInspect)
+
 				end
+			end)
+			C_Timer:After(1, CheckForNeedUpdateCharacter)
 
-				Gems:UpdateCharacterBG()
+		end
 
-			elseif  event == "UNIT_INVENTORY_CHANGED" and unit ~= "player" then
+		PaperDollFrame:HookScript("OnShow", function()
+
+			-- CharacterHandsSlot:ClearAllPoints()
+			-- CharacterHandsSlot:SetPoint("TOPRIGHT", 0, -15)
+
+			CharacterModelFrame:ClearAllPoints()
+			CharacterModelFrame:SetPoint('TOPLEFT', CharacterHeadSlot, 0, 5)
+			CharacterModelFrame:SetPoint('RIGHT', CharacterHandsSlot)
+			CharacterModelFrame:SetPoint('BOTTOM', CharacterMainHandSlot)
+			------------update bg
+			if _G["CharacterModelFrame"] and _G["CharacterModelFrame"].BackgroundTopLeft and _G["CharacterModelFrame"].BackgroundTopLeft:IsShown() then
+				_G["CharacterModelFrame"].BackgroundTopLeft:Hide()
+				_G["CharacterModelFrame"].BackgroundTopRight:Hide()
+				_G["CharacterModelFrame"].BackgroundBotLeft:Hide()
+				_G["CharacterModelFrame"].BackgroundBotRight:Hide()
+				if _G["CharacterModelFrame"].backdrop then
+					_G["CharacterModelFrame"].backdrop:Hide()
+				end
+			end
+			CharacterModelFrameBackgroundOverlay:Show()
+			CharacterModelFrameBackgroundOverlay:ClearAllPoints()
+			CharacterModelFrameBackgroundOverlay:SetAllPoints(CharacterModelFrame)
+
+		end)
+		Gems:UpdateCharacterBG()
+		InspectFrame:HookScript("OnShow",function()
+			InspectModelFrame:ClearAllPoints()
+			InspectModelFrame:SetPoint('TOPLEFT', InspectHeadSlot, 0, 5)
+			InspectModelFrame:SetPoint('RIGHT', InspectHandsSlot)
+			InspectModelFrame:SetPoint('BOTTOM', InspectMainHandSlot)
+
+			if _G["InspectModelFrame"] and _G["InspectModelFrame"].BackgroundTopLeft and _G["InspectModelFrame"].BackgroundTopLeft:IsShown() then
+				_G["InspectModelFrame"].BackgroundTopLeft:Hide()
+				_G["InspectModelFrame"].BackgroundTopRight:Hide()
+				_G["InspectModelFrame"].BackgroundBotLeft:Hide()
+				_G["InspectModelFrame"].BackgroundBotRight:Hide()
+				if _G["InspectModelFrame"].backdrop then
+					_G["InspectModelFrame"].backdrop:Hide()
+				end
+			end
+			InspectModelFrameBackgroundOverlay:Show()
+			InspectModelFrameBackgroundOverlay:ClearAllPoints()
+			InspectModelFrameBackgroundOverlay:SetAllPoints(InspectModelFrame)
+			InspectItemLevelFrame:ClearAllPoints()
+			InspectItemLevelFrame:SetPoint("BOTTOM", 0, 40)
+			Gems:UpdateInspectBG()
+			if E.private.enhanced.character.GemsEnable then
+				C_Timer:After(0.55,GemsOnInitInspect)
+				C_Timer:After(0.55, CheckForNeedUpdateInspect)
+			end
+
+		end)
+		if E.private.enhanced.character.GemsEnable then
+			InspectFrame:HookScript("OnEvent",function()
+				-- Gems:UpdateInspectBG()
+				C_Timer:After(0.55,GemsOnInitInspect)
 				C_Timer:After(0.55, CheckForNeedUpdateInspect)
 
-			end
-		end)
-		C_Timer:After(1, CheckForNeedUpdateCharacter)
 
-	end
-
-	PaperDollFrame:HookScript("OnShow", function()
-
-		-- CharacterHandsSlot:ClearAllPoints()
-		-- CharacterHandsSlot:SetPoint("TOPRIGHT", 0, -15)
-
-		CharacterModelFrame:ClearAllPoints()
-		CharacterModelFrame:SetPoint('TOPLEFT', CharacterHeadSlot, 0, 5)
-		CharacterModelFrame:SetPoint('RIGHT', CharacterHandsSlot)
-		CharacterModelFrame:SetPoint('BOTTOM', CharacterMainHandSlot)
-		------------update bg
-		if _G["CharacterModelFrame"] and _G["CharacterModelFrame"].BackgroundTopLeft and _G["CharacterModelFrame"].BackgroundTopLeft:IsShown() then
-			_G["CharacterModelFrame"].BackgroundTopLeft:Hide()
-			_G["CharacterModelFrame"].BackgroundTopRight:Hide()
-			_G["CharacterModelFrame"].BackgroundBotLeft:Hide()
-			_G["CharacterModelFrame"].BackgroundBotRight:Hide()
-			if _G["CharacterModelFrame"].backdrop then
-				_G["CharacterModelFrame"].backdrop:Hide()
-			end
+			end)
 		end
-		CharacterModelFrameBackgroundOverlay:Show()
-		CharacterModelFrameBackgroundOverlay:ClearAllPoints()
-		CharacterModelFrameBackgroundOverlay:SetAllPoints(CharacterModelFrame)
-
-	end)
-	Gems:UpdateCharacterBG()
-	InspectFrame:HookScript("OnShow",function()
-		InspectModelFrame:ClearAllPoints()
-		InspectModelFrame:SetPoint('TOPLEFT', InspectHeadSlot, 0, 5)
-		InspectModelFrame:SetPoint('RIGHT', InspectHandsSlot)
-		InspectModelFrame:SetPoint('BOTTOM', InspectMainHandSlot)
-
-		if _G["InspectModelFrame"] and _G["InspectModelFrame"].BackgroundTopLeft and _G["InspectModelFrame"].BackgroundTopLeft:IsShown() then
-			_G["InspectModelFrame"].BackgroundTopLeft:Hide()
-			_G["InspectModelFrame"].BackgroundTopRight:Hide()
-			_G["InspectModelFrame"].BackgroundBotLeft:Hide()
-			_G["InspectModelFrame"].BackgroundBotRight:Hide()
-			if _G["InspectModelFrame"].backdrop then
-				_G["InspectModelFrame"].backdrop:Hide()
-			end
-		end
-		InspectModelFrameBackgroundOverlay:Show()
-		InspectModelFrameBackgroundOverlay:ClearAllPoints()
-		InspectModelFrameBackgroundOverlay:SetAllPoints(InspectModelFrame)
-		InspectItemLevelFrame:ClearAllPoints()
-		InspectItemLevelFrame:SetPoint("BOTTOM", 0, 40)
-		Gems:UpdateInspectBG()
-		if E.db.enhanced.character.GemsEnable == true then
-			C_Timer:After(0.55,GemsOnInitInspect)
-			C_Timer:After(0.55, CheckForNeedUpdateInspect)
-		end
-
-	end)
-	if E.db.enhanced.character.GemsEnable == true then
-		InspectFrame:HookScript("OnEvent",function()
-			-- Gems:UpdateInspectBG()
-			C_Timer:After(0.55,GemsOnInitInspect)
-			C_Timer:After(0.55, CheckForNeedUpdateInspect)
-
-
-		end)
 	end
 end
 

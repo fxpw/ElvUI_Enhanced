@@ -44,6 +44,8 @@ local slots = {
 --	["AmmoSlot"] = false,
 }
 
+
+
 function EI:UpdatePaperDoll(unit)
 	if not self.initialized then return end
 
@@ -109,7 +111,10 @@ function EI:UpdatePaperDoll(unit)
 				end
 			end
 		end
+
+
 	end
+	-- UpdateGearText()
 end
 
 function EI:BuildInfoText(name)
@@ -117,6 +122,7 @@ function EI:BuildInfoText(name)
 
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
+
 
 		frame.ItemLevel = frame:CreateFontString(nil, "OVERLAY")
 
@@ -128,16 +134,24 @@ function EI:BuildInfoText(name)
 	self:UpdateInfoText(name)
 end
 
+
+
 function EI:UpdateInfoText(name)
 	local db = E.db.enhanced.equipment
 	local frame
-
+	-- local socetSize = 20
+	-- local slotID
 	for slotName, durability in pairs(slots) do
 		frame = _G[format("%s%s", name, slotName)]
 		if frame and frame.ItemLevel  then
 			frame.ItemLevel:ClearAllPoints()
 			frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
 			frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+			-- frame.SLOT_ID = GetInventorySlotInfo(slotName)
+			
+			-- frame.ChantName:ClearAllPoints()
+			-- frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
+			-- frame.ChantName:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 
 			if name == "Character" and durability then
 				frame.DurabilityInfo:ClearAllPoints()
@@ -155,6 +169,7 @@ end
 function EI:OnEvent(event, unit)
 	if event == "UPDATE_INVENTORY_DURABILITY" then
 		self:UpdatePaperDoll("player")
+
 	elseif event == "UNIT_INVENTORY_CHANGED" then
 		if unit ~= "player" and InspectFrame and unit == InspectFrame.unit then
 			self:UpdatePaperDoll(unit)
@@ -162,7 +177,7 @@ function EI:OnEvent(event, unit)
 	elseif event == "PLAYER_REGEN_ENABLED" then
 		self:UnregisterEvent("PLAYER_REGEN_ENABLED")
 		self:UpdatePaperDoll("player")
-	elseif event == "ADDON_LOADED" and unit == "Blizzard_InspectUI" then
+	elseif event == "ADDON_LOADED"  and unit == "Blizzard_InspectUI" then
 		self.initializedInspect = true
 		self:UnregisterEvent("ADDON_LOADED")
 		self:BuildInfoText("Inspect")
@@ -240,6 +255,8 @@ function EI:ToggleState(init)
 	end
 end
 
+
+
 function EI:Initialize()
 	if not E.db.enhanced.equipment.enable then return end
 	-- ItemSocketingFrame:HookScript("OnHide",function()
@@ -250,6 +267,19 @@ end
 
 local function InitializeCallback()
 	EI:Initialize()
+
+
+
+
+
 end
 
 E:RegisterModule(EI:GetName(), InitializeCallback)
+
+
+
+
+
+
+
+

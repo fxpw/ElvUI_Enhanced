@@ -51,7 +51,7 @@ V.enhanced = {
 				['Horde-text'] = FACTION_HORDE,
 				['Arena-bliz'] = ARENA,
 				['CLASS'] = CLASS,
-				-- ['FXPW'] = "FXPW",
+				["fxpw"] = "fxpw",
 				-- ['Covenant'] = L["Covenant"],
 				-- ['Covenant2'] = L["Covenant"]..' 2',
 			},

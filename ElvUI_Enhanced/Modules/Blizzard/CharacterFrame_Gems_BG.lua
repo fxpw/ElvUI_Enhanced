@@ -106,7 +106,15 @@ Gems.metaBlackSockets = {
     [260070] = true,
 }
 
+Gems.SoketsColor ={
+	["Red"] = {1, 0.109, 0.078,0.5},
+	["Yellow"] = {1, 0.945, 0.078,0.5},
+	["Blue"] = {0.078, 0.258, 1,0.5},
+	["Meta"] = {1, 1, 1,1},
+	["Socket"] = {0.988, 0.152, 0.905,0.5},
 
+	
+}
 -- taken from https://www.wowinterface.com/forums/showpost.php?p=319704&postcount=2
 local ElvUI_GetNumSockets
 do
@@ -242,6 +250,9 @@ local function UpdateLink(frame,link,who)
 	if who == "Character" then
 		SocketInventoryItem(frame.containerID)
 		frame.Gems.MaxGems = GetNumSockets() or 0
+		for i = 1,frame.Gems.MaxGems do
+			frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
+		end
 		CloseSocketInfo()
 		HideUIPanel(ItemSocketingFrame)
 	elseif who == "Inspect" then
@@ -289,15 +300,23 @@ local function UpdateGems(frame,link,who)
 	if frame.Gems.MaxGems > 0 then
 		for i = 1,frame.Gems.MaxGems do
 			local gemname, gemLink = GetItemGem(link, i)
+
 			frame.Gems["Gem"..i].GemName = gemname or "n"
 			frame.Gems["Gem"..i].GemLink = gemLink or "n"
 			local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(gemLink)
 
 			if itemTexture  then
 				frame.Gems["Gem"..i].texture:SetTexture(itemTexture)
+				frame.Gems["Gem"..i].texture:SetVertexColor(1,1,1,1)
+
 				frame.Gems["Gem"..i].texture:Show()
 			else
 				frame.Gems["Gem"..i].texture:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NormTex2]])
+				if who == "Character" then
+					if frame.Gems["Gem"..i].texture then
+						frame.Gems["Gem"..i].texture:SetVertexColor(Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][2], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][3],Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][4])
+					end
+				end
 				frame.Gems["Gem"..i].texture:Show()
 			end
 			frame.Gems["Gem"..i].texture:SetTexCoord(unpack(E.TexCoords))
@@ -505,10 +524,10 @@ local function GemsOnInitCharacter()
 				if not frame.Gems.ItemLink then
 					frame.Gems.ItemLink = "empty"
 				end
-				SocketInventoryItem(frame.containerID)
-				frame.Gems.MaxGems = GetNumSockets() or 0
-				CloseSocketInfo()
-				HideUIPanel(ItemSocketingFrame)
+				if itemLink then
+					SocketInventoryItem(frame.containerID)
+					frame.Gems.MaxGems = GetNumSockets() or 0
+				end
 
 				for i = 1,3 do
 
@@ -518,6 +537,7 @@ local function GemsOnInitCharacter()
 
 					if itemLink then
 						local gmnm, gmlnk = GetItemGem(itemLink, i)
+						frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
 						frame.Gems["Gem"..i].GemName = gmnm or "n"
 						frame.Gems["Gem"..i].GemLink = gmlnk or "n"
 					else
@@ -525,8 +545,13 @@ local function GemsOnInitCharacter()
 						frame.Gems["Gem"..i].GemName = "n"
 						frame.Gems["Gem"..i].GemLink =  "n"
 					end
+					
 
 					Gems:UpdateSize(frame,i)
+				end
+				if itemLink then
+					CloseSocketInfo()
+					HideUIPanel(ItemSocketingFrame)
 				end
 			end
 			HideUIPanel(ItemSocketingFrame)
@@ -546,11 +571,11 @@ function Gems:UpdateCharacterBG()
 	if E.private.enhanced.character.selectedBGTexture == 'HIDE' then
 		CharacterModelFrameBackgroundOverlay:SetTexture(nil)
 	elseif E.private.enhanced.character.selectedBGTexture == 'CUSTOM' then
-		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.customTexture)
+		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.character.customTexture)
 	elseif E.private.enhanced.character.selectedBGTexture == 'CLASS' then
 		CharacterModelFrameBackgroundOverlay:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.myclass)
 	else
-		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.selectedBGTexture)
+		CharacterModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.character.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.character.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.character.selectedBGTexture)
 	end
 end
 
@@ -562,7 +587,7 @@ function Gems:UpdateInspectBG()
 	elseif E.private.enhanced.character.selectedBGTexture == 'CLASS' then
 		InspectModelFrameBackgroundOverlay:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.myclass)
 	else
-		InspectModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.selectedBGTexture)
+		InspectModelFrameBackgroundOverlay:SetTexture(E.private.enhanced.character.ArmoryConfigBackgroundValues.BlizzardBackdropList[E.private.enhanced.character.selectedBGTexture] or [[Interface\AddOns\ElvUI_Enhanced\Media\Armory\]]..E.private.enhanced.character.selectedBGTexture)
 	end
 end
 --------------------------
@@ -666,11 +691,16 @@ function Gems:Initialize()
 	end
 end
 
-
-local function InitializeCallback()
-	Gems:Initialize()
+local function kostil()
 	HideUIPanel(CharacterFrame)
 	HideUIPanel(ItemSocketingFrame)
+end
+local function InitializeCallback()
+	Gems:Initialize()
+	-- HideUIPanel(CharacterFrame)
+	-- HideUIPanel(ItemSocketingFrame)
+	C_Timer:After(10, kostil)
+
 end
 
 E:RegisterModule(Gems:GetName(), InitializeCallback)

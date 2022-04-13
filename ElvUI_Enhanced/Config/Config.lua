@@ -374,6 +374,24 @@ local function BlizzardOptions()
 						end,
 						disabled = function() return E.private.enhanced.character.GemsEnableScal or not E.private.enhanced.character.enable   end
 					},
+					spacer1 = {
+						order = 13,
+						type = "description",
+						name = ""
+					},
+					GearTexturesEnable = {
+						order = 14,
+						type = "toggle",
+						name = "Полосы цвета предметов",
+						desc = "Добавляет текстуры цвета предметов",
+						get = function(info) return E.private.enhanced.character.GearTexturesEnable end,
+						disabled = function() return not E.private.enhanced.character.GemsEnable end,
+						set = function(info, value)
+							E.private.enhanced.character.GearTexturesEnable = value
+							E:StaticPopup_Show("PRIVATE_RL")
+							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+						end
+					},
 
 
 						-- }

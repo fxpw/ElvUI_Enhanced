@@ -39,6 +39,7 @@ V.enhanced = {
 		GemsEnable = true,
 		GemsEnableScal = true,
 		GemsSize = 20,
+		GearTexturesEnable = false,
 		------------------
 		ArmoryConfigBackgroundValues = {
 			BackgroundValues = {

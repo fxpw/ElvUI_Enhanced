@@ -159,7 +159,7 @@ end
 
 
 function Gems:UpdateGearTextures(who)
-
+	if not E.private.enhanced.character.GearTexturesEnable then return end
 	for SlotName, durab in pairs(Gems.Slots) do
 		local quality
 		if who == "Inspect" then

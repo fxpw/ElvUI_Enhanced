@@ -356,7 +356,7 @@ local function UpdateGems(frame,link,who)
 end
 
 local function CheckForNeedUpdateCharacter()
-
+	if not initCharacter then return end
 	for slotName, durab in pairs(Gems.Slots) do
 		local frame = _G[format("%s%s", "Character", slotName)]
 		if frame then
@@ -414,7 +414,7 @@ local function CheckForNeedUpdateInspect()
 						for i = 1,3 do
 							local gmnm, gmlnk = GetItemGem(link, i)
 
-							if frame.Gems.Gem1.GemName ~= gmnm and frame.Gems.Gem1.GemName ~= gmlnk then
+							if frame.Gems["Gem"..i].GemName ~= gmnm or frame.Gems["Gem"..i].GemName ~= gmlnk then
 								UpdateGems(frame,link,"Inspect")
 								S:ColorItemInspectBorder()
 							end
@@ -614,7 +614,7 @@ function Gems:Initialize()
 				if (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
 
 					if  E.private.enhanced.character.GemsEnable then
-						C_Timer:After(0.55, CheckForNeedUpdateCharacter)
+						C_Timer:After(0.05, CheckForNeedUpdateCharacter)
 					end
 
 					Gems:UpdateCharacterBG()
@@ -676,7 +676,7 @@ function Gems:Initialize()
 			Gems:UpdateInspectBG()
 			if E.private.enhanced.character.GemsEnable then
 				C_Timer:After(0.55,GemsOnInitInspect)
-				C_Timer:After(0.55, CheckForNeedUpdateInspect)
+				C_Timer:After(0.57, CheckForNeedUpdateInspect)
 			end
 
 		end)
@@ -684,7 +684,7 @@ function Gems:Initialize()
 			InspectFrame:HookScript("OnEvent",function()
 				-- Gems:UpdateInspectBG()
 				C_Timer:After(0.55,GemsOnInitInspect)
-				C_Timer:After(0.55, CheckForNeedUpdateInspect)
+				C_Timer:After(0.57, CheckForNeedUpdateInspect)
 
 
 			end)

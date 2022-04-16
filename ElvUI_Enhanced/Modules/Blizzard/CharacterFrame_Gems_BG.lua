@@ -314,7 +314,9 @@ local function UpdateGems(frame,link,who)
 				frame.Gems["Gem"..i].texture:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NormTex2]])
 				if who == "Character" then
 					if frame.Gems["Gem"..i].texture then
-						frame.Gems["Gem"..i].texture:SetVertexColor(Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][2], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][3],Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][4])
+						if Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1] then
+							frame.Gems["Gem"..i].texture:SetVertexColor(Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][2], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][3],Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][4])
+						end
 					end
 				end
 				frame.Gems["Gem"..i].texture:Show()
@@ -358,21 +360,20 @@ local function CheckForNeedUpdateCharacter()
 	for slotName, durab in pairs(Gems.Slots) do
 		local frame = _G[format("%s%s", "Character", slotName)]
 		if frame then
-			local a,link = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
+			local _,link = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
 			if link then
 				if  link ~= frame.Gems.ItemLink then
 					UpdateLink(frame,link,"Character")
 					HideGemTextures(frame)
 					UpdateGems(frame,link,"Character")
-					S:ColorItemCharacterBorder()
+					-- S:ColorItemCharacterBorder()
 				else
 					HideGemTextures(frame)
 					for i = 1,3 do
 						local gmnm, gmlnk = GetItemGem(link, i)
-
-						if frame.Gems.Gem1.GemName ~= gmnm and frame.Gems.Gem1.GemName ~= gmlnk then
+						if frame.Gems["Gem"..i].GemName ~= gmnm or frame.Gems["Gem"..i].GemName ~= gmlnk then
 							UpdateGems(frame,link,"Character")
-							S:ColorItemCharacterBorder()
+							-- S:ColorItemCharacterBorder()
 						end
 					end
 				end
@@ -381,6 +382,7 @@ local function CheckForNeedUpdateCharacter()
 			end
 		end
 	end
+	S:ColorItemCharacterBorder()
 	-- HideUIPanel(CharacterFrame)
 	HideUIPanel(ItemSocketingFrame)
 	Gems:UpdateGearTextures("Character")
@@ -537,7 +539,6 @@ local function GemsOnInitCharacter()
 
 					if itemLink then
 						local gmnm, gmlnk = GetItemGem(itemLink, i)
-						frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
 						frame.Gems["Gem"..i].GemName = gmnm or "n"
 						frame.Gems["Gem"..i].GemLink = gmlnk or "n"
 					else
@@ -545,7 +546,7 @@ local function GemsOnInitCharacter()
 						frame.Gems["Gem"..i].GemName = "n"
 						frame.Gems["Gem"..i].GemLink =  "n"
 					end
-					
+					frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
 
 					Gems:UpdateSize(frame,i)
 				end
@@ -699,7 +700,7 @@ local function InitializeCallback()
 	Gems:Initialize()
 	-- HideUIPanel(CharacterFrame)
 	-- HideUIPanel(ItemSocketingFrame)
-	C_Timer:After(10, kostil)
+	C_Timer:After(4, kostil)
 
 end
 

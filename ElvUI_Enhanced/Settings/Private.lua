@@ -36,7 +36,7 @@ V.enhanced = {
 		},
 		selectedBGTexture = "HIDE",
 		customTexture = "",
-		GemsEnable = true,
+		GemsEnable = false,
 		GemsEnableScal = true,
 		GemsSize = 20,
 		GearTexturesEnable = false,

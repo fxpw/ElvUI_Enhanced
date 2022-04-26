@@ -2459,8 +2459,8 @@ function module:Initialize()
 
 	equipmentManagerPane.EquipSet = CreateFrame("Button", "$parentEquipSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.EquipSet:SetText(EQUIPSET_EQUIP)
-	equipmentManagerPane.EquipSet:SetSize(79, 22)
-	equipmentManagerPane.EquipSet:Point("TOP", -38, 0)
+	equipmentManagerPane.EquipSet:SetSize(73, 22)
+	equipmentManagerPane.EquipSet:Point("TOP", -75, 0)
 	S:HandleButton(equipmentManagerPane.EquipSet)
 
 	equipmentManagerPane.EquipSet:SetScript("OnClick", function()
@@ -2473,11 +2473,24 @@ function module:Initialize()
 
 	equipmentManagerPane.SaveSet = CreateFrame("Button", "$parentSaveSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.SaveSet:SetText(SAVE)
-	equipmentManagerPane.SaveSet:SetSize(79, 22)
+	equipmentManagerPane.SaveSet:SetSize(73, 22)
 	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 4, 0)
 	S:HandleButton(equipmentManagerPane.SaveSet)
 
 	equipmentManagerPane.SaveSet:SetScript("OnClick", GearManagerDialogSaveSet_OnClick)
+
+	equipmentManagerPane.Undress = CreateFrame("Button", "$parentUndressSet", equipmentManagerPane, "UIPanelButtonTemplate")
+	equipmentManagerPane.Undress:SetText("Раздеть")
+	equipmentManagerPane.Undress:SetSize(73, 22)
+	equipmentManagerPane.Undress:Point("LEFT", "$parentSaveSet", "RIGHT", 4, 0)
+	
+	equipmentManagerPane.Undress:SetScript("OnClick", function()
+		for i = 1,19 do
+			PickupInventoryItem(i)
+			PutItemInBackpack()
+		end
+	end)
+	S:HandleButton(equipmentManagerPane.Undress)
 
 	equipmentManagerPane.scrollBar = CreateFrame("Slider", "$parentScrollBar", equipmentManagerPane, "HybridScrollBarTemplate")
 	equipmentManagerPane.scrollBar:Width(20)

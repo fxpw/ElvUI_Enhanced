@@ -107,11 +107,11 @@ Gems.metaBlackSockets = {
 }
 
 Gems.SoketsColor ={
-	["Red"] = {1, 0.109, 0.078,0.5},
-	["Yellow"] = {1, 0.945, 0.078,0.5},
-	["Blue"] = {0.078, 0.258, 1,0.5},
-	["Meta"] = {1, 1, 1,1},
-	["Socket"] = {0.988, 0.152, 0.905,0.5},
+	["Red"] = {1, 0.109, 0.078, 0.5},
+	["Yellow"] = {1, 0.945, 0.078, 0.5},
+	["Blue"] = {0.078, 0.258, 1, 0.5},
+	["Meta"] = {1, 1, 1, 1},
+	["Socket"] = {0.988, 0.152, 0.905, 0.5},
 
 	
 }
@@ -313,10 +313,10 @@ local function UpdateGems(frame,link,who)
 			else
 				frame.Gems["Gem"..i].texture:SetTexture([[Interface\AddOns\ElvUI\Media\Textures\NormTex2]])
 				if who == "Character" then
-					if frame.Gems["Gem"..i].texture then
-						if Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1] then
-							frame.Gems["Gem"..i].texture:SetVertexColor(Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][2], Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][3],Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][4])
-						end
+					if frame.Gems["Gem"..i].texture and frame.Gems["Gem"..i].GemColor then
+						-- if Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1] then
+							frame.Gems["Gem"..i].texture:SetVertexColor(Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][1] or 1, Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][2] or 1, Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][3] or 1,Gems.SoketsColor[frame.Gems["Gem"..i].GemColor][4] or 1)
+						-- end
 					end
 				end
 				frame.Gems["Gem"..i].texture:Show()

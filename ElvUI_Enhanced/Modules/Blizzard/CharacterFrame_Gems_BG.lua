@@ -175,40 +175,42 @@ function Gems:UpdateGearTextures(who)
 		-- print(quality)
 		local Slot = _G[who..SlotName]
 		-- Slot.SLOT_ID = GetInventorySlotInfo(SlotName)
-		if not Slot.Gradient then
-			Slot.Gradient = Slot:CreateTexture(nil, "BACKGROUND")
-			if Slot.Gems.AnchorForGems == "left" then
-				Slot.Gradient:SetPoint("LEFT", Slot, "LEFT", 0, 0)
-				Slot.Gradient:SetTexCoord(0, 1, 0, 1)
-			elseif Slot.Gems.AnchorForGems == "right" then
-				Slot.Gradient:SetPoint("RIGHT", Slot, "RIGHT", 0, 0)
-				Slot.Gradient:SetTexCoord(1, 0, 0, 1)
-			end
-			Slot.Gradient:Size(132, 41)
-			Slot.Gradient:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\Gradation]])
-			if type(quality) == "number" then
-				local r, g, b, hex = GetItemQualityColor(quality)
-				Slot.Gradient:SetVertexColor(r, g, b, hex)
-				Slot.Gradient:Show()
-			elseif quality == nil then
-				Slot.Gradient:Hide()
-
-			end
-		else
-			if type(quality) == "number" then
-				local r, g, b, hex = GetItemQualityColor(quality)
-				Slot.Gradient:SetVertexColor(r, g, b, hex)
-				-- Slot.Gradient:SetTexCoord(0, 1, 0, 1)
+		if Slot.Gems.AnchorForGems then
+			if not Slot.Gradient then
+				Slot.Gradient = Slot:CreateTexture(nil, "BACKGROUND")
 				if Slot.Gems.AnchorForGems == "left" then
-					-- Slot.Gradient:SetPoint("LEFT", Slot, "LEFT", 0, 0)
+					Slot.Gradient:SetPoint("LEFT", Slot, "LEFT", 0, 0)
 					Slot.Gradient:SetTexCoord(0, 1, 0, 1)
 				elseif Slot.Gems.AnchorForGems == "right" then
-					-- Slot.Gradient:SetPoint("RIGHT", Slot, "RIGHT", 0, 0)
+					Slot.Gradient:SetPoint("RIGHT", Slot, "RIGHT", 0, 0)
 					Slot.Gradient:SetTexCoord(1, 0, 0, 1)
 				end
-				Slot.Gradient:Show()
-			elseif quality == nil then
-				Slot.Gradient:Hide()
+				Slot.Gradient:Size(132, 41)
+				Slot.Gradient:SetTexture([[Interface\AddOns\ElvUI_Enhanced\Media\Armory\Gradation]])
+				if type(quality) == "number" then
+					local r, g, b, hex = GetItemQualityColor(quality)
+					Slot.Gradient:SetVertexColor(r, g, b, hex)
+					Slot.Gradient:Show()
+				elseif quality == nil then
+					Slot.Gradient:Hide()
+
+				end
+			else
+				if type(quality) == "number" then
+					local r, g, b, hex = GetItemQualityColor(quality)
+					Slot.Gradient:SetVertexColor(r, g, b, hex)
+					-- Slot.Gradient:SetTexCoord(0, 1, 0, 1)
+					if Slot.Gems.AnchorForGems == "left" then
+						-- Slot.Gradient:SetPoint("LEFT", Slot, "LEFT", 0, 0)
+						Slot.Gradient:SetTexCoord(0, 1, 0, 1)
+					elseif Slot.Gems.AnchorForGems == "right" then
+						-- Slot.Gradient:SetPoint("RIGHT", Slot, "RIGHT", 0, 0)
+						Slot.Gradient:SetTexCoord(1, 0, 0, 1)
+					end
+					Slot.Gradient:Show()
+				elseif quality == nil then
+					Slot.Gradient:Hide()
+				end
 			end
 		end
 	end
@@ -514,7 +516,7 @@ local function GemsOnInitCharacter()
 			for slotName, durability in pairs(Gems.Slots) do
 
 				local frame = _G[format("%s%s", "Character", slotName)]
-				frame.Gems = {}
+				frame.Gems = frame.Gems or {}
 				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
 				if Gems.GearListLeft[slotName]  then
 					frame.Gems.AnchorForGems = "left"
@@ -529,28 +531,28 @@ local function GemsOnInitCharacter()
 				if itemLink then
 					SocketInventoryItem(frame.containerID)
 					frame.Gems.MaxGems = GetNumSockets() or 0
-				end
+				-- end
 
-				for i = 1,3 do
+					for i = 1,3 do
 
-					frame.Gems["Gem"..i] = CreateFrame("Button",nil,frame)
-					frame.Gems["Gem"..i].texture = frame.Gems["Gem"..i]:CreateTexture()
-					frame.Gems["Gem"..i]:SetFrameLevel(4)
+						frame.Gems["Gem"..i] = CreateFrame("Button",nil,frame)
+						frame.Gems["Gem"..i].texture = frame.Gems["Gem"..i]:CreateTexture()
+						frame.Gems["Gem"..i]:SetFrameLevel(4)
 
-					if itemLink then
-						local gmnm, gmlnk = GetItemGem(itemLink, i)
-						frame.Gems["Gem"..i].GemName = gmnm or "n"
-						frame.Gems["Gem"..i].GemLink = gmlnk or "n"
-					else
-						frame.Gems.ItemLink = "empty"
-						frame.Gems["Gem"..i].GemName = "n"
-						frame.Gems["Gem"..i].GemLink =  "n"
+						if itemLink then
+							local gmnm, gmlnk = GetItemGem(itemLink, i)
+							frame.Gems["Gem"..i].GemName = gmnm or "n"
+							frame.Gems["Gem"..i].GemLink = gmlnk or "n"
+						else
+							frame.Gems.ItemLink = "empty"
+							frame.Gems["Gem"..i].GemName = "n"
+							frame.Gems["Gem"..i].GemLink =  "n"
+						end
+						frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
+
+						Gems:UpdateSize(frame,i)
 					end
-					frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
-
-					Gems:UpdateSize(frame,i)
-				end
-				if itemLink then
+				-- if itemLink then
 					CloseSocketInfo()
 					HideUIPanel(ItemSocketingFrame)
 				end

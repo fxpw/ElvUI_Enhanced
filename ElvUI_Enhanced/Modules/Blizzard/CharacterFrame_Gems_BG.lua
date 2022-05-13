@@ -290,10 +290,12 @@ end
 
 local function HideGemTextures(frame)
 	for i = 1,3 do
-		frame.Gems["Gem"..i].texture:SetTexture(nil)
-		frame.Gems["Gem"..i]:SetScript("OnEnter", nil)
-		frame.Gems["Gem"..i]:SetScript("OnLeave", nil)
-		frame.Gems["Gem"..i]:SetScript("OnClick", nil)
+		if frame.Gems  then
+			frame.Gems["Gem"..i].texture:SetTexture(nil)
+			frame.Gems["Gem"..i]:SetScript("OnEnter", nil)
+			frame.Gems["Gem"..i]:SetScript("OnLeave", nil)
+			frame.Gems["Gem"..i]:SetScript("OnClick", nil)
+		end
 	end
 end
 
@@ -531,28 +533,28 @@ local function GemsOnInitCharacter()
 				if itemLink then
 					SocketInventoryItem(frame.containerID)
 					frame.Gems.MaxGems = GetNumSockets() or 0
-				-- end
+				end
 
-					for i = 1,3 do
+				for i = 1,3 do
 
-						frame.Gems["Gem"..i] = CreateFrame("Button",nil,frame)
-						frame.Gems["Gem"..i].texture = frame.Gems["Gem"..i]:CreateTexture()
-						frame.Gems["Gem"..i]:SetFrameLevel(4)
+					frame.Gems["Gem"..i] = CreateFrame("Button",nil,frame)
+					frame.Gems["Gem"..i].texture = frame.Gems["Gem"..i]:CreateTexture()
+					frame.Gems["Gem"..i]:SetFrameLevel(4)
 
-						if itemLink then
-							local gmnm, gmlnk = GetItemGem(itemLink, i)
-							frame.Gems["Gem"..i].GemName = gmnm or "n"
-							frame.Gems["Gem"..i].GemLink = gmlnk or "n"
-						else
-							frame.Gems.ItemLink = "empty"
-							frame.Gems["Gem"..i].GemName = "n"
-							frame.Gems["Gem"..i].GemLink =  "n"
-						end
-						frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
-
-						Gems:UpdateSize(frame,i)
+					if itemLink then
+						local gmnm, gmlnk = GetItemGem(itemLink, i)
+						frame.Gems["Gem"..i].GemName = gmnm or "n"
+						frame.Gems["Gem"..i].GemLink = gmlnk or "n"
+					else
+						frame.Gems.ItemLink = "empty"
+						frame.Gems["Gem"..i].GemName = "n"
+						frame.Gems["Gem"..i].GemLink =  "n"
 					end
-				-- if itemLink then
+					frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
+
+					Gems:UpdateSize(frame,i)
+				end
+				if itemLink then
 					CloseSocketInfo()
 					HideUIPanel(ItemSocketingFrame)
 				end

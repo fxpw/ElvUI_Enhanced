@@ -175,7 +175,7 @@ function Gems:UpdateGearTextures(who)
 		-- print(quality)
 		local Slot = _G[who..SlotName]
 		-- Slot.SLOT_ID = GetInventorySlotInfo(SlotName)
-		if Slot.Gems.AnchorForGems then
+		if Slot.Gems and  Slot.Gems.AnchorForGems then
 			if not Slot.Gradient then
 				Slot.Gradient = Slot:CreateTexture(nil, "BACKGROUND")
 				if Slot.Gems.AnchorForGems == "left" then
@@ -607,25 +607,18 @@ function Gems:Initialize()
 			HideUIPanel(ItemSocketingFrame)
 			-- print("ИНИЦИАЦИЯ ЗАПУЩЕНА")
 			C_Timer:After(0.55, GemsOnInitCharacter)
-
 			local f = CreateFrame("Frame",nil,UIParent)
-
 			f:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 			f:RegisterEvent("UNIT_INVENTORY_CHANGED")
-
 			f:SetScript("OnEvent", function(self, event, unit)
-
 				if (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
-
 					if  E.private.enhanced.character.GemsEnable then
 						C_Timer:After(0.05, CheckForNeedUpdateCharacter)
 					end
-
 					Gems:UpdateCharacterBG()
 
 				elseif  event == "UNIT_INVENTORY_CHANGED" and unit ~= "player" then
 					C_Timer:After(0.55, CheckForNeedUpdateInspect)
-
 				end
 			end)
 			C_Timer:After(1, CheckForNeedUpdateCharacter)
@@ -689,8 +682,6 @@ function Gems:Initialize()
 				-- Gems:UpdateInspectBG()
 				C_Timer:After(0.55,GemsOnInitInspect)
 				C_Timer:After(0.57, CheckForNeedUpdateInspect)
-
-
 			end)
 		end
 	end

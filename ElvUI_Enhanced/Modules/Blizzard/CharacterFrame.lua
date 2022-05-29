@@ -2257,7 +2257,12 @@ function module:Initialize()
 	if GetRealmName() == server then
 		PaperDollFrameStatsFrameLeftCategory:Kill()
 		PaperDollFrameStatsFrameRightCategory:Kill()
+		-- PaperDollFrameStatsFrameItemLevelCategory:Kill()
+		CharacterItemLevelFrame:ClearAllPoints()
+		CharacterItemLevelFrame:SetParent(CharacterModelFrame)
+		CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
+
 		SCROLL_WIDTH_SIRUS_STATS = 90
 		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190
 	else

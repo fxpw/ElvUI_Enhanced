@@ -54,7 +54,7 @@ L["Declined duel request from "] = "Отклонять дуэль от "
 -- Enhanced Character Frame / Paperdoll Backgrounds
 L["Character Background"] = "Фон персонажа"
 L["Enhanced Character Frame"] = "Улучшенный фрейм персонажа"
-L["Enhanced Model Frames"] = "Enhanced Model Frames"
+L["Enhanced Model Frames"] = "Улучшенная модель персонажа"
 L["Inspect Background"] = "Проверять фон"
 L["Paperdoll Backgrounds"] = "Фоны всплывающего окна"
 L["Pet Background"] = "Фон пета"
@@ -67,7 +67,7 @@ L["Only show durabitlity information for items that are damaged."] = "Показ
 L["Quality Color"] = "Качественный цвет"
 
 -- General
-L["Add button to Dressing Room frame with ability to undress model."] = true
+L["Add button to Dressing Room frame with ability to undress model."] = "Добавляет кнопку в осмотр позваляющую раздеть модель"
 L["Add button to Trainer frame with ability to train all available skills in one click."] = true
 L["Alt-Click Merchant"] = "Alt-Click Торговец"
 L["Already Known"] = "Уже известно"
@@ -151,7 +151,7 @@ L["Silence"] = "Безмолвие"
 L["Snare"] = "Замедление"
 
 -- Unitframes
-L["Class Icons"] = true
+L["Class Icons"] = "Иконки класса"
 L["Detached Height"] = "Высота при откреплении"
 L["Show class icon for units."] = "Показывать иконку класса на цели."
 
@@ -204,7 +204,7 @@ L["Color based on reaction type."] = true
 L["Compact mode"] = "Компактный режим"
 L["Companion Background"] = true
 L["Desaturate"] = true
-L["Detached Portrait"] = true
+L["Detached Portrait"] = "Открепить портрет"
 L["Dressing Room"] = "Гардеробная"
 L["Enhanced"] = "Enhanced"
 L["Equipment Info"] = "Информация об предметах"

@@ -43,6 +43,28 @@ local modelSettings = {
 	["TrollFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.4, panMaxTop = 1.5, panMaxBottom = -0.4, panValue = 31},
 	["BloodElfMale"] = {panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36},
 	["BloodElfFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+
+
+	
+
+	["DarkIronDwarfMale"] = {panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44},
+	["DarkIronDwarfFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47},
+	["GoblinMale"] = {panMaxLeft = -0.4, panMaxRight = 0.6, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 44},
+	["GoblinFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.9, panMaxBottom = -0.2, panValue = 47},
+	["NagaMale"] = {panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30},
+	["NagaFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37},
+	["PandarenMale"] = {panMaxLeft = -0.7, panMaxRight = 0.8, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 30},
+	["PandarenFemale"] = {panMaxLeft = -0.4, panMaxRight = 0.3, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 37},
+	["VulperaMale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 52},
+	["VulperaFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 0.5, panMaxBottom = -0.2, panValue = 60},
+	["VoidElfMale"] = {panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36},
+	["VoidElfFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+	["NightborneMale"] = {panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36},
+	["NightborneFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+	["QueldoMale"] = {panMaxLeft = -0.5, panMaxRight = 0.4, panMaxTop = 1.3, panMaxBottom = -0.3, panValue = 36},
+	["QueldoFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.2, panMaxTop = 1.2, panMaxBottom = -0.3, panValue = 38},
+	["EredarFemale"] = {panMaxLeft = -0.3, panMaxRight = 0.3, panMaxTop = 1.4, panMaxBottom = 10, panValue = 31},
+	["EredarMale"] = {panMaxLeft = -0.6, panMaxRight = 0.6, panMaxTop = 1.4, panMaxBottom = -0.4, panValue = 28},
 }
 
 local playerRaceSex
@@ -51,8 +73,11 @@ do
 	_, playerRaceSex = UnitRace("player")
 	if UnitSex("player") == 2 then
 		playerRaceSex = playerRaceSex.."Male"
+		-- print(playerRaceSex)
+		-- /dump UnitRace("target")
 	else
 		playerRaceSex = playerRaceSex.."Female"
+		-- print(playerRaceSex)
 	end
 end
 
@@ -411,8 +436,9 @@ function MF:Initialize()
 		model:EnableMouse(true)
 		model:EnableMouseWheel(true)
 
-		_G[modelFrames[i].."RotateLeftButton"]:Kill()
-		_G[modelFrames[i].."RotateRightButton"]:Kill()
+		CharacterModelFrameControlFrameRotateLeftButton:Kill()
+		CharacterModelFrameControlFrameRotateRightButton:Kill()
+		CharacterModelFrameControlFrameRotateResetButton:Kill()
 
 		self:ModelWithControls(model)
 	end

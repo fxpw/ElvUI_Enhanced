@@ -2262,6 +2262,8 @@ function module:Initialize()
 		CharacterItemLevelFrame:SetParent(CharacterModelFrame)
 		CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
+		
+
 
 		SCROLL_WIDTH_SIRUS_STATS = 90
 		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190

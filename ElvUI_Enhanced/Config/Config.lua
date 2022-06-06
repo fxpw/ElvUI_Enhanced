@@ -374,7 +374,7 @@ local function BlizzardOptions()
 						end,
 						disabled = function() return E.private.enhanced.character.GemsEnableScal or not E.private.enhanced.character.enable   end
 					},
-					spacer1 = {
+					spacer3 = {
 						order = 13,
 						type = "description",
 						name = ""
@@ -2145,13 +2145,13 @@ function EE:GetOptions()
 	local enhanced = E.Options.args.enhanced
 	if enhanced then
 		enhanced.args.blizzardGroup.args.deathRecap = nil
-		enhanced.args.blizzardGroup.args.characterFrame.args.modelFrames = nil
+		-- enhanced.args.blizzardGroup.args.characterFrame.args.modelFrames = nil
 		enhanced.args.blizzardGroup.args.characterFrame.args.paperdollBackgrounds = nil
 		enhanced.args.blizzardGroup.args.dressingRoom = nil
 		enhanced.args.blizzardGroup.args.timerTracker = nil
 	end
 	E:GetModule("Enhanced_TimerTracker").Initialize = E.noop
-	E:GetModule("Enhanced_ModelFrames").Initialize = E.noop
+	-- E:GetModule("Enhanced_ModelFrames").Initialize = E.noop
 	local EB = E:GetModule("Enhanced_Blizzard")
 	EB.DressUpFrame = E.noop
 	EB.DeathRecap = E.noop

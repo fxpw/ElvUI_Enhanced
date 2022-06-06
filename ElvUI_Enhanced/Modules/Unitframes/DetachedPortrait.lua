@@ -68,7 +68,7 @@ end
 function UFDP:Initialize()
 	if not E.private.unitframe.enable then return end
 	if not (E.db.enhanced.unitframe.detachPortrait.player.enable or E.db.enhanced.unitframe.detachPortrait.target.enable) then return end
-
+	-- print(71)
 	self:ToggleState()
 end
 

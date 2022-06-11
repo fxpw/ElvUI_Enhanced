@@ -182,11 +182,6 @@ local PAPERDOLL_SIDEBARS = {
 	}
 }
 
-
-
-
-
-
 V.enhanced.character.player.ITEM_LEVEL = nil
 V.enhanced.character.player.STRENGTHEN = false
 
@@ -326,7 +321,7 @@ local PAPERDOLL_STATINFO = {
 	},
 }
 
-local PAPERDOLL_STATCATEGORIES = {
+PAPERDOLL_STATCATEGORIES = {
 	["STRENGTHEN"] = {
 		id = 1,
 		stats = {
@@ -405,7 +400,7 @@ local PAPERDOLL_STATCATEGORIES = {
 	},
 }
 
-local PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
+PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 	"STRENGTHEN",
 	"BASE_STATS",
 	"MELEE_COMBAT",
@@ -881,27 +876,7 @@ end
 -- 	end
 -- end
 
-
-
 -- local GradientTexture =  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	statFrame.Label:SetFormattedText(STAT_FORMAT, label)
@@ -2253,7 +2228,6 @@ function module:Initialize()
 			frame:Kill()
 		end
 	end
-	-- local server = "Algalon x4 - 3.3.5a"
 	if GetRealmName():match("x4") then
 		PaperDollFrameStatsFrameLeftCategory:Kill()
 		PaperDollFrameStatsFrameRightCategory:Kill()
@@ -2262,11 +2236,12 @@ function module:Initialize()
 		CharacterItemLevelFrame:SetParent(CharacterModelFrame)
 		CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
-		
-
 
 		SCROLL_WIDTH_SIRUS_STATS = 90
 		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190
+
+		table.remove(PAPERDOLL_STATCATEGORIES, 0)
+		table.remove(PAPERDOLL_STATCATEGORY_DEFAULTORDER, 0)
 	else
 		SCROLL_WIDTH_SIRUS_STATS = 168
 		SCROLL_WIDTH_SIRUS_STATS_CHILD = 239
@@ -2464,9 +2439,12 @@ function module:Initialize()
 	equipmentManagerPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
 	PaneFadeInfo(equipmentManagerPane)
 
+	local btnsInsets = 4 -- insets between buttons
+	local frameInsets = 10 -- inset to right edge
+	local btnSize = (SCROLL_WIDTH_SIRUS_STATS_CHILD - btnsInsets * 2 - frameInsets) / 3
 	equipmentManagerPane.EquipSet = CreateFrame("Button", "$parentEquipSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.EquipSet:SetText(EQUIPSET_EQUIP)
-	equipmentManagerPane.EquipSet:SetSize(73, 22)
+	equipmentManagerPane.EquipSet:SetSize(btnSize, 22)
 	equipmentManagerPane.EquipSet:Point("TOP", -75, 0)
 	S:HandleButton(equipmentManagerPane.EquipSet)
 
@@ -2480,7 +2458,7 @@ function module:Initialize()
 
 	equipmentManagerPane.SaveSet = CreateFrame("Button", "$parentSaveSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.SaveSet:SetText(SAVE)
-	equipmentManagerPane.SaveSet:SetSize(73, 22)
+	equipmentManagerPane.SaveSet:SetSize(btnSize, 22)
 	equipmentManagerPane.SaveSet:Point("LEFT", "$parentEquipSet", "RIGHT", 4, 0)
 	S:HandleButton(equipmentManagerPane.SaveSet)
 
@@ -2488,7 +2466,7 @@ function module:Initialize()
 
 	equipmentManagerPane.Undress = CreateFrame("Button", "$parentUndressSet", equipmentManagerPane, "UIPanelButtonTemplate")
 	equipmentManagerPane.Undress:SetText("Раздеть")
-	equipmentManagerPane.Undress:SetSize(73, 22)
+	equipmentManagerPane.Undress:SetSize(btnSize, 22)
 	equipmentManagerPane.Undress:Point("LEFT", "$parentSaveSet", "RIGHT", 4, 0)
 	
 	equipmentManagerPane.Undress:SetScript("OnClick", function()

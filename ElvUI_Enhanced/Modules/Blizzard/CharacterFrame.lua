@@ -2253,8 +2253,8 @@ function module:Initialize()
 			frame:Kill()
 		end
 	end
-	local server = "Algalon x4 - 3.3.5a"
-	if GetRealmName() == server then
+	-- local server = "Algalon x4 - 3.3.5a"
+	if GetRealmName():match("x4") then
 		PaperDollFrameStatsFrameLeftCategory:Kill()
 		PaperDollFrameStatsFrameRightCategory:Kill()
 		-- PaperDollFrameStatsFrameItemLevelCategory:Kill()

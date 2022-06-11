@@ -14,7 +14,7 @@ L["GearScore '3.1.20b - Release' is not for WotLK. Download 3.1.7. Disable this 
 L["Enable All"] = "Вкл все"
 L["Dependencies: "] = "Зависимости: "
 L["Disable All"] = "Выкл все"
-L["Load AddOn"] = true
+L["Load AddOn"] = "Загрузить аддон"
 L["Requires Reload"] = "Надо Перезагрузить"
 
 -- Chat
@@ -123,18 +123,18 @@ L["Hook DBM"] = true
 L["Check Player"] = "Проверьте игрока"
 L["Check achievement completion instead of boss kill stats.\nSome servers log incorrect boss kill statistics, this is an alternative way to get player progress."] = true
 L["Colorize the tooltip border based on item quality."] = "Окрашивать край тултипа в цвет качества предмета"
-L["Icecrown Citadel"] = true
+L["Icecrown Citadel"] = "ЦЛК"
 L["Item Border Color"] = "Цвет рамки предметов"
 L["Progress Info"] = "Прогресс"
-L["Ruby Sanctum"] = true
+L["Ruby Sanctum"] = "РС"
 L["Show/Hides an Icon for Achievements on the Tooltip."] = true
 L["Show/Hides an Icon for Items on the Tooltip."] = true
 L["Show/Hides an Icon for Spells on the Tooltip."] = true
 L["Show/Hides an Icon for Spells and Items on the Tooltip."] = true
 L["Tiers"] = true
 L["Tooltip Icon"] = "Значок всплывающей подсказки"
-L["Trial of the Crusader"] = true
-L["Ulduar"] = true
+L["Trial of the Crusader"] = "ИК"
+L["Ulduar"] = "Ульдуар"
 
 -- Movers
 L["Loss Control"] = "Потеря контоля"
@@ -230,8 +230,8 @@ L["Show on Arena."] = "Показать на арене."
 L["Show on Battleground."] = "Показать на поле битвы."
 L["Smooth Animations"] = "Плавные анимации"
 L["Take All"] = "Взять все"
-L["Take All Mail"] = "Возьми всю почту"
+L["Take All Mail"] = "Взять всю почту"
 L["Take Cash"] = "Принимать наличные"
 L["This addon has been disabled. You should install an updated version."] = true
 L["Where to show"] = "Где показать"
-L["seconds"] = true
+L["seconds"] = "секунд"

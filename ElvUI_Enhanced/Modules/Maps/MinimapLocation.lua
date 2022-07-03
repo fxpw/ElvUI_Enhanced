@@ -86,7 +86,7 @@ local function FadeInMinimap()
 	end
 end
 
-local function ShowMinimap()
+local function ShowMinimap(self)
 	if E.db.enhanced.minimap.fadeindelay == 0 then
 		FadeInMinimap()
 	else
@@ -94,7 +94,7 @@ local function ShowMinimap()
 	end
 end
 
-local function HideMinimap()
+local function HideMinimap(self)
 	cluster:Hide()
 end
 

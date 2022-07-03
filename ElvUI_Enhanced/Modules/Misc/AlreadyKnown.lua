@@ -74,7 +74,7 @@ end
 
 local function AuctionFrameBrowse_Update()
 	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
-	print("112312312")
+	-- print("112312312")
 
 	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
 		-- print(i)

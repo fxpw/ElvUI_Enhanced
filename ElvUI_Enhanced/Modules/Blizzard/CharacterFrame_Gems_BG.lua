@@ -59,6 +59,31 @@ Gems.GearListMain = {
 	["SecondaryHandSlot"] = true,
 	["RangedSlot"] = true,
 }
+
+
+Gems.superBlackSockets = {
+	[104000] = true,
+	[104001] = true,
+	[104002] = true,
+	[104003] = true,
+	[104004] = true,
+	[104005] = true,
+	[104006] = true,
+	[104007] = true,
+	[104008] = true,
+	[104009] = true,
+	[104010] = true,
+	[104011] = true,
+	[104012] = true,
+	[104013] = true,
+	[104014] = true,
+	[104015] = true,
+	[104016] = true,
+	[104017] = true,
+	[104018] = true,
+	[104019] = true,
+
+}
 Gems.blackSockets = {
     [260048] = true,
     [260046] = true,
@@ -221,6 +246,7 @@ end
 
 local function GemsOnClick(button,frame,SocetNum)
 	if button == "RightButton" then
+		print(frame.containerID, SocetNum)
 		SendServerMessage("ACMSG_REMOVE_SOCKET_FROM_ITEM", string.format("%d:%d:%d", -1, frame.containerID, SocetNum))
 
 	elseif button == "LeftButton" then
@@ -228,6 +254,18 @@ local function GemsOnClick(button,frame,SocetNum)
 		local yes = GetExistingSocketInfo(SocetNum)
 		local isMeta = GetSocketTypes(SocetNum)
 		if yes == nil then
+			for bagID = 0, 4 do
+				for slotID = 1, GetContainerNumSlots(bagID) do
+					local itemID = GetContainerItemID(bagID, slotID)
+					if itemID and ((isMeta == "Meta" and Gems.metaBlackSockets[itemID]) or (isMeta ~= "Meta" and Gems.superBlackSockets[itemID]))  then
+						PickupContainerItem(bagID, slotID)
+						ClickSocketButton(SocetNum)
+						AcceptSockets()
+						HideUIPanel(ItemSocketingFrame)
+						return
+					end
+				end
+			end
 			for bagID = 0, 4 do
 				for slotID = 1, GetContainerNumSlots(bagID) do
 					local itemID = GetContainerItemID(bagID, slotID)

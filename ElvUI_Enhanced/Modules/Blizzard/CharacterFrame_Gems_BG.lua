@@ -246,7 +246,7 @@ end
 
 local function GemsOnClick(button,frame,SocetNum)
 	if button == "RightButton" then
-		print(frame.containerID, SocetNum)
+		-- print(frame.containerID, SocetNum)
 		SendServerMessage("ACMSG_REMOVE_SOCKET_FROM_ITEM", string.format("%d:%d:%d", -1, frame.containerID, SocetNum))
 
 	elseif button == "LeftButton" then

@@ -4,7 +4,7 @@
 	<!-- <Script file="TakeAllMail.lua"/> -->
 	<Script file="AddonList.lua"/>
 	<Script file="DressUpFrame.lua"/>
-	<Script file="BetterSearchBox.lua"/>
+	<!-- <Script file="BetterSearchBox.lua"/> -->
 	<Script file="AnimatedAchievementsBars.lua"/>
 	<Script file="ErrorFrame.lua"/>
 

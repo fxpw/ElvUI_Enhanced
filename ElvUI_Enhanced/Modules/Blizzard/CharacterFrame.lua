@@ -410,14 +410,14 @@ PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 	"RESISTANCE"
 }
 
-local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
-	"BASE_STATS",
-	"MELEE_COMBAT",
-	"RANGED_COMBAT",
-	"SPELL_COMBAT",
-	"DEFENSES",
-	"RESISTANCE"
-}
+-- local PETPAPERDOLL_STATCATEGORY_DEFAULTORDER = {
+-- 	"BASE_STATS",
+-- 	"MELEE_COMBAT",
+-- 	"RANGED_COMBAT",
+-- 	"SPELL_COMBAT",
+-- 	"DEFENSES",
+-- 	"RESISTANCE"
+-- }
 
 local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 
@@ -443,93 +443,93 @@ local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 -----------armory
 
 -- do
-	local locale = GetLocale()
-	local classTextFormat =
-	locale == "deDE" and "Stufe %s %s%s %s" or
-	locale == "ruRU" and "%2$s%4$s (%3$s)|r %1$s-го уровня" or
-	locale == "frFR" and "%2$s%4$s %3$s|r de niveau %1$s" or
-	locale == "koKR" and "%s 레벨 %s%s %s|r" or
-	locale == "zhCN" and "等级%s %s%s %s|r" or
-	locale == "zhTW" and "等級%s%s%s%s|r" or
-	locale == "esES" and "%2$s%4$s %3$s|r de nivel %1$s" or
-	locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
-	"Level %s %s%s %s|r"
+local locale = GetLocale()
+local classTextFormat =
+locale == "deDE" and "Stufe %s %s%s %s" or
+locale == "ruRU" and "%2$s%4$s (%3$s)|r %1$s-го уровня" or
+locale == "frFR" and "%2$s%4$s %3$s|r de niveau %1$s" or
+locale == "koKR" and "%s 레벨 %s%s %s|r" or
+locale == "zhCN" and "等级%s %s%s %s|r" or
+locale == "zhTW" and "等級%s%s%s%s|r" or
+locale == "esES" and "%2$s%4$s %3$s|r de nivel %1$s" or
+locale == "ptBR" and "%2$s%4$s (%3$s)|r Nível %1$s" or
+"Level %s %s%s %s|r"
 
-	function module:PaperDollFrame_SetLevel()
-		local _, specName = E:GetTalentSpecInfo()
-		local classDisplayName, class = UnitClass("player")
-		local classColor = RAID_CLASS_COLORS[class]
-		local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
-	
-		if specName == NONE then
-			CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
+function module:PaperDollFrame_SetLevel()
+	local _, specName = E:GetTalentSpecInfo()
+	local classDisplayName, class = UnitClass("player")
+	local classColor = RAID_CLASS_COLORS[class]
+	local classColorString = format("|cFF%02x%02x%02x", classColor.r*255, classColor.g*255, classColor.b*255)
+
+	if specName == NONE then
+		CharacterLevelText:SetFormattedText(PLAYER_LEVEL, UnitLevel("player"), classColorString, classDisplayName)
+	else
+		CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
+	end
+
+	if CharacterLevelText:GetWidth() > 210 then
+		if ElvUI_PaperDollSidebarTab1:IsVisible() then
+			CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", -10, -16)
 		else
-			CharacterLevelText:SetFormattedText(classTextFormat, UnitLevel("player"), classColorString, specName, classDisplayName)
+			CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 10, -16)
 		end
-	
-		if CharacterLevelText:GetWidth() > 210 then
-			if ElvUI_PaperDollSidebarTab1:IsVisible() then
-				CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", -10, -16)
-			else
-				CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 10, -16)
-			end
-		else
-			CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 0, -16)
-		end
+	else
+		CharacterLevelText:Point("TOP", CharacterNamesText, "BOTTOM", 0, -16)
 	end
-	
-	local function PlusButton_OnShow(self)
-		self:GetParent().Value:SetPoint("RIGHT", -22, 0)
-	end
-	
-	local function PlusButton_OnHide(self)
-		self:GetParent().Value:SetPoint("RIGHT", -3, 0)
-	end
-	
-	local function PlusButton_OnEnable(self)
-		self.Texture:SetVertexColor(1, 1, 1)
-	end
-	
-	local function PlusButton_OnDisable(self)
-		self.Texture:SetVertexColor(0.6, 0.6, 0.6)
-	end
-	
-	local function StatFrame_OnEnter()
-		PaperDollStatTooltip("player")
-	end
-	
-	function module:CharacterStatFrame(button)
-		button:Size(SCROLL_WIDTH_SIRUS_STATS, 15)
-	
-		button.Label = button:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormalSmall")
-		button.Label:SetJustifyH("LEFT")
-		button.Label:SetSize(122, 0)
-		button.Label:SetPoint("LEFT", 7, 0)
-	
-		button.Value = button:CreateFontString("$parentStatText", "OVERLAY", "GameFontHighlightSmall")
-		button.Value:SetJustifyH("RIGHT")
-		button.Value:SetPoint("RIGHT", -3, 0)
-	
-		button.Plus = CreateFrame("Button", nil, button)
-		button.Plus:Hide()
-		button.Plus:Size(19)
-		button.Plus:SetPoint("RIGHT", -3, 0)
-	
-		button.Plus.Texture = button.Plus:CreateTexture()
-		button.Plus.Texture:SetAllPoints()
-		button.Plus.Texture:SetTexture(E.Media.Textures.Plus)
-	
-		button.Plus:SetScript("OnClick", CharacterStrengthenButton_OnClick)
-		button.Plus:SetScript("OnShow", PlusButton_OnShow)
-		button.Plus:SetScript("OnHide", PlusButton_OnHide)
-		button.Plus:SetScript("OnEnter", CharacterStrengthenButton_OnEnter)
-		button.Plus:SetScript("OnLeave", GameTooltip_Hide)
-		button.Plus:SetScript("OnEnable", PlusButton_OnEnable)
-		button.Plus:SetScript("OnDisable", PlusButton_OnDisable)
-	
-		button:SetScript("OnEnter", StatFrame_OnEnter)
-		button:SetScript("OnLeave", GameTooltip_Hide)
-	end
+end
+
+local function PlusButton_OnShow(self)
+	self:GetParent().Value:SetPoint("RIGHT", -22, 0)
+end
+
+local function PlusButton_OnHide(self)
+	self:GetParent().Value:SetPoint("RIGHT", -3, 0)
+end
+
+local function PlusButton_OnEnable(self)
+	self.Texture:SetVertexColor(1, 1, 1)
+end
+
+local function PlusButton_OnDisable(self)
+	self.Texture:SetVertexColor(0.6, 0.6, 0.6)
+end
+
+local function StatFrame_OnEnter()
+	PaperDollStatTooltip("player")
+end
+
+function module:CharacterStatFrame(button)
+	button:Size(SCROLL_WIDTH_SIRUS_STATS, 15)
+
+	button.Label = button:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormalSmall")
+	button.Label:SetJustifyH("LEFT")
+	button.Label:SetSize(122, 0)
+	button.Label:SetPoint("LEFT", 7, 0)
+
+	button.Value = button:CreateFontString("$parentStatText", "OVERLAY", "GameFontHighlightSmall")
+	button.Value:SetJustifyH("RIGHT")
+	button.Value:SetPoint("RIGHT", -3, 0)
+
+	button.Plus = CreateFrame("Button", nil, button)
+	button.Plus:Hide()
+	button.Plus:Size(19)
+	button.Plus:SetPoint("RIGHT", -3, 0)
+
+	button.Plus.Texture = button.Plus:CreateTexture()
+	button.Plus.Texture:SetAllPoints()
+	button.Plus.Texture:SetTexture(E.Media.Textures.Plus)
+
+	button.Plus:SetScript("OnClick", CharacterStrengthenButton_OnClick)
+	button.Plus:SetScript("OnShow", PlusButton_OnShow)
+	button.Plus:SetScript("OnHide", PlusButton_OnHide)
+	button.Plus:SetScript("OnEnter", CharacterStrengthenButton_OnEnter)
+	button.Plus:SetScript("OnLeave", GameTooltip_Hide)
+	button.Plus:SetScript("OnEnable", PlusButton_OnEnable)
+	button.Plus:SetScript("OnDisable", PlusButton_OnDisable)
+
+	button:SetScript("OnEnter", StatFrame_OnEnter)
+	button:SetScript("OnLeave", GameTooltip_Hide)
+end
 
 function module:PaperDollSidebarTab(button)
 	button:Size(33, 35)
@@ -1174,7 +1174,7 @@ function module:SetResilience(statFrame, unit)
 	local lowestRatingBonus = GetCombatRatingBonus(lowestRating)
 
 	module:SetLabelAndText(statFrame, STAT_RESILIENCE, minResilience)
-	
+
 	statFrame.tooltip = HIGHLIGHT_FONT_COLOR_CODE..format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_RESILIENCE).." "..minResilience..FONT_COLOR_CODE_CLOSE
 	statFrame.tooltip2 = format(RESILIENCE_TOOLTIP, lowestRatingBonus, min(lowestRatingBonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxRatingBonus), lowestRatingBonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER)
 	local onslaughtRating = GetOnslaughtRating();
@@ -2468,7 +2468,7 @@ function module:Initialize()
 	equipmentManagerPane.Undress:SetText("Раздеть")
 	equipmentManagerPane.Undress:SetSize(btnSize, 22)
 	equipmentManagerPane.Undress:Point("LEFT", "$parentSaveSet", "RIGHT", 4, 0)
-	
+
 	equipmentManagerPane.Undress:SetScript("OnClick", function()
 		for i = 1,19 do
 			PickupInventoryItem(i)
@@ -2590,7 +2590,7 @@ function module:Initialize()
 			if PaperDollTitlesPane:IsShown() then
 				module:PaperDollTitlesPane_Update()
 			end
-		
+
 		end
 
 		if unit == "player" then
@@ -2620,23 +2620,23 @@ function module:Initialize()
 
 	self:PaperDollFrame_UpdateSidebarTabs()
 
-	PetNameText:Point("CENTER", CharacterFrame, 6, 200)
-	PetLevelText:Point("TOP", CharacterFrame, 0, -20)
-	PetAttributesFrame:Kill()
-	PetResistanceFrame:Kill()
+	-- PetNameText:Point("CENTER", CharacterFrame, 6, 200)
+	-- PetLevelText:Point("TOP", CharacterFrame, 0, -20)
+	-- PetAttributesFrame:Kill()
+	-- PetResistanceFrame:Kill()
 
 	PetModelFrameRotateLeftButton:Point("TOPLEFT", PetPaperDollFrame, "TOPLEFT", 27, -80)
 
-	PetPaperDollFrameExpBar:Point("BOTTOMLEFT", PetPaperDollFramePetFrame, "BOTTOMLEFT", 25, 88)
-	PetPaperDollFrameExpBar:Width(285)
+	-- PetPaperDollFrameExpBar:Point("BOTTOMLEFT", PetPaperDollFramePetFrame, "BOTTOMLEFT", 25, 88)
+	-- PetPaperDollFrameExpBar:Width(285)
 
-	PetPaperDollFramePetFrame:HookScript("OnShow", function()
-		module:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
+	-- PetPaperDollFramePetFrame:HookScript("OnShow", function()
+	-- 	module:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
-		module:PaperDollFrame_UpdateStats()
-	end)
+	-- 	module:PaperDollFrame_UpdateStats()
+	-- end)
 
-	self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
+	-- self:PaperDoll_InitStatCategories(PETPAPERDOLL_STATCATEGORY_DEFAULTORDER, E.private.enhanced.character.pet.orderName, E.private.enhanced.character.pet.collapsedName, "pet")
 
 end
 

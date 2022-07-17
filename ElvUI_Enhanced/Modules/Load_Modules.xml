@@ -10,4 +10,5 @@
 	<Include file="Datatexts\Load_Datatexts.xml"/>
 	<Include file="Nameplates\Load_Nameplates.xml"/>
 	<Include file="Unitframes\Load_Unitframes.xml"/>
+	<Include file="Sirus\Load_Sirus.xml"/>
 </Ui>

@@ -32,6 +32,25 @@ do
     function frame:SetTotal(value)
         totalText:SetText(string.format("Всего прокрутов: %i", value));
     end
+
+    Custom_RouletteFrame.HistoryButton = Custom_RouletteFrame.HistoryButton or CreateFrame("Button", nil, Custom_RouletteFrame)
+    local showButton = Custom_RouletteFrame.HistoryButton
+    showButton:CreateBackdrop("Transparent")
+    showButton:SetSize(75,24)
+    showButton.text = showButton:CreateFontString(nil, "OVERLAY", "GameTooltipText");
+    showButton.text:SetText("История")
+    showButton.text:SetPoint("CENTER",0,0)
+    showButton:SetPoint("BOTTOM", Custom_RouletteFrame.closeButton,"BOTTOM",-40,-40)
+    -- showButton:Show()
+    showButton:SetScript("OnClick",function()
+        if frame:IsShown() then
+            frame:Hide()
+        else
+            frame:Show()
+        end
+    end)
+
+
 end
 local function addElement(key)
     local item = C_Split(key, ":");
@@ -150,3 +169,5 @@ frame:SetScript("OnEvent", function (self, event, prefix, msg,  ...)
         end
     end
 end)
+
+frame:Hide()

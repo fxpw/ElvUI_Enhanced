@@ -159,8 +159,8 @@ end)
 
 frame:SetScript("OnEvent", function (self, event, prefix, msg,  ...)
     if(prefix == "ASMSG_LOTTERY_REWARD") then
-        EnhancedRuletteCharDB[msg] = EnhancedRuletteCharDB[msg] + 1;
-        EnhancedRuletteCharDB.TOTAL = EnhancedRuletteCharDB.TOTAL + 1;
+        EnhancedRuletteCharDB[msg] = (EnhancedRuletteCharDB[msg] or 0) + 1;
+        EnhancedRuletteCharDB.TOTAL = (EnhancedRuletteCharDB.TOTAL or 0) + 1;
         if(self:IsShown())then
             for i = 1, #frames do
                 frames[i]:Update();

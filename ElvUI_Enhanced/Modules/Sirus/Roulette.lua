@@ -111,7 +111,7 @@ local function addElement(key)
             f:SetPoint("TOP", frames[#frames], "BOTTOM", 0, -3);
         end
     end
-    local itemname, itemlink = GetItemInfo(tonumber(item[1]));
+    local _, itemlink = GetItemInfo(tonumber(item[1]));
     local fonts = {
         name = f:CreateFontString(nil,"OVERLAY","GameFontNormalSmall"),
         count = f:CreateFontString(nil,"OVERLAY","GameFontNormalSmall"),

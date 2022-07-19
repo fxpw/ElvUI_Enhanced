@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local Gems = E:NewModule("CharacterFrame_Gems_BG", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
 -- local EI = E:GetModule("Enhanced_EquipmentInfo")
-
+local _
 local initInspect = false
 local initCharacter = false
 -- Gems.UpdateEnable = true
@@ -138,7 +138,6 @@ Gems.SoketsColor ={
 	["Meta"] = {1, 1, 1, 1},
 	["Socket"] = {0.988, 0.152, 0.905, 0.5},
 
-	
 }
 -- taken from https://www.wowinterface.com/forums/showpost.php?p=319704&postcount=2
 local ElvUI_GetNumSockets
@@ -185,8 +184,9 @@ end
 
 function Gems:UpdateGearTextures(who)
 	if not E.private.enhanced.character.GearTexturesEnable then return end
-	for SlotName, durab in pairs(Gems.Slots) do
+	for SlotName, _ in pairs(Gems.Slots) do
 		local quality
+
 		if who == "Inspect" then
 			local unit = InspectFrame.unit
 			if unit then
@@ -287,6 +287,7 @@ end
 
 
 local function UpdateLink(frame,link,who)
+	local link = link
 	if who == "Character" then
 		SocketInventoryItem(frame.containerID)
 		frame.Gems.MaxGems = GetNumSockets() or 0
@@ -307,7 +308,7 @@ local function UpdateLink(frame,link,who)
 
 		local  maxgems = ElvUI_GetNumSockets(link)
 		for i = 1,3 do
-			local gmnm, gmlnk = GetItemGem(link, i)
+			local _, gmlnk = GetItemGem(link, i)
 			if gmlnk then
 				nummaxgem = nummaxgem + 1
 			end
@@ -345,7 +346,7 @@ local function UpdateGems(frame,link,who)
 
 			frame.Gems["Gem"..i].GemName = gemname or "n"
 			frame.Gems["Gem"..i].GemLink = gemLink or "n"
-			local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(gemLink)
+			local _, _, itemQuality, _, _, _, _, _,_, itemTexture = GetItemInfo(gemLink)
 
 			if itemTexture  then
 				frame.Gems["Gem"..i].texture:SetTexture(itemTexture)
@@ -399,7 +400,7 @@ end
 
 local function CheckForNeedUpdateCharacter()
 	if not initCharacter then return end
-	for slotName, durab in pairs(Gems.Slots) do
+	for slotName, _ in pairs(Gems.Slots) do
 		local frame = _G[format("%s%s", "Character", slotName)]
 		if frame then
 			local _,link = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
@@ -431,9 +432,8 @@ local function CheckForNeedUpdateCharacter()
 end
 
 local function CheckForNeedUpdateInspect()
-
 	if InspectFrame:IsShown() then
-		for slotName, durab in pairs(Gems.Slots) do
+		for slotName, _ in pairs(Gems.Slots) do
 			local frame = _G[format("%s%s", "Inspect", slotName)]
 			if frame then
 				local unit = InspectFrame.unit
@@ -443,8 +443,6 @@ local function CheckForNeedUpdateInspect()
 				else
 					_,link = GetItemInfo(GetInventoryItemLink("target", frame:GetID()))
 				end
-
-
 				if link then
 					if  link ~= frame.Gems.ItemLink then
 						UpdateLink(frame,link,"Inspect")
@@ -498,16 +496,16 @@ local function GemsOnInitInspect()
 	if initInspect == false then
 
 		if E.private.enhanced.character.GemsEnable == true then
-			for slotName, durability in pairs(Gems.Slots) do
+			for slotName, _ in pairs(Gems.Slots) do
 
 				local frame = _G[format("%s%s", "Inspect", slotName)]
 				frame.Gems = {}
 				local unit = InspectFrame.unit
-				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent
+				local itemLink
 				if unit then
-					itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetInventoryItemLink(unit, frame:GetID()))
+					_, itemLink = GetItemInfo(GetInventoryItemLink(unit, frame:GetID()))
 				else
-					itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetInventoryItemLink("target", frame:GetID()))
+					_, itemLink = GetItemInfo(GetInventoryItemLink("target", frame:GetID()))
 				end
 				if Gems.GearListLeft[slotName]  then
 					frame.Gems.AnchorForGems = "left"
@@ -553,11 +551,11 @@ local function GemsOnInitCharacter()
 
 	if E.private.enhanced.character.GemsEnable == true then
 		if initCharacter == false then
-			for slotName, durability in pairs(Gems.Slots) do
+			for slotName, _ in pairs(Gems.Slots) do
 
 				local frame = _G[format("%s%s", "Character", slotName)]
 				frame.Gems = frame.Gems or {}
-				local itemName, itemLink, itemQuality, itemLevel, itemMinLevel, itemType, itemSubType, itemStackCount,itemEquipLoc, itemTexture, sellPrice, classID, subclassID, bindType, expacID, setID, isCraftingReagent = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
+				local  _, itemLink = GetItemInfo(GetInventoryItemLink("player", frame:GetID()))
 				if Gems.GearListLeft[slotName]  then
 					frame.Gems.AnchorForGems = "left"
 				elseif Gems.GearListRight[slotName]  then

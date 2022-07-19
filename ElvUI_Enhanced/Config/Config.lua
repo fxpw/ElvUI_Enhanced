@@ -195,7 +195,7 @@ local function BlizzardOptions()
 	local B = E:GetModule("Enhanced_Blizzard")
 	local WF = E:GetModule("Enhanced_WatchFrame")
 	-- local TAM = E:GetModule("Enhanced_TakeAllMail")
-	local CHAR = E:GetModule("Enhanced_CharacterFrame")
+	-- local CHAR = E:GetModule("Enhanced_CharacterFrame")
 
 	local choices = {
 		["NONE"] = L["NONE"],

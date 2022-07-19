@@ -449,7 +449,7 @@ function TT:SetGoTexture(timer)
 	elseif timer.type == TIMER_TYPE_CHALLENGE_MODE then
 		timer.GoTexture:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\Challenges-Logo")
 		timer.GoTextureGlow:SetTexture("Interface\\AddOns\\ElvUI_Enhanced\\media\\textures\\ChallengesGlow-Logo")
-	elseif timer.type == TIMER_TYPE_PLAYER_COUNTDOWN then 
+	elseif timer.type == TIMER_TYPE_PLAYER_COUNTDOWN then
 		timer.GoTexture:SetTexture("")
 		timer.GoTextureGlow:SetTexture("")
 	end

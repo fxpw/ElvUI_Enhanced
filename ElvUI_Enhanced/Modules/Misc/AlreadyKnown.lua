@@ -7,7 +7,7 @@ local ceil, fmod = math.ceil, math.fmod
 
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetAuctionItemClasses = GetAuctionItemClasses
-local GetAuctionItemInfo = GetAuctionItemInfo
+-- local GetAuctionItemInfo = GetAuctionItemInfo
 local GetAuctionItemLink = GetAuctionItemLink
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetBuybackItemLink = GetBuybackItemLink
@@ -18,7 +18,7 @@ local GetItemInfo = GetItemInfo
 local GetMerchantItemInfo = GetMerchantItemInfo
 local GetMerchantItemLink = GetMerchantItemLink
 local GetMerchantNumItems = GetMerchantNumItems
-local GetNumAuctionItems = GetNumAuctionItems
+-- local GetNumAuctionItems = GetNumAuctionItems
 local GetNumBuybackItems = GetNumBuybackItems
 local IsAddOnLoaded = IsAddOnLoaded
 local SetItemButtonTextureVertexColor = SetItemButtonTextureVertexColor
@@ -72,46 +72,46 @@ local function MerchantFrame_UpdateBuybackInfo()
 	end
 end
 
-local function AuctionFrameBrowse_Update()
-	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
-	-- print("112312312")
+-- local function AuctionFrameBrowse_Update()
+-- 	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
+-- 	-- print("112312312")
 
-	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
-		-- print(i)
-		if (_G["BrowseButton"..i.."Item"] and _G["BrowseButton"..i.."ItemIconTexture"]) or _G["BrowseButton"..i].id then -- Something to do with ARL?
-			local itemLink
-			if _G["BrowseButton"..i].id then
-				itemLink = GetAuctionItemLink('list', _G["BrowseButton"..i].id)
-			else
-				itemLink = GetAuctionItemLink('list', offset + i)
-			end
+-- 	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
+-- 		-- print(i)
+-- 		if (_G["BrowseButton"..i.."Item"] and _G["BrowseButton"..i.."ItemIconTexture"]) or _G["BrowseButton"..i].id then -- Something to do with ARL?
+-- 			local itemLink
+-- 			if _G["BrowseButton"..i].id then
+-- 				itemLink = GetAuctionItemLink('list', _G["BrowseButton"..i].id)
+-- 			else
+-- 				itemLink = GetAuctionItemLink('list', offset + i)
+-- 			end
 
-			if itemLink and _checkIfKnown(itemLink) then
-				if _G["BrowseButton"..i].id then
-					_G["BrowseButton"..i].Icon:SetVertexColor(db.r, db.g, db.b)
-				else
-					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(db.r, db.g, db.b)
-				end
+-- 			if itemLink and _checkIfKnown(itemLink) then
+-- 				if _G["BrowseButton"..i].id then
+-- 					_G["BrowseButton"..i].Icon:SetVertexColor(db.r, db.g, db.b)
+-- 				else
+-- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(db.r, db.g, db.b)
+-- 				end
 
-				if db.monochrome then
-					if _G["BrowseButton"..i].id then
-						_G["BrowseButton"..i].Icon:SetDesaturated(true)
-					else
-						_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(true)
-					end
-				end
-			else
-				if _G["BrowseButton"..i].id then
-					_G["BrowseButton"..i].Icon:SetVertexColor(1, 1, 1)
-					_G["BrowseButton"..i].Icon:SetDesaturated(false)
-				else
-					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(1, 1, 1)
-					_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(false)
-				end
-			end
-		end
-	end
-end
+-- 				if db.monochrome then
+-- 					if _G["BrowseButton"..i].id then
+-- 						_G["BrowseButton"..i].Icon:SetDesaturated(true)
+-- 					else
+-- 						_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(true)
+-- 					end
+-- 				end
+-- 			else
+-- 				if _G["BrowseButton"..i].id then
+-- 					_G["BrowseButton"..i].Icon:SetVertexColor(1, 1, 1)
+-- 					_G["BrowseButton"..i].Icon:SetDesaturated(false)
+-- 				else
+-- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(1, 1, 1)
+-- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(false)
+-- 				end
+-- 			end
+-- 		end
+-- 	end
+-- end
 
 local function AuctionFrameBid_Update()
 	-- local numItems = GetNumAuctionItems("bidder")
@@ -160,23 +160,17 @@ end
 
 local function GuildBankFrame_Update()
 	if GuildBankFrame.mode ~= "bank" then return end
-
 	local tab = GetCurrentGuildBankTab()
-	
-
 	for i = 1, MAX_GUILDBANK_SLOTS_PER_TAB do
 		local button = _G["GuildBankColumn"..ceil((i - 0.5) / NUM_SLOTS_PER_GUILDBANK_GROUP).."Button"..fmod(i, NUM_SLOTS_PER_GUILDBANK_GROUP)]
-
 		if button and button:IsShown() then
 			local texture, _, locked = GetGuildBankItemInfo(tab, i)
-			
 			if texture and not locked then
 				if AK:IsAlreadyKnown(GetGuildBankItemLink(tab, i)) then
 					SetItemButtonTextureVertexColor(button, knownColor.r, knownColor.g, knownColor.b)
 				else
 					SetItemButtonTextureVertexColor(button, 1, 1, 1)
 				end
-				
 			end
 		end
 	end
@@ -248,7 +242,7 @@ end
 		--------firs hoook?
 		--------firs hoook?
 		--------firs hoook?
-hooksecurefunc(AuctionHouseBrowseResultsFrameMixin,"UpdateBrowseResults",AuctionFrameBrowse_Update)
+-- hooksecurefunc(AuctionHouseBrowseResultsFrameMixin,"UpdateBrowseResults",AuctionFrameBrowse_Update)
 		--------firs hoook?
 		--------firs hoook?
 		--------firs hoook?
@@ -267,11 +261,11 @@ function AK:SetHooks()
 		-- if not self:IsHooked("AuctionHouseBrowseResultsFrameMixin:UpdateBrowseResults") then
 			-- self:SecureHook("AuctionFrameBrowse_Update", AuctionFrameBrowse_Update)
 		-- end
-		
-		
-	
+
+
+
 		if not self:IsHooked("AuctionFrameBid_Update") then
-			
+
 			self:SecureHook("AuctionFrameBid_Update", AuctionFrameBid_Update)
 		end
 		if not self:IsHooked("AuctionFrameAuctions_Update") then

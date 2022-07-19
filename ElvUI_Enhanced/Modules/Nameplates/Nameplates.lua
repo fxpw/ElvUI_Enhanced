@@ -144,7 +144,7 @@ local separatorMap = {
 	["["] = "[%s]",
 	["{"] = "{%s}"
 }
-
+local r,g,b
 local function Update_NameHook(self, frame)
 	if not E.db.enhanced.nameplates.titleCache then return end
 
@@ -214,7 +214,7 @@ local function Update_NameHook(self, frame)
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 
 		if E.db.enhanced.nameplates.npc.reactionColor then
-			local db = self.db.colors
+			db = self.db.colors
 			if frame.UnitReaction == 5 then -- friendly
 				r, g, b = db.reactions.good.r, db.reactions.good.g, db.reactions.good.b
 			elseif frame.UnitReaction == 1 or frame.UnitReaction == 2 then -- hostile

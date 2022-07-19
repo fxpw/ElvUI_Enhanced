@@ -1,15 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local module = E:NewModule("Enhanced_CharacterFrame", "AceHook-3.0", "AceEvent-3.0")
 local S = E:GetModule("Skins")
-local EI = E:GetModule("Enhanced_EquipmentInfo")
+-- local EI = E:GetModule("Enhanced_EquipmentInfo")
 local _G = _G
 local select, next, ipairs, pairs, tonumber, getmetatable = select, next, ipairs, pairs, tonumber, getmetatable
 local abs, floor, max, min = math.abs, math.floor, math.max, math.min
 local find, format, gmatch, lower, sub, trim = string.find, string.format, string.gmatch, string.lower, string.sub, string.trim
-local tconcat, tinsert, tremove, sort, wipe = table.concat, table.insert, table.remove, table.sort, table.wipe
+local tinsert, tremove, sort, wipe = table.insert, table.remove, table.sort, table.wipe
 local  gsub = string.gsub
 local CreateFrame = CreateFrame
-local GetActiveTalentGroup = GetActiveTalentGroup
+-- local GetActiveTalentGroup = GetActiveTalentGroup
 local GearManagerDialog = GearManagerDialog
 local GetAttackPowerForStat = GetAttackPowerForStat
 local GetBlockChance = GetBlockChance
@@ -24,8 +24,8 @@ local GetCursorPosition = GetCursorPosition
 local GetDodgeChance = GetDodgeChance
 local GetEquipmentSetInfo = GetEquipmentSetInfo
 local GetEquipmentSetInfoByName = GetEquipmentSetInfoByName
-local GetInventoryItemLink = GetInventoryItemLink
-local GetItemInfo = GetItemInfo
+-- local GetInventoryItemLink = GetInventoryItemLink
+-- local GetItemInfo = GetItemInfo
 local GetMaxCombatRatingBonus = GetMaxCombatRatingBonus
 local GetNumCompanions = GetNumCompanions
 local GetNumEquipmentSets = GetNumEquipmentSets
@@ -40,7 +40,7 @@ local GetUnitHealthRegenRateFromSpirit = GetUnitHealthRegenRateFromSpirit
 local GetUnitManaRegenRateFromSpirit = GetUnitManaRegenRateFromSpirit
 local GetUnitMaxHealthModifier = GetUnitMaxHealthModifier
 local GetUnitPowerModifier = GetUnitPowerModifier
-local HasPetUI = HasPetUI
+-- local HasPetUI = HasPetUI
 local IsTitleKnown = IsTitleKnown
 local PlaySound = PlaySound
 local SetCVar = SetCVar
@@ -49,7 +49,7 @@ local UnitAttackSpeed = UnitAttackSpeed
 local UnitClass = UnitClass
 local UnitDamage = UnitDamage
 local UnitHasMana = UnitHasMana
-local UnitHasRelicSlot = UnitHasRelicSlot
+-- local UnitHasRelicSlot = UnitHasRelicSlot
 local UnitLevel = UnitLevel
 local UnitRace = UnitRace
 local UnitResistance = UnitResistance
@@ -81,9 +81,6 @@ local PaperDollFrame_SetSpellCritChance = PaperDollFrame_SetSpellCritChance
 local PaperDollFrame_SetSpellHaste = PaperDollFrame_SetSpellHaste
 local PetPaperDollFrameCompanionFrame = PetPaperDollFrameCompanionFrame
 local PetPaperDollFrame_FindCompanionIndex = PetPaperDollFrame_FindCompanionIndex
-
-local GearManagerDialog = GearManagerDialog
-
 local ARMOR_PER_AGILITY = ARMOR_PER_AGILITY
 local BLOCK_CHANCE = BLOCK_CHANCE
 local BLOCK_PER_STRENGTH = BLOCK_PER_STRENGTH
@@ -102,15 +99,15 @@ local CR_HIT_SPELL = CR_HIT_SPELL
 local CR_PARRY = CR_PARRY
 local CR_PARRY_TOOLTIP = CR_PARRY_TOOLTIP
 local DAMAGE_PER_SECOND = DAMAGE_PER_SECOND
-local DEFENSE = DEFENSE
+-- local DEFENSE = DEFENSE
 local DODGE_CHANCE = DODGE_CHANCE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 local GREEN_FONT_COLOR_CODE = GREEN_FONT_COLOR_CODE
 local HEALTH_PER_STAMINA = HEALTH_PER_STAMINA
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
-local INVSLOT_BODY = INVSLOT_BODY
-local INVSLOT_MAINHAND = INVSLOT_MAINHAND
+-- local INVSLOT_BODY = INVSLOT_BODY
+-- local INVSLOT_MAINHAND = INVSLOT_MAINHAND
 local MANA_PER_INTELLECT = MANA_PER_INTELLECT
 local MANA_REGEN_FROM_SPIRIT = MANA_REGEN_FROM_SPIRIT
 local MAX_EQUIPMENT_SETS_PER_PLAYER = MAX_EQUIPMENT_SETS_PER_PLAYER
@@ -419,7 +416,7 @@ PAPERDOLL_STATCATEGORY_DEFAULTORDER = {
 -- 	"RESISTANCE"
 -- }
 
-local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
+-- local _PLAYER_LEVEL, _PLAYER_LEVEL_NO_SPEC
 
 -- local txframe = CreateFrame('Frame')
 -- local tx = txframe:CreateTexture()
@@ -627,8 +624,8 @@ end
 
 local StatCategoryFrames = {}
 
-local titanGrip
-local qualityColors = {}
+-- local titanGrip
+-- local qualityColors = {}
 
 -- do
 -- 	for i = 0, 7 do
@@ -875,8 +872,6 @@ end
 -- 		return ilvl / items, (sumR / colorCount), (sumG / colorCount), (sumB / colorCount)
 -- 	end
 -- end
-
--- local GradientTexture =  
 
 function module:SetLabelAndText(statFrame, label, text, isPercentage)
 	statFrame.Label:SetFormattedText(STAT_FORMAT, label)

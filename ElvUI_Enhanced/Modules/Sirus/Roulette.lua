@@ -1,9 +1,12 @@
--- from https://github.com/Mimirone/SirusRouletteHistory
+---@diagnostic disable: param-type-mismatch, redundant-parameter
+
 EnhancedRuletteCharDB = S_Roulette_Char_DB or EnhancedRuletteCharDB or {};
+EnhancedRuletteDB = S_Roulette_DB or EnhancedRuletteDB or {};
 if(not Custom_RouletteFrame) then
     return false;
 end
 local frames = {};
+local events = {};
 local frame = SRH_MainFrame or CreateFrame("Frame", "SRH_MainFrame", Custom_RouletteFrame);
 frame:RegisterEvent("CHAT_MSG_ADDON");
 do
@@ -27,27 +30,58 @@ do
     local title = frame:CreateFontString(nil,"OVERLAY","GameFontNormal");
     title:SetText("История рулетки");
     title:SetPoint("TOP",0,-5);
-    local totalText = frame:CreateFontString(nil,"OVERLAY","GameFontNormal");
-    totalText:SetPoint("BOTTOMLEFT",5,7);
-    function frame:SetTotal(value)
-        totalText:SetText(string.format("Всего прокрутов: %i", value));
+    local totalTextPerChar = frame:CreateFontString(nil,"OVERLAY","GameFontNormal");
+    totalTextPerChar:SetPoint("BOTTOMLEFT",5,35);
+    totalTextPerChar :SetSize(frame:GetHeight()*0.8, 20);
+    totalTextPerChar :SetJustifyH("LEFT")
+    local totalTextPerAccount = frame:CreateFontString(nil,"OVERLAY","GameFontNormal");
+    totalTextPerAccount:SetPoint("TOP",totalTextPerChar, "BOTTOM", 0 , -5 );
+    totalTextPerAccount:SetSize(frame:GetHeight()*0.8, 20);
+    totalTextPerAccount:SetJustifyH("LEFT")
+    function frame:SetTotalPerChar(value)
+        totalTextPerChar:SetText(string.format("Всего прокрутов на персонаже: %i", value));
     end
+    function frame:SetTotalPerAccount(value)
+        totalTextPerAccount:SetText(string.format("Всего прокрутов на аккаунте: %i", value));
+    end
+    frame:Hide();
+    frame:SetAlpha(0);
 
-    Custom_RouletteFrame.HistoryButton = Custom_RouletteFrame.HistoryButton or CreateFrame("Button", nil, Custom_RouletteFrame)
-    local showButton = Custom_RouletteFrame.HistoryButton
-    showButton:CreateBackdrop("Transparent")
-    showButton:SetSize(75,24)
-    showButton.text = showButton:CreateFontString(nil, "OVERLAY", "GameTooltipText");
-    showButton.text:SetText("История")
-    showButton.text:SetPoint("CENTER",0,0)
-    showButton:SetPoint("BOTTOM", Custom_RouletteFrame.closeButton,"BOTTOM",-40,-40)
-    -- showButton:Show()
-    showButton:SetScript("OnClick",function()
-        if frame:IsShown() then
-            frame:Hide()
+    local btn_show_hide = CreateFrame("Button", nil, Custom_RouletteFrame);
+    btn_show_hide:SetSize(30, 30);
+    btn_show_hide.texture = btn_show_hide:CreateTexture();
+    btn_show_hide.texture:SetAllPoints(btn_show_hide);
+    btn_show_hide.texture:SetTexture("Interface\\PVPFrame\\Icons\\PVP-Banner-Emblem-47");
+    btn_show_hide:ClearAllPoints();
+    btn_show_hide:SetPoint("RIGHT", Custom_RouletteFrameCloseButton, "RIGHT", -55 ,0);
+    btn_show_hide:SetScript("OnClick", function (self)
+        if(frame:IsShown()) then
+            C_Timer:NewTicker(0.05, function ()
+                if(frame:GetAlpha() > 0.1) then
+                    frame:SetAlpha(frame:GetAlpha() - 0.1);
+                else
+                    frame:SetAlpha(frame:GetAlpha() - 0.1);
+                    frame:Hide();
+                end
+            end, 10);
         else
-            frame:Show()
+            C_Timer:NewTicker(0.05, function ()
+                if(frame:GetAlpha() < 0.1) then
+                    frame:Show();
+                    frame:SetAlpha(frame:GetAlpha() + 0.1);
+                else
+                    frame:SetAlpha(frame:GetAlpha() + 0.1);
+                end
+            end, 10);
         end
+    end)
+    btn_show_hide:SetScript("OnEnter", function (self)
+        GameTooltip:SetOwner(self,"ANCHOR_RIGHT");
+        GameTooltip:AddLine("Показать/Скрыть историю рулетки.")
+        GameTooltip:Show();
+    end)
+    btn_show_hide:SetScript("OnLeave", function (self)
+        GameTooltip:Hide();
     end)
 
 
@@ -58,8 +92,8 @@ local function addElement(key)
     local f = CreateFrame("Button", nil, frame);
     f.ID = key
     do  --Frame
-        f:SetSize(frame:GetWidth()-4, frame:GetHeight() / 16 - 2.5);
-        if ( f.CreateBackdrop) then
+        f:SetSize(frame:GetWidth()-4, frame:GetHeight() / 18 - 2.5);
+        if(f.CreateBackdrop) then
             f:CreateBackdrop("Transparent");
         else
             f:SetBackdrop({
@@ -127,6 +161,23 @@ local function addElement(key)
                 GameTooltip:AddDoubleLine("|cffFFFFFFШанс выиграть:|r", "|cffFF3333НЕИЗВЕСТНО|r");
             end
         end
+
+        local globals = {count = 0, total = 0};
+        for _, v in pairs(EnhancedRuletteDB) do
+            globals.count = globals.count + (v[f.ID] or 0);
+            globals.total = globals.total + (v.TOTAL or 0);
+        end
+        if(globals.total > 0) then
+            GameTooltip:AddLine("Информация по всем персонажам:");
+            GameTooltip:AddDoubleLine("|cffFFFFFFВыиграно:|r", string.format("|cffFFFFFF%i|r раз(а).", globals.count));
+            if(globals.count == 0) then
+                GameTooltip:AddDoubleLine("|cffFFFFFFШанс выиграть:|r", "|cffFF3333НЕИЗВЕСТНО|r");
+            else
+                GameTooltip:AddDoubleLine("|cffFFFFFFШанс выиграть:|r", string.format("|cffFFFFFF%.3f%%|r", globals.count  / globals.total*100));
+            end
+        end
+
+
         GameTooltip:Show();
     end)
     f:SetScript("OnLeave", function ()
@@ -134,9 +185,17 @@ local function addElement(key)
     end)
     return f;
 end
-frame:SetScript("OnShow", function ()
+frame:SetScript("OnShow", function (self)
     EnhancedRuletteCharDB.TOTAL = EnhancedRuletteCharDB.TOTAL or 0;
-    frame:SetTotal(EnhancedRuletteCharDB.TOTAL);
+    if(not EnhancedRuletteDB[UnitName("Player")]) then
+        EnhancedRuletteDB[UnitName("Player")] = EnhancedRuletteCharDB;
+    end
+    self:SetTotalPerChar(EnhancedRuletteCharDB.TOTAL);
+    local total = 0;
+    for _,v in pairs(EnhancedRuletteDB or {}) do
+        total = total + (v.TOTAL or 0);
+    end
+    self:SetTotalPerAccount(total);
     if(#frames > 0) then
         for i = 1, #frames do
             frames[i]:Update();
@@ -157,17 +216,38 @@ frame:SetScript("OnShow", function ()
     end
 end)
 
-frame:SetScript("OnEvent", function (self, event, prefix, msg,  ...)
-    if(prefix == "ASMSG_LOTTERY_REWARD") then
-        EnhancedRuletteCharDB[msg] = (EnhancedRuletteCharDB[msg] or 0) + 1;
-        EnhancedRuletteCharDB.TOTAL = (EnhancedRuletteCharDB.TOTAL or 0) + 1;
-        if(self:IsShown())then
+do  -- Events
+    function events:CHAT_MSG_ADDON(prefix, msg)
+        if(prefix == "ASMSG_LOTTERY_REWARD" and #msg > 0) then
+            if(not EnhancedRuletteCharDB[msg]) then
+                EnhancedRuletteCharDB[msg] = 0;
+            end
+            if(not EnhancedRuletteCharDB.TOTAL) then
+                EnhancedRuletteCharDB.TOTAL = 0
+            end
+            EnhancedRuletteCharDB[msg] = EnhancedRuletteCharDB[msg] + 1;
+            EnhancedRuletteCharDB.TOTAL = EnhancedRuletteCharDB.TOTAL + 1;
+            EnhancedRuletteDB[UnitName("Player")] = EnhancedRuletteCharDB;
+        elseif(prefix == "ACMSG_LOTTERY_REWARD" and frame:IsShown()) then
             for i = 1, #frames do
                 frames[i]:Update();
             end
-            self:SetTotal(EnhancedRuletteCharDB.TOTAL);
+            frame:SetTotalPerChar(EnhancedRuletteCharDB.TOTAL);
+            local total = 0;
+            for _,v in pairs(EnhancedRuletteDB or {}) do
+                total = total + (v.TOTAL or 0);
+            end
+            frame:SetTotalPerAccount(total);
         end
     end
-end)
+end
 
-frame:Hide()
+for k, _ in pairs(events or {}) do
+    frame:RegisterEvent(k);
+end
+frame:SetScript("OnEvent", function (_, event, ...)
+    if(not events[event]) then return;
+    elseif(type(events[event]) == "function") then
+        events[event](event, ...);
+    end
+end)

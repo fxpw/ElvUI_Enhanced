@@ -14,7 +14,7 @@ local pairs = pairs
 -- local utf8sub = string.utf8sub
 
 local GetInventoryItemDurability = GetInventoryItemDurability
-local GetInventoryItemID = GetInventoryItemID
+-- local GetInventoryItemID = GetInventoryItemID
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemInfo = GetItemInfo
 local GetItemQualityColor = GetItemQualityColor
@@ -148,7 +148,6 @@ function EI:UpdateInfoText(name)
 			frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
 			frame.ItemLevel:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 			-- frame.SLOT_ID = GetInventorySlotInfo(slotName)
-			
 			-- frame.ChantName:ClearAllPoints()
 			-- frame.ItemLevel:Point(db.itemlevel.position, frame, db.itemlevel.xOffset, db.itemlevel.yOffset)
 			-- frame.ChantName:FontTemplate(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)

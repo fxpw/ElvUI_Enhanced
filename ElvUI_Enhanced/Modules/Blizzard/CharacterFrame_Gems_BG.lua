@@ -287,7 +287,6 @@ end
 
 
 local function UpdateLink(frame,link,who)
-	local link = link
 	if who == "Character" then
 		SocketInventoryItem(frame.containerID)
 		frame.Gems.MaxGems = GetNumSockets() or 0

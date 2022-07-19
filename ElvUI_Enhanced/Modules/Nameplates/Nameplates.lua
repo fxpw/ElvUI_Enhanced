@@ -451,7 +451,7 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 				if E.PixelMode then
 					bubbleFrame:SetBackdropBorderColor(info.r, info.g, info.b)
 				else
-					local r, g, b = info.r, info.g, info.b
+					r, g, b = info.r, info.g, info.b
 					bubbleFrame.bordertop:SetTexture(r, g, b)
 					bubbleFrame.borderbottom:SetTexture(r, g, b)
 					bubbleFrame.borderleft:SetTexture(r, g, b)

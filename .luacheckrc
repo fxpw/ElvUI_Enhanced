@@ -96,8 +96,6 @@ globals = {
     "SRH_MainFrame",
     "Custom_RouletteFrameCloseButton",
     "EnhancedRuletteCharDB",
-	"FauxScrollFrame_GetOffset",
-	"GetAuctionItemLink",
 
 	--fonts 
 	"GameFontNormal9",

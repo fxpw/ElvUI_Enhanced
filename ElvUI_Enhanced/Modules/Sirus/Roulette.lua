@@ -225,8 +225,8 @@ do  -- Events
             if(not EnhancedRuletteCharDB.TOTAL) then
                 EnhancedRuletteCharDB.TOTAL = 0
             end
-            EnhancedRuletteCharDB[msg] = EnhancedRuletteCharDB[msg] + 1;
-            EnhancedRuletteCharDB.TOTAL = EnhancedRuletteCharDB.TOTAL + 1;
+            EnhancedRuletteCharDB[msg] = (EnhancedRuletteCharDB[msg] or 0) + 1;
+            EnhancedRuletteCharDB.TOTAL = (EnhancedRuletteCharDB.TOTAL or 0) + 1;
             EnhancedRuletteDB[UnitName("Player")] = EnhancedRuletteCharDB;
         elseif(prefix == "ACMSG_LOTTERY_REWARD" and frame:IsShown()) then
             for i = 1, #frames do

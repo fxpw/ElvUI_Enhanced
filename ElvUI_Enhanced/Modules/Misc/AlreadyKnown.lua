@@ -5,10 +5,10 @@ local _G = _G
 local match = string.match
 local ceil, fmod = math.ceil, math.fmod
 
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+-- local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 local GetAuctionItemClasses = GetAuctionItemClasses
 -- local GetAuctionItemInfo = GetAuctionItemInfo
-local GetAuctionItemLink = GetAuctionItemLink
+-- local GetAuctionItemLink = GetAuctionItemLink
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetBuybackItemLink = GetBuybackItemLink
 local GetCurrentGuildBankTab = GetCurrentGuildBankTab

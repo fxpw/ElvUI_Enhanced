@@ -96,7 +96,7 @@ globals = {
     "SRH_MainFrame",
     "Custom_RouletteFrameCloseButton",
     "EnhancedRuletteCharDB",
-
+	"LookingForGuildFrame",
 	--fonts 
 	"GameFontNormal9",
     "GameFontNormal11",
@@ -115,6 +115,7 @@ globals = {
 	"C_FactionManager",
 	"C_Talent",
 	"Mixin",
+	"C_CVar",
 
 	--chat
 	"ChatUrlHyperlink_OnClick",

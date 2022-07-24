@@ -220,11 +220,11 @@ local function LogChanged()
             fnstrngtoshowL:SetText(MainFrame.history[#MainFrame.history-logIndex][1])
             -- recordtoshow:SetPoint("LEFT",recordtoshow,"RIGHT")
             buttontoshow:SetScript("OnEnter",function(self)
-                local name, lvl, members, comment
+                local name, lvl, members
                 name = MainFrame.history[#MainFrame.history-logIndex][1]
                 lvl = MainFrame.history[#MainFrame.history-logIndex][2]
                 members = MainFrame.history[#MainFrame.history-logIndex][3]
-                comment = MainFrame.history[#MainFrame.history-logIndex][4]
+                -- local comment = MainFrame.history[#MainFrame.history-logIndex][4]
                 -- guildInfo[1] = guild[GF_BROWSE_UPDATE.Name];
                 -- guildInfo[2] = tonumber(guild[GF_BROWSE_UPDATE.Level]) or 1;
                 -- guildInfo[3] = tonumber(guild[GF_BROWSE_UPDATE.MemberCount]) or 1;
@@ -276,7 +276,7 @@ local GF_BROWSE_UPDATE = {
 	ActivityTimes = 11,
 };
 
-local NUM_LF_GUILD_SETTINGS_FLAGS = 13;
+-- local NUM_LF_GUILD_SETTINGS_FLAGS = 13;
 local NUM_LF_GUILD_INTERESTS_FLAGS = 5;
 local NUM_LF_GUILD_AVAILABILITY_FLAGS = 2;
 local NUM_LF_GUILD_CLASS_ROLES_FLAGS = 3;

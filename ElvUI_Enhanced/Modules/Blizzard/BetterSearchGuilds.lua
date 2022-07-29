@@ -82,7 +82,7 @@ end
 local ScrollBar = CreateFrame("ScrollFrame", "LFRHistoryFrameScrollFrame",ScrollParent,"FauxScrollFrameTemplateLight")
 ScrollBar:SetWidth(ScrollParent:GetWidth() - 35)
 ScrollBar:SetHeight(ScrollParent:GetHeight() - 10)
-ScrollBar:SetPoint("TOPRIGHT", ScrollParent, "TOPRIGHT", -20, -10)
+ScrollBar:SetPoint("RIGHT", ScrollParent, "RIGHT", -35, 0)
 
 
 -- local function LogRecordToString(record,i)
@@ -220,11 +220,11 @@ local function LogChanged()
             fnstrngtoshowL:SetText(MainFrame.history[#MainFrame.history-logIndex][1])
             -- recordtoshow:SetPoint("LEFT",recordtoshow,"RIGHT")
             buttontoshow:SetScript("OnEnter",function(self)
-                local name, lvl, members
+                local name, lvl, members, comment
                 name = MainFrame.history[#MainFrame.history-logIndex][1]
                 lvl = MainFrame.history[#MainFrame.history-logIndex][2]
                 members = MainFrame.history[#MainFrame.history-logIndex][3]
-                -- local comment = MainFrame.history[#MainFrame.history-logIndex][4]
+                comment = MainFrame.history[#MainFrame.history-logIndex][4]
                 -- guildInfo[1] = guild[GF_BROWSE_UPDATE.Name];
                 -- guildInfo[2] = tonumber(guild[GF_BROWSE_UPDATE.Level]) or 1;
                 -- guildInfo[3] = tonumber(guild[GF_BROWSE_UPDATE.MemberCount]) or 1;

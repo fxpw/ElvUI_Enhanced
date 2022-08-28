@@ -1,5 +1,5 @@
 ---@diagnostic disable: param-type-mismatch, redundant-parameter
-
+if select(4,GetAddOnInfo("SirusRouletteHistory")) then return end
 EnhancedRuletteCharDB = S_Roulette_Char_DB or EnhancedRuletteCharDB or {};
 EnhancedRuletteDB = S_Roulette_DB or EnhancedRuletteDB or {};
 if(not Custom_RouletteFrame) then

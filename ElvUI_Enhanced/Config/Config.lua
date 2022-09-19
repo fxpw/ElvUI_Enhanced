@@ -2116,7 +2116,7 @@ local UF = E.UnitFrames
 local ACH = LibStub("LibAceConfigHelper")
 
 --GLOBALS: unpack, format
-local format = string.format
+-- local format = string.format
 local wipe = wipe
 
 

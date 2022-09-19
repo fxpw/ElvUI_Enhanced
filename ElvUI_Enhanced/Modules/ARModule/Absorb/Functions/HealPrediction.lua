@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local _, Engine = ...
 local ARModule = E:GetModule("ElvUI_ARModule")
 local UF = E.UnitFrames
-local LSM = E.Libs.LSM
+-- local LSM = E.Libs.LSM
 
 local StatusBarPrototype = Engine.Compat.StatusBarPrototype
 

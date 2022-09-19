@@ -1,5 +1,26 @@
 local E, L, V, P, G = unpack(ElvUI)
 
+local AbsorbPrediction = {
+	enable = true,
+	absorbStyle = "REVERSED",
+	anchorPoint = "BOTTOM",
+	absorbTexture = "ElvUI Norm",
+	height = -1
+}
+
+local RoleIcon = {
+	enable = false,
+	position = "BOTTOMRIGHT",
+	attachTo = "Health",
+	xOffset = 0,
+	yOffset = 0,
+	size = 15,
+	tank = true,
+	healer = true,
+	damager = true,
+	combatHide = false,
+}
+
 P.enhanced = {
 	general = {
 		pvpAutoRelease = false,
@@ -230,17 +251,61 @@ P.enhanced = {
 				height = 54
 			}
 		},
+		hideRoleInCombat = false,
+		-----~absorb
+		general = {
+			roleIcons = {
+				icons = "ElvUI",
+			}
+		},
+		colors = {
+			absorbPrediction = {
+				absorbs = {r = 0, g = 1, b = 1, a = 1},
+				healAbsorbs = {r = 1, g = 0, b = 0, a = 0.25},
+				overabsorbs = {r = 0, g = 1, b = 1, a = 1},
+				overhealabsorbs = {r = 1, g = 0, b = 0, a = 0.25},
+			}
+		},
 		units = {
+			player = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+				roleIcon = CopyTable(RoleIcon),
+			},
 			target = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+				roleIcon = CopyTable(RoleIcon),
 				classicon = {
 					enable = false,
 					size = 28,
 					xOffset = -58,
 					yOffset = -22
 				}
-			}
-		},
-		hideRoleInCombat = false
+			},
+			focus = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+				roleIcon = CopyTable(RoleIcon),
+			},
+			pet = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+			},
+			arena = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+				roleIcon = CopyTable(RoleIcon),
+			},
+			party = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+			},
+			raid = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+			},
+			raid40 = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+				roleIcon = CopyTable(RoleIcon),
+			},
+			raidpet = {
+				absorbPrediction = CopyTable(AbsorbPrediction),
+			},
+		}
 	},
 	watchframe = {
 		enable = false,

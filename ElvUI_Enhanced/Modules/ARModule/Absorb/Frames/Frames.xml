@@ -1,0 +1,4 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/">
+	<Include file="Groups\Groups.xml"/>
+    <Include file="Units\Units.xml"/>
+</Ui>

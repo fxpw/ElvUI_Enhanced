@@ -1661,89 +1661,89 @@ local function TooltipOptions()
 	}
 end
 
-local function LoseControlOptions()
-	return {
-		type = "group",
-		name = L["Lose Control"],
-		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
-		set = function(info, value)
-			E.db.enhanced.loseControl[info[#info]] = value
-			E:GetModule("Enhanced_LoseControl"):UpdateSettings()
-		end,
-		args = {
-			header = {
-				order = 0,
-				type = "header",
-				name = EE:ColorizeSettingName(L["Lose Control"])
-			},
-			enable = {
-				order = 1,
-				type = "toggle",
-				width = "full",
-				name = L["Enable"],
-				get = function(info) return E.private.enhanced.loseControl.enable end,
-				set = function(info, value)
-					E.private.enhanced.loseControl.enable = value
-					E:GetModule("Enhanced_LoseControl"):ToggleState()
-				end,
-			},
-			compactMode = {
-				order = 2,
-				type = "toggle",
-				name = L["Compact mode"],
-				disabled = function() return not E.private.enhanced.loseControl.enable end
-			},
-			iconSize = {
-				order = 3,
-				type = "range",
-				min = 30, max = 120, step = 1,
-				name = L["Icon Size"],
-				disabled = function() return not E.private.enhanced.loseControl.enable end
-			},
-			typeGroup = {
-				order = 4,
-				type = "group",
-				name = TYPE,
-				guiInline = true,
-				get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
-				set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
-				disabled = function() return not E.private.enhanced.loseControl.enable end,
-				args = {
-					CC = {
-						order = 1,
-						type = "toggle",
-						name = L["CC"]
-					},
-					PvE = {
-						order = 2,
-						type = "toggle",
-						name = L["PvE"]
-					},
-					Silence = {
-						order = 3,
-						type = "toggle",
-						name = L["Silence"]
-					},
-					Disarm = {
-						order = 4,
-						type = "toggle",
-						name = L["Disarm"]
-					},
-					Root = {
-						order = 5,
-						type = "toggle",
-						name = L["Root"]
-					},
-					Snare = {
-						order = 6,
-						type = "toggle",
-						name = L["Snare"]
-					}
-				}
-			}
-		}
-	}
-end
+-- local function LoseControlOptions()
+-- 	return {
+-- 		type = "group",
+-- 		name = L["Lose Control"],
+-- 		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+-- 		set = function(info, value)
+-- 			E.db.enhanced.loseControl[info[#info]] = value
+-- 			E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+-- 		end,
+-- 		args = {
+-- 			header = {
+-- 				order = 0,
+-- 				type = "header",
+-- 				name = EE:ColorizeSettingName(L["Lose Control"])
+-- 			},
+-- 			enable = {
+-- 				order = 1,
+-- 				type = "toggle",
+-- 				width = "full",
+-- 				name = L["Enable"],
+-- 				get = function(info) return E.private.enhanced.loseControl.enable end,
+-- 				set = function(info, value)
+-- 					E.private.enhanced.loseControl.enable = value
+-- 					E:GetModule("Enhanced_LoseControl"):ToggleState()
+-- 				end,
+-- 			},
+-- 			compactMode = {
+-- 				order = 2,
+-- 				type = "toggle",
+-- 				name = L["Compact mode"],
+-- 				disabled = function() return not E.private.enhanced.loseControl.enable end
+-- 			},
+-- 			iconSize = {
+-- 				order = 3,
+-- 				type = "range",
+-- 				min = 30, max = 120, step = 1,
+-- 				name = L["Icon Size"],
+-- 				disabled = function() return not E.private.enhanced.loseControl.enable end
+-- 			},
+-- 			typeGroup = {
+-- 				order = 4,
+-- 				type = "group",
+-- 				name = TYPE,
+-- 				guiInline = true,
+-- 				get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+-- 				set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
+-- 				disabled = function() return not E.private.enhanced.loseControl.enable end,
+-- 				args = {
+-- 					CC = {
+-- 						order = 1,
+-- 						type = "toggle",
+-- 						name = L["CC"]
+-- 					},
+-- 					PvE = {
+-- 						order = 2,
+-- 						type = "toggle",
+-- 						name = L["PvE"]
+-- 					},
+-- 					Silence = {
+-- 						order = 3,
+-- 						type = "toggle",
+-- 						name = L["Silence"]
+-- 					},
+-- 					Disarm = {
+-- 						order = 4,
+-- 						type = "toggle",
+-- 						name = L["Disarm"]
+-- 					},
+-- 					Root = {
+-- 						order = 5,
+-- 						type = "toggle",
+-- 						name = L["Root"]
+-- 					},
+-- 					Snare = {
+-- 						order = 6,
+-- 						type = "toggle",
+-- 						name = L["Snare"]
+-- 					}
+-- 				}
+-- 			}
+-- 		}
+-- 	}
+-- end
 
 local function InterruptTrackerOptions()
 	return {
@@ -2300,7 +2300,7 @@ function EE:GetOptions()
 		-- enhanced.args.blizzardGroup.args.dressingRoom = nil
 		-- enhanced.args.blizzardGroup.args.timerTracker = nil
 	-- end
-	E:GetModule("Enhanced_TimerTracker").Initialize = E.noop
+	-- E:GetModule("Enhanced_TimerTracker").Initialize = E.noop
 	-- E:GetModule("Enhanced_ModelFrames").Initialize = E.noop
 	local EB = E:GetModule("Enhanced_Blizzard")
 	EB.DressUpFrame = E.noop

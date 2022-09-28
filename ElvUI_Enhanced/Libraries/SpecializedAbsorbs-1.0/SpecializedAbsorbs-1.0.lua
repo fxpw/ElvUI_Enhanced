@@ -1621,25 +1621,28 @@ local function deathknight_ScanEquipment()
 	-- print(privateScaling["2dktRaid5"] )
 end
 
-local csaa = {
-	SPELL_AURA_APPLIED = true,
-}
-local csarf = {
-	SPELL_AURA_REFRESH = true,
-}
+-- local csaa = {
+-- 	["SPELL_AURA_APPLIED"] = true,
+-- }
+-- local csarf = {
+-- 	["SPELL_AURA_REFRESH"] = true,
+-- }
 
 local csarm = {
-	["SPELL_AURA_REMOVED"] = true,
+	["SPELL_AURA_REMOVED"] = true
 }
-local cspm = {
-	SWING_MISSED = true,
-}
+-- local cspm = {
+-- 	["SWING_MISSED"] = true,
+-- }
 
-local cswm = {
-	SPELL_MISSED = true,
-}
+-- local cswm = {
+-- 	["SPELL_MISSED"] = true,
+-- }
 local csd = {
-	["SPELL_DAMAGE"] = true,
+	["SPELL_DAMAGE"] = true
+}
+local sh = {
+	["SPELL_HEAL"] = true
 }
 local function deathknight_OnEquipmentChangedDelayed()
 	deathknight_ScanEquipment()
@@ -1734,6 +1737,12 @@ local function Tanks_CLEU(self,...)
         end
 	elseif csarm[subevent3] and spellid10 == 308125 then
 		lastDkAbsorbTable[whoguid4] = 0
+	elseif sh[subevent3] and (spellid10 == 48782) then -- ttg 16% свет небес
+		local absorb = spelldmg13 * 0.16
+		lastPalAbsorbTable[whoguid4] = absorb
+	elseif sh[subevent3] and (spellid10 == 48785) then -- ttg 8% вспышка света
+		local absorb = spelldmg13 * 0.08
+		lastPalAbsorbTable[whoguid4] = absorb
 	end
 	-- end
 
@@ -1942,7 +1951,7 @@ end
 local paladin_defaultScaling = {1.0}
 local function paladin_T5OTankOnCreate(...)
 	local whoguid = ...
-	local absorb = lastPalAbsorbTable[whoguid][2] or 0
+	local absorb = whoguid and lastPalAbsorbTable[whoguid] and lastPalAbsorbTable[whoguid][2] or 0
 	return absorb, 1.0
 end
 
@@ -1960,6 +1969,21 @@ local function paladin_OnTalentUpdate()
 	local t = select(5, GetTalentInfo(2, 9))
 	playerScaling[1] = 1 + (t * 0.1)
 	lib.ScheduleScalingBroadcast()
+end
+
+local function paladin_TTG_Absorb284(srcGUID, srcName, dstGUID, dstName, spellid, destEffects)
+
+	local absorb
+	if spellid == 319738 then --4
+		absorb = (lastPalAbsorbTable[srcGUID] >= 1940 and 1940) or lastPalAbsorbTable[srcGUID]
+	elseif spellid == 319996 then --3
+		absorb = (lastPalAbsorbTable[srcGUID] >= 1140 and 1140) or lastPalAbsorbTable[srcGUID]
+	elseif spellid == 320110 then --2
+		absorb = (lastPalAbsorbTable[srcGUID] >= 960 and 960) or lastPalAbsorbTable[srcGUID]
+	elseif spellid == 320221 then --1
+		absorb = (lastPalAbsorbTable[srcGUID] >= 480 and 480) or lastPalAbsorbTable[srcGUID]
+	end
+	return absorb,1.0
 end
 
 function OnEnableClass.PALADIN()
@@ -2594,7 +2618,11 @@ Core.Effects = {
 	[317293] = {1.0, 10, function() return 1700, 1.0 end, generic_Hit}, -- статуэтка бронзового дракона
 	[315529] = {1.0, 10, function() return 3660, 1.0 end, generic_Hit}, -- расколотое солнце
 
-	[317911]= {1.0, 10, function() return 722, 1.0 end, generic_Hit}, -- духовный барьер
+	[317911] = {1.0, 10, function() return 722, 1.0 end, generic_Hit}, -- духовный барьер
+	[319738] = {1.0, 6, paladin_TTG_Absorb284, generic_Hit}, -- чарка ттг 4
+	[319996] = {1.0, 6, paladin_TTG_Absorb284, generic_Hit}, -- чарка ттг 3
+	[320110] = {1.0, 6, paladin_TTG_Absorb284, generic_Hit}, -- чарка ттг 2
+	[320221] = {1.0, 6, paladin_TTG_Absorb284, generic_Hit}, -- чарка ттг 1
 
 }
 

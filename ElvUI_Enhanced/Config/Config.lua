@@ -2276,7 +2276,7 @@ function EE:GetOptions()
 			namePlatesGroup = NamePlatesOptions(),
 			tooltipGroup = TooltipOptions(),
 			unitframesGroup = UnitFrameOptions(),
-			loseControlGroup = LoseControlOptions(),
+			-- loseControlGroup = LoseControlOptions(),
 			interruptGroup = InterruptTrackerOptions(),
 			absorbGroup = AbsorbUnitFramesOptions(),
 		}

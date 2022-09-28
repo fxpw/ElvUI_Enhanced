@@ -228,11 +228,11 @@ local function BlizzardOptions()
 						type = "header",
 						name = L["General"]
 					},
-					deathRecap = {
-						order = 2,
-						type = "toggle",
-						name = L["Death Recap Frame"]
-					},
+					-- deathRecap = {
+					-- 	order = 2,
+					-- 	type = "toggle",
+					-- 	name = L["Death Recap Frame"]
+					-- },
 					-- takeAllMail = {
 					-- 	order = 3,
 					-- 	type = "toggle",
@@ -504,97 +504,97 @@ local function BlizzardOptions()
 					-- }
 				}
 			},
-			dressingRoom = {
-				order = 4,
-				type = "group",
-				name = L["Dressing Room"],
-				get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
-				set = function(info, value)
-					E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
-					E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
-				end,
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = L["Dressing Room"],
-					},
-					enable = {
-						order = 2,
-						type = "toggle",
-						name = L["Enable"],
-						set = function(info, value)
-							E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
-							E:StaticPopup_Show("PRIVATE_RL")
-						end,
-					},
-					multiplier = {
-						order = 3,
-						type = "range",
-						min = 1, max = 2, step = 0.01,
-						isPercent = true,
-						name = L["Scale"],
-						disabled = function() return not E.db.enhanced.blizzard.dressUpFrame.enable end
-					},
-					undressButton = {
-						order = 4,
-						type = "toggle",
-						name = L["Undress Button"],
-						desc = L["Add button to Dressing Room frame with ability to undress model."],
-						get = function(info) return E.db.enhanced.general.undressButton end,
-						set = function(info, value)
-							E.db.enhanced.general.undressButton = value
-							E:GetModule("Enhanced_UndressButtons"):ToggleState()
-						end
-					},
-				}
-			},
-			timerTracker = {
-				order = 5,
-				type = "group",
-				name = L["Timer Tracker"],
-				get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
-				args = {
-					header = {
-						order = 1,
-						type = "header",
-						name = L["Timer Tracker"]
-					},
-					enable = {
-						order = 2,
-						type = "toggle",
-						name = L["Enable"],
-						set = function(info, value)
-							E.db.enhanced.timerTracker.enable = value
-							E:GetModule("Enhanced_TimerTracker"):ToggleState()
-						end
-					},
-					dbm = {
-						order = 3,
-						type = "toggle",
-						name = L["Hook DBM"],
-						set = function(info, value)
-							E.db.enhanced.timerTracker.dbm = value
-							E:GetModule("Enhanced_TimerTracker"):HookDBM()
-						end,
-						disabled = function() return not E.db.enhanced.timerTracker.enable end
-					},
-					dbmTimerType = {
-						order = 8,
-						type = "select",
-						name = L["DBM Timer Type"],
-						set = function(info, value)
-							E.db.enhanced.timerTracker.dbmTimerType = value
-						end,
-						values = {
-							[1] = L["PvP"],
-							[2] = L["Challenge Mode"],
-							[3] = L["Player Countdown"]
-						},
-						disabled = function() return not E.db.enhanced.timerTracker.enable or not E.db.enhanced.timerTracker.dbm end
-					}
-				}
-			},
+			-- dressingRoom = {
+			-- 	order = 4,
+			-- 	type = "group",
+			-- 	name = L["Dressing Room"],
+			-- 	get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
+			-- 	set = function(info, value)
+			-- 		E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+			-- 		E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
+			-- 	end,
+			-- 	args = {
+			-- 		header = {
+			-- 			order = 1,
+			-- 			type = "header",
+			-- 			name = L["Dressing Room"],
+			-- 		},
+			-- 		enable = {
+			-- 			order = 2,
+			-- 			type = "toggle",
+			-- 			name = L["Enable"],
+			-- 			set = function(info, value)
+			-- 				E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+			-- 				E:StaticPopup_Show("PRIVATE_RL")
+			-- 			end,
+			-- 		},
+			-- 		multiplier = {
+			-- 			order = 3,
+			-- 			type = "range",
+			-- 			min = 1, max = 2, step = 0.01,
+			-- 			isPercent = true,
+			-- 			name = L["Scale"],
+			-- 			disabled = function() return not E.db.enhanced.blizzard.dressUpFrame.enable end
+			-- 		},
+			-- 		undressButton = {
+			-- 			order = 4,
+			-- 			type = "toggle",
+			-- 			name = L["Undress Button"],
+			-- 			desc = L["Add button to Dressing Room frame with ability to undress model."],
+			-- 			get = function(info) return E.db.enhanced.general.undressButton end,
+			-- 			set = function(info, value)
+			-- 				E.db.enhanced.general.undressButton = value
+			-- 				E:GetModule("Enhanced_UndressButtons"):ToggleState()
+			-- 			end
+			-- 		},
+			-- 	}
+			-- },
+			-- timerTracker = {
+			-- 	order = 5,
+			-- 	type = "group",
+			-- 	name = L["Timer Tracker"],
+			-- 	get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
+			-- 	args = {
+			-- 		header = {
+			-- 			order = 1,
+			-- 			type = "header",
+			-- 			name = L["Timer Tracker"]
+			-- 		},
+			-- 		enable = {
+			-- 			order = 2,
+			-- 			type = "toggle",
+			-- 			name = L["Enable"],
+			-- 			set = function(info, value)
+			-- 				E.db.enhanced.timerTracker.enable = value
+			-- 				E:GetModule("Enhanced_TimerTracker"):ToggleState()
+			-- 			end
+			-- 		},
+			-- 		dbm = {
+			-- 			order = 3,
+			-- 			type = "toggle",
+			-- 			name = L["Hook DBM"],
+			-- 			set = function(info, value)
+			-- 				E.db.enhanced.timerTracker.dbm = value
+			-- 				E:GetModule("Enhanced_TimerTracker"):HookDBM()
+			-- 			end,
+			-- 			disabled = function() return not E.db.enhanced.timerTracker.enable end
+			-- 		},
+			-- 		dbmTimerType = {
+			-- 			order = 8,
+			-- 			type = "select",
+			-- 			name = L["DBM Timer Type"],
+			-- 			set = function(info, value)
+			-- 				E.db.enhanced.timerTracker.dbmTimerType = value
+			-- 			end,
+			-- 			values = {
+			-- 				[1] = L["PvP"],
+			-- 				[2] = L["Challenge Mode"],
+			-- 				[3] = L["Player Countdown"]
+			-- 			},
+			-- 			disabled = function() return not E.db.enhanced.timerTracker.enable or not E.db.enhanced.timerTracker.dbm end
+			-- 		}
+			-- 	}
+			-- },
 			watchframe = {
 				order = 6,
 				type = "group",
@@ -2292,14 +2292,14 @@ function EE:GetOptions()
 --	E.Options.args.enhanced.args.loseControlGroup.order = 8
 --	E.Options.args.enhanced.args.interruptGroup.order = 9
 --	E.Options.args.enhanced.args.unitframesGroup.order = 10
-	local enhanced = E.Options.args.enhanced
-	if enhanced then
-		enhanced.args.blizzardGroup.args.deathRecap = nil
+	-- local enhanced = E.Options.args.enhanced
+	-- if enhanced then
+		-- enhanced.args.blizzardGroup.args.deathRecap = nil
 		-- enhanced.args.blizzardGroup.args.characterFrame.args.modelFrames = nil
-		enhanced.args.blizzardGroup.args.characterFrame.args.paperdollBackgrounds = nil
-		enhanced.args.blizzardGroup.args.dressingRoom = nil
-		enhanced.args.blizzardGroup.args.timerTracker = nil
-	end
+		-- enhanced.args.blizzardGroup.args.characterFrame.args.paperdollBackgrounds = nil
+		-- enhanced.args.blizzardGroup.args.dressingRoom = nil
+		-- enhanced.args.blizzardGroup.args.timerTracker = nil
+	-- end
 	E:GetModule("Enhanced_TimerTracker").Initialize = E.noop
 	-- E:GetModule("Enhanced_ModelFrames").Initialize = E.noop
 	local EB = E:GetModule("Enhanced_Blizzard")

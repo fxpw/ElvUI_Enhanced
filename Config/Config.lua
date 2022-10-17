@@ -77,15 +77,15 @@ local function GeneralOptions()
 					M:BuyStackToggle()
 				end
 			},
-			trainAllSkills = {
-				type = "toggle",
-				name = L["Train All Button"],
-				desc = L["Add button to Trainer frame with ability to train all available skills in one click."],
-				set = function(info, value)
-					E.db.enhanced.general.trainAllSkills = value
-					E:GetModule("Enhanced_TrainAll"):ToggleState()
-				end
-			},
+			-- trainAllSkills = {
+			-- 	type = "toggle",
+			-- 	name = L["Train All Button"],
+			-- 	desc = L["Add button to Trainer frame with ability to train all available skills in one click."],
+			-- 	set = function(info, value)
+			-- 		E.db.enhanced.general.trainAllSkills = value
+			-- 		E:GetModule("Enhanced_TrainAll"):ToggleState()
+			-- 	end
+			-- },
 			showQuestLevel = {
 				type = "toggle",
 				name = L["Show Quest Level"],

@@ -495,12 +495,14 @@ local function OnShowHook(frame, ...)
 end
 
 local function OnHideHook(frame)
-	if frame.UnitFrame.bubbleFrame then
-		frame.UnitFrame.bubbleFrame:Hide()
-	end
-	if frame.UnitFrame.Title then
-		frame.UnitFrame.Title:SetText()
-		frame.UnitFrame.Title:Hide()
+	if frame and frame.UnitFrame then
+		if frame.UnitFrame.bubbleFrame then
+			frame.UnitFrame.bubbleFrame:Hide()
+		end
+		if frame.UnitFrame.Title then
+			frame.UnitFrame.Title:SetText()
+			frame.UnitFrame.Title:Hide()
+		end
 	end
 end
 

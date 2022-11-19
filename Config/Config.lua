@@ -1661,89 +1661,345 @@ local function TooltipOptions()
 	}
 end
 
--- local function LoseControlOptions()
--- 	return {
--- 		type = "group",
--- 		name = L["Lose Control"],
--- 		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
--- 		set = function(info, value)
--- 			E.db.enhanced.loseControl[info[#info]] = value
--- 			E:GetModule("Enhanced_LoseControl"):UpdateSettings()
--- 		end,
--- 		args = {
--- 			header = {
--- 				order = 0,
--- 				type = "header",
--- 				name = EE:ColorizeSettingName(L["Lose Control"])
--- 			},
--- 			enable = {
--- 				order = 1,
--- 				type = "toggle",
--- 				width = "full",
--- 				name = L["Enable"],
--- 				get = function(info) return E.private.enhanced.loseControl.enable end,
--- 				set = function(info, value)
--- 					E.private.enhanced.loseControl.enable = value
--- 					E:GetModule("Enhanced_LoseControl"):ToggleState()
--- 				end,
--- 			},
--- 			compactMode = {
--- 				order = 2,
--- 				type = "toggle",
--- 				name = L["Compact mode"],
--- 				disabled = function() return not E.private.enhanced.loseControl.enable end
--- 			},
--- 			iconSize = {
--- 				order = 3,
--- 				type = "range",
--- 				min = 30, max = 120, step = 1,
--- 				name = L["Icon Size"],
--- 				disabled = function() return not E.private.enhanced.loseControl.enable end
--- 			},
--- 			typeGroup = {
--- 				order = 4,
--- 				type = "group",
--- 				name = TYPE,
--- 				guiInline = true,
--- 				get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
--- 				set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
--- 				disabled = function() return not E.private.enhanced.loseControl.enable end,
--- 				args = {
--- 					CC = {
--- 						order = 1,
--- 						type = "toggle",
--- 						name = L["CC"]
--- 					},
--- 					PvE = {
--- 						order = 2,
--- 						type = "toggle",
--- 						name = L["PvE"]
--- 					},
--- 					Silence = {
--- 						order = 3,
--- 						type = "toggle",
--- 						name = L["Silence"]
--- 					},
--- 					Disarm = {
--- 						order = 4,
--- 						type = "toggle",
--- 						name = L["Disarm"]
--- 					},
--- 					Root = {
--- 						order = 5,
--- 						type = "toggle",
--- 						name = L["Root"]
--- 					},
--- 					Snare = {
--- 						order = 6,
--- 						type = "toggle",
--- 						name = L["Snare"]
--- 					}
--- 				}
--- 			}
--- 		}
--- 	}
--- end
+local function LoseControlOptions()
+	return {
+		type = "group",
+		name = L["Lose Control"],
+		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+		set = function(info, value)
+			E.db.enhanced.loseControl[info[#info]] = value
+			E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+			
+		end,
+		args = {
+			header = {
+				order = 0,
+				type = "header",
+				name = EE:ColorizeSettingName(L["Lose Control"])
+			},
+			enable = {
+				order = 1,
+				type = "toggle",
+				width = "full",
+				name = L["Enable"],
+				get = function(info) return E.private.enhanced.loseControl.enable end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.enable = value
+					E:GetModule("Enhanced_LoseControl"):ToggleState()
+					E:StaticPopup_Show("PRIVATE_RL")
+				end,
+			},
+			-- compactMode = {
+			-- 	order = 2,
+			-- 	type = "toggle",
+			-- 	name = L["Compact mode"],
+			-- 	disabled = function() return not E.private.enhanced.loseControl.enable end
+			-- },
+			frameScale = {
+				order = 2,
+				type = "range",
+				min = 0.5, max = 1.5, step = 0.05,
+				name = L["frameScale"],
+				get = function(info) return E.private.enhanced.loseControl.frameScale end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.frameScale = value;
+					C_CVar:SetValue("C_CVAR_LOSS_OF_CONTROL_SCALE", tostring(value));
+					LossOfControlFrame_SetScale(LossOfControlFrame, value);
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings();
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enable end
+			},
+			spacer1 = {
+				order = 3,
+				type = "description",
+				name = L["iconFrame"],
+				width = "full"
+			},
+			iconSize = {
+				order = 4,
+				type = "range",
+				min = 30, max = 200, step = 1,
+				name = L["Icon Size"],
+				disabled = function() return not E.private.enhanced.loseControl.enable end
+			},
+			spacer2 = {
+				order = 5,
+				type = "description",
+				name = L["cooldownFrame"],
+				width = "full"
+			},
+			enableCooldownFrame = {
+				order = 6,
+				type = "toggle",
+				width = "full",
+				name = L["enableCooldownFrame"],
+				disabled = function() return not E.private.enhanced.loseControl.enable end,
+				get = function(info) return E.private.enhanced.loseControl.enableCooldownFrame end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.enableCooldownFrame = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+				end,
+			},
+			-- xOffsetCooldownFrame = {
+			-- 	order = 7,
+			-- 	type = "range",
+			-- 	min = -500, max = 500, step = 1,
+			-- 	name = L["X-Offset"],
+			-- 	get = function(info) return E.private.enhanced.loseControl.xOffsetCooldownFrame end,
+			-- 	set = function(info, value)
+			-- 		E.private.enhanced.loseControl.xOffsetCooldownFrame = value
+			-- 		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+			-- 	end,
+			-- 	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
+				
+			-- },
+			-- yOffsetCooldownFrame = {
+			-- 	order = 8,
+			-- 	type = "range",
+			-- 	min = -500, max = 500, step = 1,
+			-- 	name = L["Y-Offset"],
+			-- 	get = function(info) return E.private.enhanced.loseControl.yOffsetCooldownFrame end,
+			-- 	set = function(info, value)
+			-- 		E.private.enhanced.loseControl.yOffsetCooldownFrame = value
+			-- 		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+			-- 	end,
+			-- 	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
+			-- },
+			spacer3 = {
+				order = 9,
+				type = "description",
+				name = L["abilityName"],
+				width = "full"
+			},
+			enableAbilityName = {
+				order = 10,
+				type = "toggle",
+				width = "full",
+				name = L["enableAbilityName"],
+				disabled = function() return not E.private.enhanced.loseControl.enable end,
+				get = function(info) return E.private.enhanced.loseControl.enableAbilityName end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.enableAbilityName = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+			},
+			xOffsetAbilityName = {
+				order = 11,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["X-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.xOffsetAbilityName end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.xOffsetAbilityName = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableAbilityName end
+			},
+			yOffsetAbilityName = {
+				order = 12,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["Y-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.yOffsetAbilityName end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.yOffsetAbilityName = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableAbilityName end
+			},
+			fontAbilityName = {
+				order = 13,
+				type = "select",
+				dialogControl = "LSM30_Font",
+				name = L["Font"],
+				values = AceGUIWidgetLSMlists.font,
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			fontSizeAbilityName = {
+				order = 14,
+				type = "range",
+				min = 6, max = 50, step = 1,
+				name = L["FONT_SIZE"],
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			fontOutlineAbilityName = {
+				order = 15,
+				type = "select",
+				name = L["Font Outline"],
+				values = {
+					["NONE"] = L["NONE"],
+					["OUTLINE"] = "OUTLINE",
+					["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+					["THICKOUTLINE"] = "THICKOUTLINE"
+				},
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			spacer4 = {
+				order = 16,
+				type = "description",
+				name = L["secondsText"],
+				width = "full"
+			},
+			enableNumberText = {
+				order = 17,
+				type = "toggle",
+				width = "full",
+				name = L["enableNumberText"],
+				disabled = function() return not E.private.enhanced.loseControl.enable end,
+				get = function(info) return E.private.enhanced.loseControl.enableNumberText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.enableNumberText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+			},
+			xOffsetNumberText = {
+				order = 18,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["X-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.xOffsetNumberText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.xOffsetNumberText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			yOffsetNumberText = {
+				order = 19,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["Y-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.yOffsetNumberText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.yOffsetNumberText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			colorNumberText = {
+				order = 20,
+				type = "color",
+				name = L["COLOR"],
+				get = function(info)
+					local t = E.private.enhanced.loseControl[info[#info]]
+					local d = P.enhanced.loseControl[info[#info]]
+					return t.r, t.g, t.b, t.a, d.r, d.g, d.b
+				end,
+				set = function(info, r, g, b)
+					local t = E.private.enhanced.loseControl[info[#info]]
+					t.r, t.g, t.b = r, g, b
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end,
+			},
+			fontNumberText = {
+				order = 21,
+				type = "select",
+				dialogControl = "LSM30_Font",
+				name = L["Font"],
+				values = AceGUIWidgetLSMlists.font,
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			fontSizeNumberText = {
+				order = 22,
+				type = "range",
+				min = 6, max = 50, step = 1,
+				name = L["FONT_SIZE"],
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			fontOutlineNumberText = {
+				order = 23,
+				type = "select",
+				name = L["Font Outline"],
+				values = {
+					["NONE"] = L["NONE"],
+					["OUTLINE"] = "OUTLINE",
+					["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
+					["THICKOUTLINE"] = "THICKOUTLINE"
+				},
+				disabled = function() return not E.private.enhanced.loseControl.enableNumberText end
+			},
+			enableSecondsText = {
+				order = 24,
+				type = "toggle",
+				width = "full",
+				name = L["enableSecondsText"],
+				disabled = function() return not E.private.enhanced.loseControl.enable end,
+				get = function(info) return E.private.enhanced.loseControl.enableSecondsText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.enableSecondsText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+			},
+			xOffsetSecondsText = {
+				order = 25,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["X-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.xOffsetSecondsText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.xOffsetSecondsText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableSecondsText end
+			},
+			yOffsetSecondsText = {
+				order = 26,
+				type = "range",
+				min = -500, max = 500, step = 1,
+				name = L["Y-Offset"],
+				get = function(info) return E.private.enhanced.loseControl.yOffsetSecondsText end,
+				set = function(info, value)
+					E.private.enhanced.loseControl.yOffsetSecondsText = value
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
+				end,
+				disabled = function() return not E.private.enhanced.loseControl.enableSecondsText end
+			},
+
+			-- typeGroup = {
+			-- 	order = 4,
+			-- 	type = "group",
+			-- 	name = TYPE,
+			-- 	guiInline = true,
+			-- 	get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+			-- 	set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
+			-- 	disabled = function() return not E.private.enhanced.loseControl.enable end,
+			-- 	args = {
+			-- 		CC = {
+			-- 			order = 1,
+			-- 			type = "toggle",
+			-- 			name = L["CC"]
+			-- 		},
+			-- 		PvE = {
+			-- 			order = 2,
+			-- 			type = "toggle",
+			-- 			name = L["PvE"]
+			-- 		},
+			-- 		Silence = {
+			-- 			order = 3,
+			-- 			type = "toggle",
+			-- 			name = L["Silence"]
+			-- 		},
+			-- 		Disarm = {
+			-- 			order = 4,
+			-- 			type = "toggle",
+			-- 			name = L["Disarm"]
+			-- 		},
+			-- 		Root = {
+			-- 			order = 5,
+			-- 			type = "toggle",
+			-- 			name = L["Root"]
+			-- 		},
+			-- 		Snare = {
+			-- 			order = 6,
+			-- 			type = "toggle",
+			-- 			name = L["Snare"]
+			-- 		}
+			-- 	}
+			-- }
+		}
+	}
+end
 
 local function InterruptTrackerOptions()
 	return {
@@ -2276,7 +2532,7 @@ function EE:GetOptions()
 			namePlatesGroup = NamePlatesOptions(),
 			tooltipGroup = TooltipOptions(),
 			unitframesGroup = UnitFrameOptions(),
-			-- loseControlGroup = LoseControlOptions(),
+			loseControlGroup = LoseControlOptions(),
 			interruptGroup = InterruptTrackerOptions(),
 			absorbGroup = AbsorbUnitFramesOptions(),
 		}

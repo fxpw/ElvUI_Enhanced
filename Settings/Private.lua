@@ -72,7 +72,8 @@ V.enhanced = {
 		enable = false
 	},
 	loseControl = {
-		enable = false
+		enable = false,
+		colorNumberText = {r = 1, g = 1 , b = 1},
 	},
 	interruptTracker = {
 		enable = false,

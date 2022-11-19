@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-global
 local E = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local L = E.Libs.ACL:NewLocale("ElvUI", "ruRU")
 
@@ -137,7 +138,7 @@ L["Trial of the Crusader"] = "ИК"
 L["Ulduar"] = "Ульдуар"
 
 -- Movers
-L["Loss Control"] = "Потеря контоля"
+L["Loss Control"] = "Потеря контроля"
 L["Player Portrait"] = "Портрет игрока"
 L["Target Portrait"] = "Портрет цели"
 
@@ -235,3 +236,13 @@ L["Take Cash"] = "Принимать наличные"
 L["This addon has been disabled. You should install an updated version."] = true
 L["Where to show"] = "Где показать"
 L["seconds"] = "секунд"
+
+L["iconFrame"] = "Иконка"
+L["frameScale"] = "Размер фрейма"
+L["cooldownFrame"] = "Фрейм перезарядки"
+L["enableCooldownFrame"] = "Включить фрейм перезарядки"
+L["abilityName"] = "Имя заклинания"
+L["enableAbilityName"] = "Отображать имя заклинания"
+L["secondsText"] = "Тексты секунд"
+L["enableNumberText"] =  "Включить цифровое значение"
+L["enableSecondsText"] = "Включить подпись [секунд]"

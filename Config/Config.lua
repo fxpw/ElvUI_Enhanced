@@ -1668,7 +1668,7 @@ local function LoseControlOptions()
 		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
 		set = function(info, value)
 			E.db.enhanced.loseControl[info[#info]] = value
-			E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)		
+			E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
 		end,
 		args = {
 			header = {

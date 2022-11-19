@@ -1668,8 +1668,7 @@ local function LoseControlOptions()
 		get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
 		set = function(info, value)
 			E.db.enhanced.loseControl[info[#info]] = value
-			E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)
-			
+			E:GetModule("Enhanced_LoseControl"):UpdateSettings(true)		
 		end,
 		args = {
 			header = {
@@ -1751,7 +1750,6 @@ local function LoseControlOptions()
 			-- 		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
 			-- 	end,
 			-- 	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
-				
 			-- },
 			-- yOffsetCooldownFrame = {
 			-- 	order = 8,

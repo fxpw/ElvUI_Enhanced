@@ -42270,6 +42270,10 @@ globals = {
 	"faction",
 	"classToken",
 	"MaximizeMinimizeFrame",
+	"LossOfControlFrame_SetScale",
+	"LossOfControlAddOrUpdateDebuff",
+	"LossOfControlRemoveDebuff",
+	"LossOfControlTimeLeftFrame_SetTime",
 	--sirus character 
 	"GearManagerDialogPopupSearchBox",
 	"PaperDollFrameStrengthenFrame",

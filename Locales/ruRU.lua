@@ -111,10 +111,10 @@ L["Hide minimap while in combat."] = "Скрывать миникарту во �
 L["Show Location Digits"] = "Показать цифры местоположения"
 L["Toggle Location Digits."] = "Переключить цифры местоположения."
 L["Location Digits"] = "Цифры координат"
-L["Location Panel"] = true
+L["Location Panel"] = "Текст локации"
 L["Number of digits for map location."] = "Колличество цифр после запятой в координатах."
 L["The time to wait before fading the minimap back in after combat hide. (0 = Disabled)"] = "Время ожидания появления миникарты после выхода из боя. (0 = Выключено)"
-L["Toggle Location Panel."] = true
+L["Toggle Location Panel."] = "Включает текст локации"
 
 -- Timer Tracker
 L["Timer Tracker"] = true

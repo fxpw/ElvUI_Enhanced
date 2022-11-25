@@ -38,7 +38,9 @@ function WF:ChangeState()
 	end
 
 	if IsResting() then
-		statedriver[self.db.city](WatchFrame)
+		if statedriver[self.db.city] then
+			statedriver[self.db.city](WatchFrame)
+		end
 	else
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then

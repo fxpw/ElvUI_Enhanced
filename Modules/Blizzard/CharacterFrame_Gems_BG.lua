@@ -235,7 +235,6 @@ Gems.blackSockets = {
     [104021] = true,
     [100758] = true,
     [100821] = true,
-    [100782] = true,
     [100700] = true,
     [100701] = true,
     [100702] = true,

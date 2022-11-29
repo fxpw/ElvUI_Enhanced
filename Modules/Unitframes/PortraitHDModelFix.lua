@@ -5,7 +5,7 @@ local UF = E:GetModule("UnitFrames")
 local _G = _G
 local ipairs = ipairs
 local type = type
-local find, format, gsub, lower, split = string.find, string.format, string.gsub, string.lower, string.split
+local find, format, gsub, lower= string.find, string.format, string.gsub, string.lower
 local tinsert, twipe = table.insert, table.wipe
 
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES

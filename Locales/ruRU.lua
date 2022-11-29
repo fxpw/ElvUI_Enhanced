@@ -94,7 +94,7 @@ L["Undress"] = "Раздеть"
 L["Debug"] = true
 L["List of models with broken portrait camera. Separete each model name with ';' simbol"] = "Список моделей со сломанной портретной камерой. Отделять каждое название модели символом ';'"
 L["Models to fix"] = "Модели для исправления"
-L["Portrait HD Fix"] = "Портрет HD Fix."
+L["Portrait HD Fix"] = "Исправление портретов"
 L["Print to chat model names of units with enabled 3D portraits."] = "Печатает в чате модели имен юнитов с включенными 3D-портретами."
 
 -- Interrupt Tracker

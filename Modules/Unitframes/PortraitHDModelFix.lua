@@ -10,7 +10,7 @@ local tinsert, twipe = table.insert, table.wipe
 
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_ARENA_ENEMIES = 5
-
+local debug = true
 local function checkHDModels()
 	local hdTexturePathList = {
 		"Character\\Tauren\\Male\\TaurenMaleFaceLower00_00_HD",
@@ -34,7 +34,7 @@ local function portraitHDModelFix(self)
 		local model = self:GetModel()
 		if type(model) ~= "string" then return end
 
-		if E.db.enhanced.unitframe.portraitHDModelFix.debug then
+		if debug then
 			E:Print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, gsub(model, ".+\\(%S+%.m2)", "%1")))
 		end
 
@@ -54,20 +54,48 @@ local unitTypes = {
 	{"party", "raid", "raid40"},
 	{"boss", "arena"},
 }
+-- local modelList = gsub(modelList, "%s+", "")
+-- local tableModelList = {split(";", modelList)}
+
+local tableModelList = {
+	-- "scourgemale.m2",
+	"dwarfmale.m2;",
+	"orcmalenpc.m2",
+	"scourgemalenpc.m2;",
+	"scourgefemalenpc.m2;",
+	"dwarfmalenpc.m2",
+	"humanmalekid.m2",
+	"humanfemalekid.m2;",
+	"chicken.m2",
+	"rat.m2",
+	"scourgemale_hd.m2",
+	"scourgefemale_hd.m2",
+	"dwarfmale_hd.m2",
+	"vulperafemale.m2",
+	"worgenmale.m2;",
+	"vulperamale.m2;",
+	"humanfemale_hd.m2",
+	"darkirondwarfmale.m2",
+	"dracthyrdragonmale1.m2",
+	"dracthyrfemale.m2",
+	"dracthyrdragonfemale2.m",
+	"skeleton_hd.m2",
+}
+
 
 function UFPM:UpdatePortraits()
 	if not self.HDModelFound then return end
 
 	twipe(self.modelsToFix)
-	local modelList = gsub(E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix, "%s+", "")
+	-- local modelList = gsub(E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix, "%s+", "")
 
-	if modelList ~= "" then
-		for _, modelName in ipairs({split(";", modelList)}) do
+	-- if modelList ~= "" then
+		for _, modelName in ipairs(tableModelList) do
 			if modelName ~= "" then
 				tinsert(self.modelsToFix, lower(modelName))
 			end
 		end
-	end
+	-- end
 
 	for i = 1, #unitTypes do
 		for _, unit in ipairs(unitTypes[i]) do
@@ -85,18 +113,18 @@ end
 function UFPM:ToggleState()
 	if not self.HDModelFound then return end
 
-	if E.db.enhanced.unitframe.portraitHDModelFix.enable then
+	-- if E.db.enhanced.unitframe.portraitHDModelFix.enable then
 		if not self.hooked then
 			self:SecureHook(UF, "PortraitUpdate", portraitHDModelFix)
 			self.hooked = true
 		end
-	else
-		if self.hooked then
-			self:UnhookAll()
-			self.hooked = nil
-		end
-		return
-	end
+	-- else
+	-- 	if self.hooked then
+	-- 		self:UnhookAll()
+	-- 		self.hooked = nil
+	-- 	end
+	-- 	return
+	-- end
 
 	for i = 1, #unitTypes do
 		for _, unit in ipairs(unitTypes[i]) do
@@ -119,7 +147,7 @@ function UFPM:Initialize()
 	self.modelsToFix = {}
 	self.HDModelFound = checkHDModels()
 
-	if not E.db.enhanced.unitframe.portraitHDModelFix.enable then return end
+	-- if not E.db.enhanced.unitframe.portraitHDModelFix.enable then return end
 
 	self:ToggleState()
 end

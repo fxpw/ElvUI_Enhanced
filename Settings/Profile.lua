@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local AbsorbPrediction = {
-	enable = true,
+	enable = false,
 	absorbStyle = "REVERSED",
 	anchorPoint = "BOTTOM",
 	absorbTexture = "ElvUI Norm",

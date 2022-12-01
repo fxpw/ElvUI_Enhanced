@@ -518,7 +518,7 @@ function Core.ApplySingularEffect(timestamp, srcGUID, srcName, dstGUID, dstName,
 	local destEffects = activeEffectsBySpell[dstGUID]
 	local effectInfo = Effects[spellid]
 	local effectEntry
-
+	if not destEffects then return end
 	local value, quality = effectInfo[3](srcGUID, srcName, dstGUID, dstName, spellid, destEffects)
 	if value == nil then return end
 	-- print(value)

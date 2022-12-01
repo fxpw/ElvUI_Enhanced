@@ -42267,6 +42267,7 @@ globals = {
 	"DeathRecapFrame",
 	"ExtraActionBarFrame",
 	"OldTip",
+	"C_AchievementManager",
 	"faction",
 	"classToken",
 	"MaximizeMinimizeFrame",

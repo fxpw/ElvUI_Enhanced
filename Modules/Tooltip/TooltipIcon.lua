@@ -5,7 +5,7 @@ local _G = _G
 local select, type = select, type
 local find, match = string.find, string.match
 
--- local GetAchievementInfo = GetAchievementInfo
+local GetAchievementInfo = C_AchievementManager._GetAchievementInfo
 local GetItemIcon = GetItemIcon
 local GetSpellInfo = GetSpellInfo
 
@@ -51,7 +51,7 @@ local function AchievementIcon(self, link)
 	local linkType, id = match(link, "^([^:]+):(%d+)")
 	if id and (linkType == "achievement") then
 		-- print(id,linkType)
-		local icon = select(10, C_AchievementManager._GetAchievementInfo(id))
+		local icon = select(10, GetAchievementInfo(id))
 		-- print(icon)
 		if icon then
 			AddIcon(self, icon)

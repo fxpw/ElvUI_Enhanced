@@ -7,7 +7,7 @@ local CH = E:GetModule("Chat")
 local _G = _G
 local ipairs, next, pairs = ipairs, next, pairs
 local sub, gsub, floor = string.sub, string.gsub, math.floor
-local match, gmatch, format, lower = string.match, string.gmatch, string.format, string.lower
+local match, gmatch, format, lower, find = string.match, string.gmatch, string.format, string.lower, string.find
 local tinsert, tremove = table.insert, table.remove
 
 local GetGuildInfo = GetGuildInfo
@@ -78,9 +78,10 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 		local name = _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
 		if not name then return end
 		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
+		-- print(description)
 		if not description then return end
 
-		if match(description, UNIT_LEVEL_TEMPLATE) then return end
+		if match(description, UNIT_LEVEL_TEMPLATE) or find(description, "труп существа") then return end
 
 		name = gsub(gsub((name), "|c........", "" ), "|r", "")
 		if name ~= UnitName("mouseover") then return end
@@ -211,6 +212,7 @@ local function Update_NameHook(self, frame)
 		end
 
 		local db = E.db.enhanced.nameplates.npc
+		-- if not separatorMap[db.separator] then return end
 		frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
 
 		if E.db.enhanced.nameplates.npc.reactionColor then
@@ -230,8 +232,10 @@ local function Update_NameHook(self, frame)
 		end
 
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-		frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
-		frame.Title:Show()
+		if separatorMap[db.separator] then
+			frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
+			frame.Title:Show()
+		end
 	elseif frame.Title then
 		frame.Title:SetText("")
 	end

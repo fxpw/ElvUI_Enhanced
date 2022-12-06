@@ -1,4 +1,0 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/">
-	<Script file="GroupRoleIndicator.lua"/>
-	<Script file="HealthPrediction.lua"/>
-</Ui>

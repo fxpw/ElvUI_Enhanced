@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local AbsorbPrediction = {
-	enable = false,
+	enable = true,
 	absorbStyle = "REVERSED",
 	anchorPoint = "BOTTOM",
 	absorbTexture = "ElvUI Norm",
@@ -324,7 +324,7 @@ P.enhanced = {
 			raidpet = {
 				absorbPrediction = CopyTable(AbsorbPrediction),
 			},
-		}
+		},
 	},
 	watchframe = {
 		enable = false,

@@ -1,25 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local AbsorbPrediction = {
-	enable = true,
-	absorbStyle = "REVERSED",
-	anchorPoint = "BOTTOM",
-	absorbTexture = "ElvUI Norm",
-	height = -1
-}
-
-local RoleIcon = {
-	enable = false,
-	position = "BOTTOMRIGHT",
-	attachTo = "Health",
-	xOffset = 0,
-	yOffset = 0,
-	size = 15,
-	tank = true,
-	healer = true,
-	damager = true,
-	combatHide = false,
-}
 
 P.enhanced = {
 	general = {

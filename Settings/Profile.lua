@@ -256,7 +256,7 @@ P.enhanced = {
 		portraitHDModelFix = {
 			enable = false,
 			debug = false,
-			modelsToFix = "scourgemale.m2; dwarfmale.m2; orcmalenpc.m2; scourgemalenpc.m2; scourgefemalenpc.m2; dwarfmalenpc.m2; humanmalekid.m2; humanfemalekid.m2; chicken.m2; rat.m2; scourgemale_hd.m2; scourgefemale_hd.m2; dwarfmale_hd.m2; vulperafemale.m2; worgenmale.m2; vulperamale.m2; humanfemale_hd.m2; darkirondwarfmale.m2"
+			-- modelsToFix = "scourgemale.m2; dwarfmale.m2; orcmalenpc.m2; scourgemalenpc.m2; scourgefemalenpc.m2; dwarfmalenpc.m2; humanmalekid.m2; humanfemalekid.m2; chicken.m2; rat.m2; scourgemale_hd.m2; scourgefemale_hd.m2; dwarfmale_hd.m2; vulperafemale.m2; worgenmale.m2; vulperamale.m2; humanfemale_hd.m2; darkirondwarfmale.m2"
 		},
 		detachPortrait = {
 			player = {
@@ -286,13 +286,13 @@ P.enhanced = {
 			}
 		},
 		units = {
-			player = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-				roleIcon = CopyTable(RoleIcon),
-			},
+			-- player = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- 	-- roleIcon = CopyTable(RoleIcon),
+			-- },
 			target = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-				roleIcon = CopyTable(RoleIcon),
+				-- absorbPrediction = CopyTable(AbsorbPrediction),
+				-- roleIcon = CopyTable(RoleIcon),
 				classicon = {
 					enable = false,
 					size = 28,
@@ -300,30 +300,30 @@ P.enhanced = {
 					yOffset = -22
 				}
 			},
-			focus = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-				roleIcon = CopyTable(RoleIcon),
-			},
-			pet = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-			},
-			arena = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-				roleIcon = CopyTable(RoleIcon),
-			},
-			party = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-			},
-			raid = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-			},
-			raid40 = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-				roleIcon = CopyTable(RoleIcon),
-			},
-			raidpet = {
-				absorbPrediction = CopyTable(AbsorbPrediction),
-			},
+			-- focus = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- 	-- roleIcon = CopyTable(RoleIcon),
+			-- },
+			-- pet = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- },
+			-- arena = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- 	-- roleIcon = CopyTable(RoleIcon),
+			-- },
+			-- party = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- },
+			-- raid = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- },
+			-- raid40 = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- 	-- roleIcon = CopyTable(RoleIcon),
+			-- },
+			-- raidpet = {
+			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			-- },
 		},
 	},
 	watchframe = {

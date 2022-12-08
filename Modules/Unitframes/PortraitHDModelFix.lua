@@ -51,7 +51,7 @@ end
 
 local unitTypes = {
 	{"player", "target", "targettarget", "targettargettarget", "focus", "focustarget", "pet", "pettarget"},
-	{"party", "raid", "raid40"},
+	{"party", "raid10","raid25", "raid40"},
 	{"boss", "arena"},
 }
 -- local modelList = gsub(modelList, "%s+", "")

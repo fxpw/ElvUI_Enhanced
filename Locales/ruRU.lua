@@ -101,7 +101,7 @@ L["Print to chat model names of units with enabled 3D portraits."] = "Печат
 L["Interrupt Tracker"] = "Прерывания"
 
 -- Nameplates
-L["Cache Unit Class"] = "Кэш юнит классы"
+L["Cache Unit Class"] = "Кэшировать классы юнитов"
 
 -- Minimap
 L["Above Minimap"] = "Над миникартой"

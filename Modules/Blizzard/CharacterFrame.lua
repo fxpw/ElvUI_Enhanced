@@ -890,7 +890,6 @@ EventHandlerFrame:RegisterEvent("CHAT_MSG_ADDON")
 EventHandlerFrame:SetScript("OnEvent", function(_, _, opcode, msg)
 	if opcode == "UPS_INFO" then
 		local total, maximum, current = strsplit(":", msg)
-
 		current = tonumber(current)
 
 		StrengthenData.Total = total
@@ -903,6 +902,8 @@ EventHandlerFrame:SetScript("OnEvent", function(_, _, opcode, msg)
 			StrengthenData[i] = {splitstat[i] / 2, splitstat[i]}
 			if i == 3 then
 				StrengthenData[i] = {splitstat[i] / 3, splitstat[i]}
+			elseif i == 6 then
+				StrengthenData[i] = {splitstat[i] / 2.3, splitstat[i]}
 			elseif i == 7 then
 				StrengthenData[i] = {splitstat[i] / 4, splitstat[i]}
 			end
@@ -914,7 +915,11 @@ function module:StrengthenStat(statFrame, unit, statIndex)
 	statFrame.Label:SetText(StrengthenStats[statIndex])
 
 	if StrengthenData[statIndex] then
-		statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+		if statIndex == 6 then
+			statFrame.Value:SetFormattedText(tonumber(StrengthenData[statIndex][2]) > 0 and "%.0f (+|cff00FF00%.1f|r)" or "%.0f (+|cff00FF00%.0f|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+		else
+			statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+		end
 	else
 		statFrame.Value:SetText(0)
 	end

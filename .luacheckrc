@@ -42275,6 +42275,18 @@ globals = {
 	"LossOfControlAddOrUpdateDebuff",
 	"LossOfControlRemoveDebuff",
 	"LossOfControlTimeLeftFrame_SetTime",
+	--sirus legacy
+	"HeirloomsJournalClassDropDown",
+	"CollectionsJournalTab5",
+	"HeirloomsJournalIconsFrameOverlayFrame",
+	"HeirloomsJournal",
+	"HeirloomsJournalIconsFrame",
+	"HeirloomsJournalFilterButton",
+	"HeirloomsJournalSearchBox",
+	"HeirloomsJournalNextPageButton",
+	"HeirloomsJournalPrevPageButton",
+	"HeirloomsJournalProgressBar",
+
 	--sirus character 
 	"GearManagerDialogPopupSearchBox",
 	"PaperDollFrameStrengthenFrame",

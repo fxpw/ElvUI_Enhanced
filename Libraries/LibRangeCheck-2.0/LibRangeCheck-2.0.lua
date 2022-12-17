@@ -41,7 +41,7 @@ License: Public Domain
 -- @class file
 -- @name LibRangeCheck-2.0
 local MAJOR_VERSION = "LibRangeCheck-2.0"
-local MINOR_VERSION = tonumber(("$Revision: 98 $"):match("%d+")) + 100000
+local MINOR_VERSION = tonumber(("$Revision: 99 $"):match("%d+")) + 100000
 
 local lib, oldminor = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then
@@ -331,7 +331,7 @@ local tremove = tremove
 local BOOKTYPE_SPELL = BOOKTYPE_SPELL
 local GetSpellInfo = GetSpellInfo
 local GetSpellName = GetSpellName
-local GetItemInfo = GetItemInfo
+local GetItemInfo = C_Item.GetItemInfoRaw
 local UnitCanAttack = UnitCanAttack
 local UnitCanAssist = UnitCanAssist
 local UnitExists = UnitExists
@@ -905,7 +905,7 @@ function lib:UNIT_INVENTORY_CHANGED(event, unit)
         self:scheduleInit()
     end
 end
-
+local last
 function lib:processItemRequests(itemRequests)
     while true do
         local range, items = next(itemRequests)
@@ -929,6 +929,7 @@ function lib:processItemRequests(itemRequests)
                 tremove(items, i)
             elseif not itemRequestTimeoutAt then
                 requestItemInfo(item)
+                -- print()
                 itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
                 return true
             elseif GetTime() > itemRequestTimeoutAt then

@@ -267,10 +267,6 @@ end
 local function InitializeCallback()
 	EI:Initialize()
 
-
-
-
-
 end
 
 E:RegisterModule(EI:GetName(), InitializeCallback)

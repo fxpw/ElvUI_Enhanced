@@ -511,14 +511,15 @@ local function UpdateLink(frame,link,who)
 end
 
 local function HideGemTextures(frame)
-	for i = 1,3 do
-		if frame.Gems  then
-			frame.Gems["Gem"..i].texture:SetTexture(nil)
-			frame.Gems["Gem"..i]:SetScript("OnEnter", nil)
-			frame.Gems["Gem"..i]:SetScript("OnLeave", nil)
-			frame.Gems["Gem"..i]:SetScript("OnClick", nil)
-		end
-	end
+    if not frame.Gems then return end
+
+    for i = 1, 3 do
+        local gem = frame.Gems["Gem"..i]
+        gem.texture:SetTexture(nil)
+        gem:SetScript("OnEnter", nil)
+        gem:SetScript("OnLeave", nil)
+        gem:SetScript("OnClick", nil)
+    end
 end
 
 local function UpdateGems(frame,link,who)

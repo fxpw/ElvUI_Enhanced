@@ -60,8 +60,8 @@ local CharacterSpellCritChance_OnEnter = CharacterSpellCritChance_OnEnter
 local CooldownFrame_SetTimer = CooldownFrame_SetTimer
 local GameTooltip_Hide = GameTooltip_Hide
 local GearManagerDialogSaveSet_OnClick = GearManagerDialogSaveSet_OnClick
-local PaperDollFrameItemPopoutButton_HideAll = PaperDollFrameItemPopoutButton_HideAll
-local PaperDollFrameItemPopoutButton_ShowAll = PaperDollFrameItemPopoutButton_ShowAll
+-- local PaperDollFrameItemPopoutButton_HideAll = PaperDollFrameItemPopoutButton_HideAll
+-- local PaperDollFrameItemPopoutButton_ShowAll = PaperDollFrameItemPopoutButton_ShowAll
 local PaperDollFrame_ClearIgnoredSlots = PaperDollFrame_ClearIgnoredSlots
 local PaperDollFrame_SetArmor = PaperDollFrame_SetArmor
 local PaperDollFrame_SetAttackPower = PaperDollFrame_SetAttackPower
@@ -2519,12 +2519,12 @@ function module:Initialize()
 
 	equipmentManagerPane:SetScript("OnShow", function(self)
 		module:PaperDollEquipmentManagerPane_Update()
-		PaperDollFrameItemPopoutButton_ShowAll()
+		-- PaperDollFrameItemPopoutButton_ShowAll()
 	end)
 
 	equipmentManagerPane:SetScript("OnHide", function()
 		PaperDollFrame_ClearIgnoredSlots()
-		PaperDollFrameItemPopoutButton_HideAll()
+		-- PaperDollFrameItemPopoutButton_HideAll()
 		GearManagerDialogPopup:Hide()
 		StaticPopup_Hide("CONFIRM_SAVE_EQUIPMENT_SET")
 		StaticPopup_Hide("CONFIRM_OVERWRITE_EQUIPMENT_SET")

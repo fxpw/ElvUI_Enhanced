@@ -299,7 +299,7 @@ function LC:ToggleState()
 	end
 end
 function LossOfControlTimeLeftFrame_SetTime(self, timeRemaining)
-    if( timeRemaining ) then
+    if (timeRemaining) then
 		local color = E:RGBToHex(E.private.enhanced.loseControl.colorNumberText.r, E.private.enhanced.loseControl.colorNumberText.g, E.private.enhanced.loseControl.colorNumberText.b)
 		if ( timeRemaining >= 10 ) then
 			self.NumberText:SetFormattedText("%s%d", color, timeRemaining);
@@ -311,7 +311,7 @@ function LossOfControlTimeLeftFrame_SetTime(self, timeRemaining)
 		self.numberWidth = self.NumberText:GetStringWidth() + LOSS_OF_CONTROL_TIME_OFFSET;
 	else
 		self:Hide();
-		-- self.numberWidth = 0;
+		self.numberWidth = 0;
 	end
 end
 

@@ -79,7 +79,7 @@ for i=2,numLogRecordFrames do
 end
 
 
-local ScrollBar = CreateFrame("ScrollFrame", "LFRHistoryFrameScrollFrame",ScrollParent,"FauxScrollFrameTemplateLight")
+local ScrollBar = CreateFrame("ScrollFrame", "ElvUI_LookingForGuildFrameScrollParentScrollBar",ScrollParent,"FauxScrollFrameTemplateLight")
 ScrollBar:SetWidth(ScrollParent:GetWidth() - 35)
 ScrollBar:SetHeight(ScrollParent:GetHeight() - 10)
 ScrollBar:SetPoint("RIGHT", ScrollParent, "RIGHT", -35, 0)
@@ -368,7 +368,7 @@ clearButton:SetSize(120,25)
 clearButton:SetPoint("BOTTOMRIGHT",MainFrame,"BOTTOMRIGHT",0,-25)
 clearButton:SetText("Стереть историю")
 clearButton:SetScript("OnClick",function()
-    MainFrame.history = {}
+    table.wipe(MainFrame.history)
     LogChanged()
 end)
 S:HandleButton(clearButton)

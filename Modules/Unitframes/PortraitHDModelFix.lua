@@ -10,7 +10,7 @@ local tinsert, twipe = table.insert, table.wipe
 
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_ARENA_ENEMIES = 5
-local debug = not false
+local debug = false
 local function checkHDModels()
 	local hdTexturePathList = {
 		"Character\\Tauren\\Male\\TaurenMaleFaceLower00_00_HD",

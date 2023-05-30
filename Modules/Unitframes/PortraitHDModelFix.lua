@@ -10,7 +10,7 @@ local tinsert, twipe = table.insert, table.wipe
 
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_ARENA_ENEMIES = 5
-local debug = false
+local debug = not false
 local function checkHDModels()
 	local hdTexturePathList = {
 		"Character\\Tauren\\Male\\TaurenMaleFaceLower00_00_HD",
@@ -80,6 +80,8 @@ local tableModelList = {
 	"dracthyrfemale.m2",
 	"dracthyrdragonfemale2.m",
 	"skeleton_hd.m2",
+	"taurenmale_hd.m2",
+
 }
 
 

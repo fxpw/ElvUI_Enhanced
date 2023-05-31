@@ -5,8 +5,7 @@ local UF = E:GetModule("UnitFrames")
 local _G = _G
 local ipairs = ipairs
 local type = type
-local find, format, lower= string.find, string.format, string.lower
-local tinsert, twipe = table.insert, table.wipe
+local match, format, lower= string.match, string.format, string.lower
 
 local MAX_BOSS_FRAMES = MAX_BOSS_FRAMES
 local MAX_ARENA_ENEMIES = 5
@@ -64,8 +63,7 @@ local function portraitHDModelFix(self)
 			E:Print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, model))
 		end
 		model = lower(model)
-		model = string.match(model,pattern)
-
+		model = match(model,pattern)
 		if model and tableModelList[model] then
 			self:SetCamera(1)
 		end
@@ -77,25 +75,9 @@ local unitTypes = {
 	{"party", "raid10","raid25", "raid40"},
 	{"boss", "arena"},
 }
--- local modelList = gsub(modelList, "%s+", "")
--- local tableModelList = {split(";", modelList)}
-
-
 
 function UFPM:UpdatePortraits()
 	if not self.HDModelFound then return end
-
-	-- twipe(self.modelsToFix)
-	-- local modelList = gsub(E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix, "%s+", "")
-
-	-- if modelList ~= "" then
-		-- for _, modelName in ipairs(tableModelList) do
-		-- 	if modelName ~= "" then
-		-- 		tinsert(self.modelsToFix, lower(modelName))
-		-- 	end
-		-- end
-	-- end
-
 	for i = 1, #unitTypes do
 		for _, unit in ipairs(unitTypes[i]) do
 			if i == 1 then
@@ -111,19 +93,10 @@ end
 
 function UFPM:ToggleState()
 	if not self.HDModelFound then return end
-
-	-- if E.db.enhanced.unitframe.portraitHDModelFix.enable then
 		if not self.hooked then
 			self:SecureHook(UF, "PortraitUpdate", portraitHDModelFix)
 			self.hooked = true
 		end
-	-- else
-	-- 	if self.hooked then
-	-- 		self:UnhookAll()
-	-- 		self.hooked = nil
-	-- 	end
-	-- 	return
-	-- end
 
 	for i = 1, #unitTypes do
 		for _, unit in ipairs(unitTypes[i]) do

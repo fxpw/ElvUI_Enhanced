@@ -28,7 +28,33 @@ local function checkHDModels()
 		end
 	end
 end
-
+local tableModelList = {
+	["dwarfmale.m2"] = true,
+	["orcmalenpc.m2"] = true,
+	["scourgemalenpc.m2"] = true,
+	["scourgefemalenpc.m2"] = true,
+	["dwarfmalenpc.m2"] = true,
+	["humanmalekid.m2"] = true,
+	["humanfemalekid.m2"] = true,
+	["chicken.m2"] = true,
+	["rat.m2"] = true,
+	["scourgemale_hd.m2"] = true,
+	["scourgefemale_hd.m2"] = true,
+	["dwarfmale_hd.m2"] = true,
+	["vulperafemale.m2"] = true,
+	["worgenmale.m2"] = true,
+	["vulperamale.m2"] = true,
+	["humanfemale_hd.m2"] = true,
+	["darkirondwarfmale.m2"] = true,
+	["dracthyrdragonmale1.m2"] = true,
+	["dracthyrfemale.m2"] = true,
+	["dracthyrdragonfemale2.m2"] = true,
+	["dracthyrdragonfemale3.m2"] = true,
+	["skeleton_hd.m2"] = true,
+	["taurenmale_hd.m2"] = true,
+	["hd.m2"] = true,
+}
+local pattern = "[^\\]*%.m2$"
 local function portraitHDModelFix(self)
 	if self:IsObjectType("Model") then
 		local model = self:GetModel()
@@ -37,14 +63,11 @@ local function portraitHDModelFix(self)
 		if debug then
 			E:Print(format("|cffc79c6eUnit:|r %s; |cffc79c6eModel:|r %s", self:GetParent().unitframeType, model))
 		end
-
 		model = lower(model)
+		model = string.match(model,pattern)
 
-		for _, modelName in ipairs(UFPM.modelsToFix) do
-			if find(model, modelName, 1, true) then
-				self:SetCamera(1)
-				break
-			end
+		if model and tableModelList[model] then
+			self:SetCamera(1)
 		end
 	end
 end
@@ -57,46 +80,20 @@ local unitTypes = {
 -- local modelList = gsub(modelList, "%s+", "")
 -- local tableModelList = {split(";", modelList)}
 
-local tableModelList = {
-	-- "scourgemale.m2",
-	"dwarfmale.m2;",
-	"orcmalenpc.m2",
-	"scourgemalenpc.m2;",
-	"scourgefemalenpc.m2;",
-	"dwarfmalenpc.m2",
-	"humanmalekid.m2",
-	"humanfemalekid.m2;",
-	"chicken.m2",
-	"rat.m2",
-	"scourgemale_hd.m2",
-	"scourgefemale_hd.m2",
-	"dwarfmale_hd.m2",
-	"vulperafemale.m2",
-	"worgenmale.m2;",
-	"vulperamale.m2;",
-	"humanfemale_hd.m2",
-	"darkirondwarfmale.m2",
-	"dracthyrdragonmale1.m2",
-	"dracthyrfemale.m2",
-	"dracthyrdragonfemale2.m",
-	"skeleton_hd.m2",
-	"taurenmale_hd.m2",
-
-}
 
 
 function UFPM:UpdatePortraits()
 	if not self.HDModelFound then return end
 
-	twipe(self.modelsToFix)
+	-- twipe(self.modelsToFix)
 	-- local modelList = gsub(E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix, "%s+", "")
 
 	-- if modelList ~= "" then
-		for _, modelName in ipairs(tableModelList) do
-			if modelName ~= "" then
-				tinsert(self.modelsToFix, lower(modelName))
-			end
-		end
+		-- for _, modelName in ipairs(tableModelList) do
+		-- 	if modelName ~= "" then
+		-- 		tinsert(self.modelsToFix, lower(modelName))
+		-- 	end
+		-- end
 	-- end
 
 	for i = 1, #unitTypes do
@@ -146,11 +143,7 @@ end
 function UFPM:Initialize()
 	if not E.private.unitframe.enable then return end
 
-	self.modelsToFix = {}
 	self.HDModelFound = checkHDModels()
-
-	-- if not E.db.enhanced.unitframe.portraitHDModelFix.enable then return end
-
 	self:ToggleState()
 end
 

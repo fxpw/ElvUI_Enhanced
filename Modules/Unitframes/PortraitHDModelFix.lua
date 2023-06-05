@@ -51,8 +51,10 @@ local tableModelList = {
 	["dracthyrdragonfemale3.m2"] = true,
 	["skeleton_hd.m2"] = true,
 	["taurenmale_hd.m2"] = true,
-	["hd.m2"] = true,
+	["gnomemale_hd.m2"] = true,
+	["gnomefemale_hd.m2"] = true,
 }
+
 local pattern = "[^\\]*%.m2$"
 local function portraitHDModelFix(self)
 	if self:IsObjectType("Model") then

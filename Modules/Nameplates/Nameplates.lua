@@ -379,7 +379,7 @@ function ENP:AddBubbleMessage(frame, msg, author, guid)
 	if not frame.text:GetFont() then
 		frame.text:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE")
 	end
-	
+
 	frame.text:SetText(msg)
 
 	if frame.text:GetStringWidth() > 300 then

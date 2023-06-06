@@ -2,21 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:NewModule("Enhanced_Misc", "AceHook-3.0", "AceEvent-3.0")
 
 local CancelDuel = CancelDuel
-local GetSpellInfo = GetSpellInfo
+-- local GetSpellInfo = GetSpellInfo
 local IsInInstance = IsInInstance
 local RepopMe = RepopMe
-local UnitBuff = UnitBuff
+-- local UnitBuff = UnitBuff
 
-local soulstone
 function M:PLAYER_DEAD()
 	local inInstance, instanceType = IsInInstance()
 
 	if inInstance and instanceType == "pvp" then
-		if not soulstone then
-			soulstone = GetSpellInfo(20707)
-		end
-
-		if E.myclass ~= "SHAMAN" and not (soulstone and UnitBuff("player", soulstone)) then
+		if not HasSoulstone() then
 			RepopMe()
 		end
 	end

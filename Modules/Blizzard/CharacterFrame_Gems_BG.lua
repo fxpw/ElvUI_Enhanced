@@ -462,8 +462,8 @@ local function GemsOnClick(button,frame,SocetNum)
 					end
 				end
 			end
-			HideUIPanel(ItemSocketingFrame)
-		else
+		end
+		if ItemSocketingFrame:IsShown() then
 			HideUIPanel(ItemSocketingFrame)
 		end
 	end
@@ -478,7 +478,9 @@ local function UpdateLink(frame,link,who)
 			frame.Gems["Gem"..i].GemColor = GetSocketTypes(i)
 		end
 		CloseSocketInfo()
-		HideUIPanel(ItemSocketingFrame)
+		if ItemSocketingFrame:IsShown() then
+			HideUIPanel(ItemSocketingFrame)
+		end
 	elseif who == "Inspect" then
 		local nummaxgem = 0
 		local unit = InspectFrame.unit
@@ -779,7 +781,9 @@ local function GemsOnInitCharacter()
 					HideUIPanel(ItemSocketingFrame)
 				end
 			end
-			HideUIPanel(ItemSocketingFrame)
+			if ItemSocketingFrame:IsShown() then
+				HideUIPanel(ItemSocketingFrame)
+			end
 		end
 		initCharacter = true
 	end
@@ -908,15 +912,18 @@ function Gems:Initialize()
 end
 
 local function kostil()
-	HideUIPanel(CharacterFrame)
-	HideUIPanel(ItemSocketingFrame)
+	if CharacterFrame:IsShown() then
+		HideUIPanel(CharacterFrame)
+	end
+	if ItemSocketingFrame:IsShown() then
+		HideUIPanel(ItemSocketingFrame)
+	end
 end
+
 local function InitializeCallback()
 	Gems:Initialize()
-	-- HideUIPanel(CharacterFrame)
-	-- HideUIPanel(ItemSocketingFrame)
 	C_Timer:After(4, kostil)
-
+	C_Timer:After(10, kostil)
 end
 
 E:RegisterModule(Gems:GetName(), InitializeCallback)

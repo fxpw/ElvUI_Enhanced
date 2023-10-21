@@ -326,9 +326,10 @@ P.enhanced = {
 		enable = false,
 		level = false,
 		city = "COLLAPSED",
-		pvp = "HIDDEN",
-		arena = "HIDDEN",
+		pvp = "HIDE",
+		arena = "HIDE",
 		party = "COLLAPSED",
-		raid = "COLLAPSED"
+		raid = "COLLAPSED",
+		noOne = "NONE",
 	}
 }

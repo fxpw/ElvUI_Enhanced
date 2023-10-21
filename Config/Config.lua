@@ -198,9 +198,10 @@ local function BlizzardOptions()
 	-- local CHAR = E:GetModule("Enhanced_CharacterFrame")
 
 	local choices = {
-		["NONE"] = L["NONE"],
-		["COLLAPSED"] = L["Collapsed"],
-		["HIDDEN"] = L["Hidden"]
+		["EXPAND"] = L["Expand"],
+		["COLLAPSE"] = L["Collapse"],
+		["HIDE"] = L["Hidden"],
+		["NONE"] = L["No action"],
 	}
 
 	return {
@@ -671,7 +672,13 @@ local function BlizzardOptions()
 								type = "select",
 								name = L["Raid"],
 								values = choices
-							}
+							},
+							noOne = {
+								order = 6,
+								type = "select",
+								name = L["None of the previous ones"],
+								values = choices
+							},
 						}
 					}
 				}

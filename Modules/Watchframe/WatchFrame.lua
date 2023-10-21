@@ -15,22 +15,26 @@ local WATCHFRAME_QUESTLINES = WATCHFRAME_QUESTLINES
 local WatchFrame = WatchFrame
 
 local statedriver = {
-	["NONE"] = function()
+	["EXPAND"] = function()
+		WatchFrame:Show()
 		WatchFrame.userCollapsed = false
 		WatchFrame_Expand(WatchFrame)
-		WatchFrame:Show()
 	end,
-	["COLLAPSED"] = function()
+	["COLLAPSE"] = function()
+		WatchFrame:Show()
 		WatchFrame.userCollapsed = true
 		WatchFrame_Collapse(WatchFrame)
-		WatchFrame:Show()
 	end,
-	["HIDDEN"] = function()
+	["HIDE"] = function()
 		WatchFrame:Hide()
+	end,
+	["NONE"] = function()
+		-- WatchFrame:Hide()
 	end
 }
 
 function WF:ChangeState()
+	print("da")
 	if UnitAffectingCombat("player") then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState")
 		self.inCombat = true
@@ -39,20 +43,26 @@ function WF:ChangeState()
 
 	if IsResting() then
 		if statedriver[self.db.city] then
-			statedriver[self.db.city](WatchFrame)
+			print(43,self.db.city)
+			statedriver[self.db.city]()
 		end
 	else
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
-			statedriver[self.db.pvp](WatchFrame)
+			print(49,self.db.pvp)
+			statedriver[self.db.pvp]()
 		elseif instanceType == "arena" then
-			statedriver[self.db.arena](WatchFrame)
+			print(52,self.db.arena)
+			statedriver[self.db.arena]()
 		elseif instanceType == "party" then
-			statedriver[self.db.party](WatchFrame)
+			print(55,self.db.party)
+			statedriver[self.db.party]()
 		elseif instanceType == "raid" then
-			statedriver[self.db.raid](WatchFrame)
+			print(58,self.db.raid)
+			statedriver[self.db.raid]()
 		else
-			statedriver["NONE"](WatchFrame)
+			print(61)
+			statedriver["NONE"]()
 		end
 	end
 

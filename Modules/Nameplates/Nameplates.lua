@@ -430,7 +430,7 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	if sub(chatType, 1, 7) == "CHANNEL" then
 		chatType = "CHANNEL"..channelID
 	end
-
+	if not E.db.enhanced.nameplates.chatBubblesTypes[event] then return end
 	local info = ChatTypeInfo[chatType]
 	if not info then return end
 
@@ -514,7 +514,7 @@ local function OnHideHook(frame)
 end
 
 function ENP:ChatBubbles()
-	if E.db.enhanced.nameplates.chatBubbles then
+	if E.db.enhanced.nameplates.chatBubblesEnable then
 		for _, event in ipairs(events) do
 			ENP:RegisterEvent(event, "FindNameplateByChatMsg")
 		end
@@ -542,16 +542,16 @@ function ENP:UpdateAllSettings()
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
 	end
 
-	if E.db.enhanced.nameplates.chatBubbles or E.db.enhanced.nameplates.titleCache then
+	if E.db.enhanced.nameplates.chatBubblesEnable or E.db.enhanced.nameplates.titleCache then
 		if not ENP:IsHooked(NP, "OnHide") then
 			ENP:Hook(NP, "OnHide", OnHideHook)
 		end
-	elseif not E.db.enhanced.nameplates.chatBubbles and not E.db.enhanced.nameplates.titleCache then
+	elseif not E.db.enhanced.nameplates.chatBubblesEnable and not E.db.enhanced.nameplates.titleCache then
 		if ENP:IsHooked(NP, "OnHide") then
 			ENP:Unhook(NP, "OnHide")
 		end
 	end
-	if E.db.enhanced.nameplates.chatBubbles then
+	if E.db.enhanced.nameplates.chatBubblesEnable then
 		if not ENP:IsHooked(NP, "OnShow") then
 			ENP:RawHook(NP, "OnShow", OnShowHook, true)
 		end

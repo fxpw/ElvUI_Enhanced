@@ -134,7 +134,7 @@ P.enhanced = {
 	},
 	nameplates = {
 		classCache = false,
-		chatBubbles = false,
+		chatBubblesEnable = false,
 		titleCache = false,
 		guild = {
 			font = "PT Sans Narrow",
@@ -162,6 +162,22 @@ P.enhanced = {
 			reactionColor = false,
 			color = {r = 1, g = 1, b = 1},
 			separator = " ",
+		},
+		chatBubblesTypes = {
+			CHAT_MSG_GUILD = true,
+			CHAT_MSG_OFFICER = true,
+			CHAT_MSG_PARTY = true,
+			CHAT_MSG_PARTY_LEADER = true,
+			CHAT_MSG_RAID = true,
+			CHAT_MSG_RAID_LEADER = true,
+			CHAT_MSG_RAID_WARNING = true,
+			CHAT_MSG_BATTLEGROUND = true,
+			CHAT_MSG_BATTLEGROUND_LEADER = true,
+			CHAT_MSG_CHANNEL = true,
+			CHAT_MSG_SAY = true,
+			CHAT_MSG_YELL = true,
+			CHAT_MSG_MONSTER_SAY = true,
+			CHAT_MSG_MONSTER_YELL = true,
 		}
 	},
 	tooltip = {

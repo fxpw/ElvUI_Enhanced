@@ -1239,8 +1239,38 @@ local function MinimapOptions()
 		}
 	}
 end
-
+local events = {
+	"CHAT_MSG_GUILD",
+	"CHAT_MSG_OFFICER",
+	"CHAT_MSG_PARTY",
+	"CHAT_MSG_PARTY_LEADER",
+	"CHAT_MSG_RAID",
+	"CHAT_MSG_RAID_LEADER",
+	"CHAT_MSG_RAID_WARNING",
+	"CHAT_MSG_BATTLEGROUND",
+	"CHAT_MSG_BATTLEGROUND_LEADER",
+	"CHAT_MSG_CHANNEL",
+	"CHAT_MSG_SAY",
+	"CHAT_MSG_YELL",
+	"CHAT_MSG_MONSTER_SAY",
+	"CHAT_MSG_MONSTER_YELL"
+}
 local function NamePlatesOptions()
+	local argsForChatBubbles = {}
+	for e in ipairs(events) do
+		argsForChatBubbles[events[e]] = {
+			order = e,
+			type = "toggle",
+			name = L[events[e]],
+			set = function(info, value)
+				E.db.enhanced.nameplates.chatBubblesTypes[info[#info]] = value
+				E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
+				E:GetModule("NamePlates"):ConfigureAll()
+			end,
+			get = function(info) return E.db.enhanced.nameplates.chatBubblesTypes[info[#info]] end,
+			disabled = function() return not E.db.enhanced.nameplates.chatBubblesEnable end,
+		}
+	end
 	return {
 		type = "group",
 		name = L["NamePlates"],
@@ -1260,7 +1290,7 @@ local function NamePlatesOptions()
 					E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
 				end
 			},
-			chatBubbles = {
+			chatBubblesEnable = {
 				order = 2,
 				type = "toggle",
 				name = L["Chat Bubbles"],
@@ -1274,7 +1304,7 @@ local function NamePlatesOptions()
 				order = 3,
 				type = "group",
 				name = L["Cache Unit Guilds / NPC Titles"],
-				guiInline = true,
+				-- guiInline = true,
 				get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
 				args = {
 					titleCache = {
@@ -1484,6 +1514,14 @@ local function NamePlatesOptions()
 						}
 					}
 				}
+			},
+			chatBubblesGroup = {
+				order = 4,
+				type = "group",
+				name = L["Chat Bubbles Group"],
+				-- guiInline = true,
+				-- get = function(info) return E.db.enhanced.nameplates[info[#info]] end,
+				args = argsForChatBubbles
 			}
 		}
 	}

@@ -34,7 +34,7 @@ local statedriver = {
 }
 
 function WF:ChangeState()
-	print("da")
+	-- print("da")
 	if UnitAffectingCombat("player") then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState")
 		self.inCombat = true
@@ -43,25 +43,25 @@ function WF:ChangeState()
 
 	if IsResting() then
 		if statedriver[self.db.city] then
-			print(43,self.db.city)
+			-- print(43,self.db.city)
 			statedriver[self.db.city]()
 		end
 	else
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
-			print(49,self.db.pvp)
+			-- print(49,self.db.pvp)
 			statedriver[self.db.pvp]()
 		elseif instanceType == "arena" then
-			print(52,self.db.arena)
+			-- print(52,self.db.arena)
 			statedriver[self.db.arena]()
 		elseif instanceType == "party" then
-			print(55,self.db.party)
+			-- print(55,self.db.party)
 			statedriver[self.db.party]()
 		elseif instanceType == "raid" then
-			print(58,self.db.raid)
+			-- print(58,self.db.raid)
 			statedriver[self.db.raid]()
 		else
-			print(61)
+			-- print(61)
 			statedriver["NONE"]()
 		end
 	end

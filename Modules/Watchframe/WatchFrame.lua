@@ -62,7 +62,7 @@ function WF:ChangeState()
 			statedriver[self.db.raid]()
 		else
 			-- print(61)
-			statedriver["NONE"]()
+			statedriver[self.db.noOne]()
 		end
 	end
 

@@ -9,7 +9,8 @@ local twipe = table.wipe
 local CanInspect = CanInspect
 local ClearAchievementComparisonUnit = ClearAchievementComparisonUnit
 local GetAchievementComparisonInfo = GetAchievementComparisonInfo
-local GetAchievementInfo = C_AchievementManager._GetAchievementInfo
+-- todo
+-- local GetAchievementInfo = C_AchievementManager._GetAchievementInfo
 local GetComparisonStatistic = GetComparisonStatistic
 local GetStatistic = GetStatistic
 local GetTime = GetTime
@@ -161,7 +162,8 @@ end
 ]]
 
 local function isAchievementComplete(achievementID)
-	return (select(4, GetAchievementInfo(achievementID))) and 1 or 0
+	-- todo
+	return 0
 end
 
 local function isAchievementComparisonComplete(achievementID)

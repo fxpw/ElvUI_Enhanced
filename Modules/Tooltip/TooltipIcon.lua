@@ -56,6 +56,7 @@ local function AchievementIcon(self, link)
 		-- if false then
 		-- 	AddIcon(self, icon)
 		-- end
+		return
 	end
 end
 

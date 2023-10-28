@@ -57,12 +57,12 @@ end
 
 function mod:DressUpFrame()
 	if not E.db.enhanced.blizzard.dressUpFrame.enable then return end
-
-	DressUpBackgroundTopLeft:SetAlpha(0)
-	DressUpBackgroundTopRight:SetAlpha(0)
-	DressUpBackgroundBotLeft:SetAlpha(0)
-	DressUpBackgroundBotRight:SetAlpha(0)
-
+	if DressUpBackgroundTopLeft then
+		DressUpBackgroundTopLeft:SetAlpha(0)
+		DressUpBackgroundTopRight:SetAlpha(0)
+		DressUpBackgroundBotLeft:SetAlpha(0)
+		DressUpBackgroundBotRight:SetAlpha(0)
+	end
 	DressUpFrameCancelButton:ClearAllPoints()
 	DressUpFrameCancelButton:Point("BOTTOMRIGHT", -40, 84)
 

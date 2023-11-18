@@ -49,20 +49,26 @@ function WF:ChangeState()
 	else
 		local _, instanceType = IsInInstance()
 		if instanceType == "pvp" then
-			-- print(49,self.db.pvp)
-			statedriver[self.db.pvp]()
+			if self.db.pvp and statedriver[self.db.pvp] then
+				statedriver[self.db.pvp]()
+			end
 		elseif instanceType == "arena" then
-			-- print(52,self.db.arena)
-			statedriver[self.db.arena]()
+			if self.db.arena and statedriver[self.db.arena] then
+				statedriver[self.db.arena]()
+			end
 		elseif instanceType == "party" then
-			-- print(55,self.db.party)
-			statedriver[self.db.party]()
+			if self.db.party and statedriver[self.db.party] then
+				statedriver[self.db.party]()
+			end
 		elseif instanceType == "raid" then
-			-- print(58,self.db.raid)
-			statedriver[self.db.raid]()
+			if self.db.raid and statedriver[self.db.raid] then
+				statedriver[self.db.raid]()
+			end
 		else
 			-- print(61)
-			statedriver[self.db.noOne]()
+			if self.db.noOne and statedriver[self.db.noOne] then
+				statedriver[self.db.noOne]()
+			end
 		end
 	end
 

@@ -35,7 +35,9 @@ S:AddCallbackForAddon("Blizzard_AchievementUI", "Enhanced_AchievementUI", functi
 		end
 		bar:SetValue(0)
 		bar.anim.progress:SetChange(value)
-
+		if not value or not max or value > max then
+			return
+		end
 		local r, g, b = E:ColorGradient(value / max, 1, 0, 0, 1, 1, 0, 0, 1, 0)
 		bar.anim.color:Reset()
 		bar.anim.color:SetChange(r, g, b)

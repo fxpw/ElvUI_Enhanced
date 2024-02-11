@@ -7,6 +7,7 @@
 ## SavedVariablesPerCharacter: EnhancedRuletteCharDB
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
+## X-Sirus-Update: https://github.com/fxpw/ElvUI_Enhanced
 
 Developer\Load_Developer.xml
 Libraries\Load_Libraries.xml

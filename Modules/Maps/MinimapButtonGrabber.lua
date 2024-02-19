@@ -434,7 +434,7 @@ function MBG:Initialize()
 	self.frame = CreateFrame("Frame", "ElvUI_MinimapButtonGrabber", UIParent)
 	self.frame:Size(db.buttonSize + (spacing * 2))
 	self.frame:Point("TOPRIGHT", MMHolder, "BOTTOMRIGHT", 0, 1)
-	self.frame:SetFrameStrata("LOW")
+	self.frame:SetFrameStrata("MEDIUM")
 	self.frame:SetClampedToScreen(true)
 	self.frame:CreateBackdrop()
 

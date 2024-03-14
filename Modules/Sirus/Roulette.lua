@@ -203,8 +203,8 @@ frame:SetScript("OnShow", function (self)
         return;
     end
     for _, v in pairs(Custom_RouletteFrame.rewardData or {}) do
-        if(v and type(v) == "table" and v.itemCountMin) then
-            local key = string.format("%i:%i:%i",v.itemEntry, v.itemCountMin and v.itemCountMin or 0, v.isJackpot and 1 or 0);
+        if(v and type(v) == "table" and v.amountMin) then
+            local key = string.format("%i:%i:%i",v.itemID, v.amountMin and v.amountMin or 0, v.isJackpot and 1 or 0);
             if(not EnhancedRuletteCharDB[key]) then
                 EnhancedRuletteCharDB[key] = 0;
             end

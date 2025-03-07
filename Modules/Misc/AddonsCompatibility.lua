@@ -165,15 +165,15 @@ local addonFixes = {
 	end,
 
 	-- https://github.com/ElvUI-WotLK/ElvUI_Enhanced/issues/100
-	["OmniBar"] = function()
-		hooksecurefunc("OmniBar_CreateIcon", function(self)
-			E:RegisterCooldown(self.icons[#self.icons].cooldown)
-		end)
+	--["OmniBar"] = function()
+	--	hooksecurefunc("OmniBar_CreateIcon", function(self)
+		--	E:RegisterCooldown(self.icons[#self.icons].cooldown)
+	--	end)
 
-		for _, icon in ipairs(OmniBar.icons) do
-			E:RegisterCooldown(icon.cooldown)
-		end
-	end,
+		--for _, icon in ipairs(OmniBar.icons) do
+		--	E:RegisterCooldown(icon.cooldown)
+		--end
+	--end,
 
 	-- BlizzMove r18
 	-- https://www.curseforge.com/wow/addons/blizzmove/files/456128

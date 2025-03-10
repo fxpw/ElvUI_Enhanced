@@ -171,7 +171,7 @@ local addonFixes = {
 		end)
 		if OmniBar.icons then
 		    for _, icon in ipairs(OmniBar.icons) do
-		    	E:RegisterCooldown(icon.cooldown)
+			E:RegisterCooldown(icon.cooldown)
 		    end
 		end
 	end,

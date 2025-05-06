@@ -299,7 +299,7 @@ function LC:ToggleState()
 	end
 end
 function LossOfControlTimeLeftFrame_SetTime(self, timeRemaining)
-    if (timeRemaining) then
+	if (timeRemaining) then
 		local color = E:RGBToHex(E.private.enhanced.loseControl.colorNumberText.r, E.private.enhanced.loseControl.colorNumberText.g, E.private.enhanced.loseControl.colorNumberText.b)
 		if ( timeRemaining >= 10 ) then
 			self.NumberText:SetFormattedText("%s%d", color, timeRemaining);
@@ -337,20 +337,20 @@ function LC:UpdateSettings(testFrame)
 		end
 		testTimer = C_Timer:After(21,function() LossOfControlRemoveDebuff(51724) end)
 	end
-    local frame = self.frame;
-    local icon = self.frame.Icon;
-    local cooldown = self.frame.Cooldown; -- фрейм кулдауна
-    local abilityName = self.frame.AbilityName; -- название спела
-    local numberText = self.frame.TimeLeft.NumberText; -- время
-    local secondsText = self.frame.TimeLeft.SecondsText; -- текст [секунд]
+	local frame = self.frame;
+	local icon = self.frame.Icon;
+	local cooldown = self.frame.Cooldown; -- фрейм кулдауна
+	local abilityName = self.frame.AbilityName; -- название спела
+	local numberText = self.frame.TimeLeft.NumberText; -- время
+	local secondsText = self.frame.TimeLeft.SecondsText; -- текст [секунд]
 	frame:Size(self.db.iconSize);
 	cooldown:Size(self.db.iconSize);
 	icon:Size(self.db.iconSize);
 	-- print(self.db)
 	-- print(E.private.enhanced.loseControl.enableCooldownFrame)
 	-- print(E.private.enhanced.loseControl.xOffsetCooldownFrame)
-    if E.private.enhanced.loseControl.enableCooldownFrame then
-        cooldown:Show();
+	if E.private.enhanced.loseControl.enableCooldownFrame then
+		cooldown:Show();
 		cooldown:ClearAllPoints()
 		cooldown:SetPoint("CENTER",frame,"CENTER",E.private.enhanced.loseControl.xOffsetCooldownFrame,E.private.enhanced.loseControl.yOffsetCooldownFrame)
 		if true then
@@ -359,39 +359,39 @@ function LC:UpdateSettings(testFrame)
 			end
 		end
 	else
-        cooldown:Hide();
-    end
-    if E.private.enhanced.loseControl.enableAbilityName then
-        abilityName:Show();
+		cooldown:Hide();
+	end
+	if E.private.enhanced.loseControl.enableAbilityName then
+		abilityName:Show();
 		abilityName:ClearAllPoints()
 		abilityName:SetPoint("CENTER",frame,"CENTER",E.private.enhanced.loseControl.xOffsetAbilityName,E.private.enhanced.loseControl.yOffsetAbilityName)
 		abilityName:FontTemplate(E.LSM:Fetch("font", self.db.fontAbilityName), self.db.fontSizeAbilityName, self.db.fontOutlineAbilityName);
 		-- abilityName:SetText
-    else
-        abilityName:Hide();
-    end
-    if E.private.enhanced.loseControl.enableNumberText then
-        numberText:Show();
+	else
+		abilityName:Hide();
+	end
+	if E.private.enhanced.loseControl.enableNumberText then
+		numberText:Show();
 		numberText:ClearAllPoints()
 		numberText:SetPoint("CENTER",frame,"CENTER",E.private.enhanced.loseControl.xOffsetNumberText,E.private.enhanced.loseControl.yOffsetNumberText)
 		numberText:FontTemplate(E.LSM:Fetch("font", self.db.fontNumberText), self.db.fontSizeNumberText, self.db.fontOutlineNumberText);
 	else
-        numberText:Hide();
-    end
-    if E.private.enhanced.loseControl.enableSecondsText then
-        secondsText:Show();
+		numberText:Hide();
+	end
+	if E.private.enhanced.loseControl.enableSecondsText then
+		secondsText:Show();
 		secondsText:ClearAllPoints()
 		secondsText:SetPoint("CENTER",frame,"CENTER",E.private.enhanced.loseControl.xOffsetSecondsText,E.private.enhanced.loseControl.yOffsetSecondsText)
-    else
-        secondsText:Hide();
-    end
+	else
+		secondsText:Hide();
+	end
 
 
 
-    -- print(E.private.enhanced.loseControl.enableCooldownFrame)
-    -- print(E.private.enhanced.loseControl.enableAbilityName)
-    -- print(E.private.enhanced.loseControl.enableNumberText)
-    -- print(E.private.enhanced.loseControl.enableSecondsText)
+	-- print(E.private.enhanced.loseControl.enableCooldownFrame)
+	-- print(E.private.enhanced.loseControl.enableAbilityName)
+	-- print(E.private.enhanced.loseControl.enableNumberText)
+	-- print(E.private.enhanced.loseControl.enableSecondsText)
 
 	-- if self.db.compactMode then
 	-- 	self.frame.TimeLeft.NumberText:FontTemplate(E.media.normFont, E:Round(self.db.iconSize / 3), "OUTLINE")
@@ -410,8 +410,8 @@ end
 
 -- local functionForHook = LossOfControlFrame_SetUpDisplay
 -- function LossOfControlFrame_SetUpDisplay(...)
---     functionForHook(...)
---     LC:UpdateSettings()
+--	 functionForHook(...)
+--	 LC:UpdateSettings()
 -- end
 
 
@@ -422,7 +422,7 @@ function LC:Initialize()
 	self.db = E.db.enhanced.loseControl;
 
 	self.frame = _G.LossOfControlFrame;
-    -- local frame = self.frame;
+	-- local frame = self.frame;
 	-- self.frame:SetPoint("CENTER")
 	-- self.frame:SetTemplate()
 	-- self.frame:Hide()
@@ -430,31 +430,31 @@ function LC:Initialize()
 	-- self.frame.icon = self.frame.Icon or self.frame:CreateTexture(nil, "ARTWORK")
 	-- self.frame.icon:SetInside()
 
-    -- self.frame.icon:SetAllPoints()
-    local icon = self.frame.Icon;
+	-- self.frame.icon:SetAllPoints()
+	local icon = self.frame.Icon;
 	icon:SetTexCoord(unpack(E.TexCoords));
-    icon:ClearAllPoints();
-    icon:SetAllPoints(self.frame);
+	icon:ClearAllPoints();
+	icon:SetAllPoints(self.frame);
 
-    -- local cooldown = self.frame.Cooldown; -- фрейм кулдауна
+	-- local cooldown = self.frame.Cooldown; -- фрейм кулдауна
 
-    -- cooldown:Size(self.frame:GetWidth()-self.frame:GetWidth()/3,self.frame:GetHeight()-self.frame:GetWidth()/3);
+	-- cooldown:Size(self.frame:GetWidth()-self.frame:GetWidth()/3,self.frame:GetHeight()-self.frame:GetWidth()/3);
 
-    -- cooldown:ClearAllPoints();
-    -- cooldown:SetAllPoints(self.frame);
+	-- cooldown:ClearAllPoints();
+	-- cooldown:SetAllPoints(self.frame);
 
 
-    -- local abilityName = self.frame.AbilityName; -- название спела
+	-- local abilityName = self.frame.AbilityName; -- название спела
 	-- abilityName = self.frame.AbilityName or self.frame:CreateFontString(nil, "OVERLAY")
 	-- abilityName:FontTemplate(E.media.normFont, 20, "OUTLINE");
-    -- abilityName:ClearAllPoints();
+	-- abilityName:ClearAllPoints();
 	-- abilityName:SetPoint("TOP",self.frame,"BOTTOM", 0, -250);
 
 	-- local numberText = self.frame.TimeLeft.NumberText; -- время
 
-    local secondsText = self.frame.TimeLeft.SecondsText; -- текст [секунд]
+	local secondsText = self.frame.TimeLeft.SecondsText; -- текст [секунд]
 	-- secondsText:FontTemplate(E.media.normFont, 20, "OUTLINE");
-    -- secondsText:ClearAllPoints();
+	-- secondsText:ClearAllPoints();
 	-- secondsText:SetPoint("TOP",self.frame,"BOTTOM", 0, -500);
 	secondsText:SetText(L["seconds"]);
 
@@ -479,8 +479,3 @@ local function InitializeCallback()
 end
 
 E:RegisterModule(LC:GetName(), InitializeCallback);
-
-
-
-
-

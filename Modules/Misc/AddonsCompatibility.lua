@@ -170,9 +170,9 @@ local addonFixes = {
 			E:RegisterCooldown(self.icons[#self.icons].cooldown)
 		end)
 		if OmniBar.icons then
-		    for _, icon in ipairs(OmniBar.icons) do
-		    	E:RegisterCooldown(icon.cooldown)
-		    end
+			for _, icon in ipairs(OmniBar.icons) do
+				E:RegisterCooldown(icon.cooldown)
+			end
 		end
 	end,
 

@@ -54,7 +54,7 @@ local function AchievementIcon(self, link)
 		-- local icon = select(10, GetAchievementInfo(id)) or nil
 		-- print(icon)
 		-- if false then
-		-- 	AddIcon(self, icon)
+		--	AddIcon(self, icon)
 		-- end
 		return
 	end

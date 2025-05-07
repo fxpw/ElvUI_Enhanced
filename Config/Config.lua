@@ -78,13 +78,13 @@ local function GeneralOptions()
 				end
 			},
 			-- trainAllSkills = {
-			-- 	type = "toggle",
-			-- 	name = L["Train All Button"],
-			-- 	desc = L["Add button to Trainer frame with ability to train all available skills in one click."],
-			-- 	set = function(info, value)
-			-- 		E.db.enhanced.general.trainAllSkills = value
-			-- 		E:GetModule("Enhanced_TrainAll"):ToggleState()
-			-- 	end
+			--	type = "toggle",
+			--	name = L["Train All Button"],
+			--	desc = L["Add button to Trainer frame with ability to train all available skills in one click."],
+			--	set = function(info, value)
+			--		E.db.enhanced.general.trainAllSkills = value
+			--		E:GetModule("Enhanced_TrainAll"):ToggleState()
+			--	end
 			-- },
 			showQuestLevel = {
 				type = "toggle",
@@ -230,23 +230,23 @@ local function BlizzardOptions()
 						name = L["General"]
 					},
 					-- deathRecap = {
-					-- 	order = 2,
-					-- 	type = "toggle",
-					-- 	name = L["Death Recap Frame"]
+					--	order = 2,
+					--	type = "toggle",
+					--	name = L["Death Recap Frame"]
 					-- },
 					-- takeAllMail = {
-					-- 	order = 3,
-					-- 	type = "toggle",
-					-- 	name = L["Take All Mail"],
-					-- 	get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
-					-- 	set = function(info, value)
-					-- 		E.db.enhanced.blizzard.takeAllMail = value
-					-- 		if value and not TAM.initialized then
-					-- 			TAM:Initialize()
-					-- 		elseif not value then
-					-- 			E:StaticPopup_Show("CONFIG_RL")
-					-- 		end
-					-- 	end
+					--	order = 3,
+					--	type = "toggle",
+					--	name = L["Take All Mail"],
+					--	get = function(info) return E.db.enhanced.blizzard.takeAllMail end,
+					--	set = function(info, value)
+					--		E.db.enhanced.blizzard.takeAllMail = value
+					--		if value and not TAM.initialized then
+					--			TAM:Initialize()
+					--		elseif not value then
+					--			E:StaticPopup_Show("CONFIG_RL")
+					--		end
+					--	end
 					-- },
 					animatedAchievementBars = {
 						order = 3,
@@ -308,10 +308,10 @@ local function BlizzardOptions()
 						name = ""
 					},
 					-- backgroundTexture = {
-					-- 	type = 'group',
-					-- 	name = L["Backdrop"],
-					-- 	order = 7,
-					-- 	args = {
+					--	type = 'group',
+					--	name = L["Backdrop"],
+					--	order = 7,
+					--	args = {
 
 					selectedBGTexture = {
 						type = 'select',
@@ -399,202 +399,202 @@ local function BlizzardOptions()
 					-- },
 
 					-- paperdollBackgrounds = {
-					-- 	order = 5,
-					-- 	type = "group",
-					-- 	name = L["Paperdoll Backgrounds"],
-					-- 	guiInline = true,
-					-- 	get = function(info) return E.db.enhanced.character[info[#info]] end,
-					-- 	disabled = function() return not E.private.enhanced.character.enable end,
-					-- 	args = {
-					-- 		characterBackground = {
-					-- 			order = 1,
-					-- 			type = "toggle",
-					-- 			name = L["Character Background"],
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.characterBackground = value
-					-- 				CHAR:UpdateCharacterModelFrame()
-					-- 			end
-					-- 		},
-					-- 		desaturateCharacter = {
-					-- 			order = 2,
-					-- 			type = "toggle",
-					-- 			name = L["Desaturate"],
-					-- 			get = function(info) return E.db.enhanced.character.desaturateCharacter end,
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.desaturateCharacter = value
-					-- 				CHAR:UpdateCharacterModelFrame()
-					-- 			end,
-					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.characterBackground end
-					-- 		},
-					-- 		spacer = {
-					-- 			order = 3,
-					-- 			type = "description",
-					-- 			name = " "
-					-- 		},
-					-- 		petBackground = {
-					-- 			order = 4,
-					-- 			type = "toggle",
-					-- 			name = L["Pet Background"],
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.petBackground = value
-					-- 				CHAR:UpdatePetModelFrame()
-					-- 			end
-					-- 		},
-					-- 		desaturatePet = {
-					-- 			order = 5,
-					-- 			type = "toggle",
-					-- 			name = L["Desaturate"],
-					-- 			get = function(info) return E.db.enhanced.character.desaturatePet end,
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.desaturatePet = value
-					-- 				CHAR:UpdatePetModelFrame()
-					-- 			end,
-					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.petBackground end
-					-- 		},
-					-- 		spacer2 = {
-					-- 			order = 6,
-					-- 			type = "description",
-					-- 			name = " "
-					-- 		},
-					-- 		inspectBackground = {
-					-- 			order = 6,
-					-- 			type = "toggle",
-					-- 			name = L["Inspect Background"],
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.inspectBackground = value
-					-- 				CHAR:UpdateInspectModelFrame()
-					-- 			end
-					-- 		},
-					-- 		desaturateInspect = {
-					-- 			order = 8,
-					-- 			type = "toggle",
-					-- 			name = L["Desaturate"],
-					-- 			get = function(info) return E.db.enhanced.character.desaturateInspect end,
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.desaturateInspect = value
-					-- 				CHAR:UpdateInspectModelFrame()
-					-- 			end,
-					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
-					-- 		},
-					-- 		spacer3 = {
-					-- 			order = 9,
-					-- 			type = "description",
-					-- 			name = " "
-					-- 		},
-					-- 		companionBackground = {
-					-- 			order = 10,
-					-- 			type = "toggle",
-					-- 			name = L["Companion Background"],
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.companionBackground = value
-					-- 				CHAR:UpdateCompanionModelFrame()
-					-- 			end
-					-- 		},
-					-- 		desaturateCompanion = {
-					-- 			order = 11,
-					-- 			type = "toggle",
-					-- 			name = L["Desaturate"],
-					-- 			get = function(info) return E.db.enhanced.character.desaturateCompanion end,
-					-- 			set = function(info, value)
-					-- 				E.db.enhanced.character.desaturateCompanion = value
-					-- 				CHAR:UpdateCompanionModelFrame()
-					-- 			end,
-					-- 			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.companionBackground end
-					-- 		}
-					-- 	}
+					--	order = 5,
+					--	type = "group",
+					--	name = L["Paperdoll Backgrounds"],
+					--	guiInline = true,
+					--	get = function(info) return E.db.enhanced.character[info[#info]] end,
+					--	disabled = function() return not E.private.enhanced.character.enable end,
+					--	args = {
+					--		characterBackground = {
+					--			order = 1,
+					--			type = "toggle",
+					--			name = L["Character Background"],
+					--			set = function(info, value)
+					--				E.db.enhanced.character.characterBackground = value
+					--				CHAR:UpdateCharacterModelFrame()
+					--			end
+					--		},
+					--		desaturateCharacter = {
+					--			order = 2,
+					--			type = "toggle",
+					--			name = L["Desaturate"],
+					--			get = function(info) return E.db.enhanced.character.desaturateCharacter end,
+					--			set = function(info, value)
+					--				E.db.enhanced.character.desaturateCharacter = value
+					--				CHAR:UpdateCharacterModelFrame()
+					--			end,
+					--			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.characterBackground end
+					--		},
+					--		spacer = {
+					--			order = 3,
+					--			type = "description",
+					--			name = " "
+					--		},
+					--		petBackground = {
+					--			order = 4,
+					--			type = "toggle",
+					--			name = L["Pet Background"],
+					--			set = function(info, value)
+					--				E.db.enhanced.character.petBackground = value
+					--				CHAR:UpdatePetModelFrame()
+					--			end
+					--		},
+					--		desaturatePet = {
+					--			order = 5,
+					--			type = "toggle",
+					--			name = L["Desaturate"],
+					--			get = function(info) return E.db.enhanced.character.desaturatePet end,
+					--			set = function(info, value)
+					--				E.db.enhanced.character.desaturatePet = value
+					--				CHAR:UpdatePetModelFrame()
+					--			end,
+					--			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.petBackground end
+					--		},
+					--		spacer2 = {
+					--			order = 6,
+					--			type = "description",
+					--			name = " "
+					--		},
+					--		inspectBackground = {
+					--			order = 6,
+					--			type = "toggle",
+					--			name = L["Inspect Background"],
+					--			set = function(info, value)
+					--				E.db.enhanced.character.inspectBackground = value
+					--				CHAR:UpdateInspectModelFrame()
+					--			end
+					--		},
+					--		desaturateInspect = {
+					--			order = 8,
+					--			type = "toggle",
+					--			name = L["Desaturate"],
+					--			get = function(info) return E.db.enhanced.character.desaturateInspect end,
+					--			set = function(info, value)
+					--				E.db.enhanced.character.desaturateInspect = value
+					--				CHAR:UpdateInspectModelFrame()
+					--			end,
+					--			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.inspectBackground end
+					--		},
+					--		spacer3 = {
+					--			order = 9,
+					--			type = "description",
+					--			name = " "
+					--		},
+					--		companionBackground = {
+					--			order = 10,
+					--			type = "toggle",
+					--			name = L["Companion Background"],
+					--			set = function(info, value)
+					--				E.db.enhanced.character.companionBackground = value
+					--				CHAR:UpdateCompanionModelFrame()
+					--			end
+					--		},
+					--		desaturateCompanion = {
+					--			order = 11,
+					--			type = "toggle",
+					--			name = L["Desaturate"],
+					--			get = function(info) return E.db.enhanced.character.desaturateCompanion end,
+					--			set = function(info, value)
+					--				E.db.enhanced.character.desaturateCompanion = value
+					--				CHAR:UpdateCompanionModelFrame()
+					--			end,
+					--			disabled = function() return not E.private.enhanced.character.enable or not E.db.enhanced.character.companionBackground end
+					--		}
+					--	}
 					-- }
 				}
 			},
 			-- dressingRoom = {
-			-- 	order = 4,
-			-- 	type = "group",
-			-- 	name = L["Dressing Room"],
-			-- 	get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
-			-- 	set = function(info, value)
-			-- 		E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
-			-- 		E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
-			-- 	end,
-			-- 	args = {
-			-- 		header = {
-			-- 			order = 1,
-			-- 			type = "header",
-			-- 			name = L["Dressing Room"],
-			-- 		},
-			-- 		enable = {
-			-- 			order = 2,
-			-- 			type = "toggle",
-			-- 			name = L["Enable"],
-			-- 			set = function(info, value)
-			-- 				E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
-			-- 				E:StaticPopup_Show("PRIVATE_RL")
-			-- 			end,
-			-- 		},
-			-- 		multiplier = {
-			-- 			order = 3,
-			-- 			type = "range",
-			-- 			min = 1, max = 2, step = 0.01,
-			-- 			isPercent = true,
-			-- 			name = L["Scale"],
-			-- 			disabled = function() return not E.db.enhanced.blizzard.dressUpFrame.enable end
-			-- 		},
-			-- 		undressButton = {
-			-- 			order = 4,
-			-- 			type = "toggle",
-			-- 			name = L["Undress Button"],
-			-- 			desc = L["Add button to Dressing Room frame with ability to undress model."],
-			-- 			get = function(info) return E.db.enhanced.general.undressButton end,
-			-- 			set = function(info, value)
-			-- 				E.db.enhanced.general.undressButton = value
-			-- 				E:GetModule("Enhanced_UndressButtons"):ToggleState()
-			-- 			end
-			-- 		},
-			-- 	}
+			--	order = 4,
+			--	type = "group",
+			--	name = L["Dressing Room"],
+			--	get = function(info) return E.db.enhanced.blizzard.dressUpFrame[info[#info]] end,
+			--	set = function(info, value)
+			--		E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+			--		E:GetModule("Enhanced_Blizzard"):UpdateDressUpFrame()
+			--	end,
+			--	args = {
+			--		header = {
+			--			order = 1,
+			--			type = "header",
+			--			name = L["Dressing Room"],
+			--		},
+			--		enable = {
+			--			order = 2,
+			--			type = "toggle",
+			--			name = L["Enable"],
+			--			set = function(info, value)
+			--				E.db.enhanced.blizzard.dressUpFrame[info[#info]] = value
+			--				E:StaticPopup_Show("PRIVATE_RL")
+			--			end,
+			--		},
+			--		multiplier = {
+			--			order = 3,
+			--			type = "range",
+			--			min = 1, max = 2, step = 0.01,
+			--			isPercent = true,
+			--			name = L["Scale"],
+			--			disabled = function() return not E.db.enhanced.blizzard.dressUpFrame.enable end
+			--		},
+			--		undressButton = {
+			--			order = 4,
+			--			type = "toggle",
+			--			name = L["Undress Button"],
+			--			desc = L["Add button to Dressing Room frame with ability to undress model."],
+			--			get = function(info) return E.db.enhanced.general.undressButton end,
+			--			set = function(info, value)
+			--				E.db.enhanced.general.undressButton = value
+			--				E:GetModule("Enhanced_UndressButtons"):ToggleState()
+			--			end
+			--		},
+			--	}
 			-- },
 			-- timerTracker = {
-			-- 	order = 5,
-			-- 	type = "group",
-			-- 	name = L["Timer Tracker"],
-			-- 	get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
-			-- 	args = {
-			-- 		header = {
-			-- 			order = 1,
-			-- 			type = "header",
-			-- 			name = L["Timer Tracker"]
-			-- 		},
-			-- 		enable = {
-			-- 			order = 2,
-			-- 			type = "toggle",
-			-- 			name = L["Enable"],
-			-- 			set = function(info, value)
-			-- 				E.db.enhanced.timerTracker.enable = value
-			-- 				E:GetModule("Enhanced_TimerTracker"):ToggleState()
-			-- 			end
-			-- 		},
-			-- 		dbm = {
-			-- 			order = 3,
-			-- 			type = "toggle",
-			-- 			name = L["Hook DBM"],
-			-- 			set = function(info, value)
-			-- 				E.db.enhanced.timerTracker.dbm = value
-			-- 				E:GetModule("Enhanced_TimerTracker"):HookDBM()
-			-- 			end,
-			-- 			disabled = function() return not E.db.enhanced.timerTracker.enable end
-			-- 		},
-			-- 		dbmTimerType = {
-			-- 			order = 8,
-			-- 			type = "select",
-			-- 			name = L["DBM Timer Type"],
-			-- 			set = function(info, value)
-			-- 				E.db.enhanced.timerTracker.dbmTimerType = value
-			-- 			end,
-			-- 			values = {
-			-- 				[1] = L["PvP"],
-			-- 				[2] = L["Challenge Mode"],
-			-- 				[3] = L["Player Countdown"]
-			-- 			},
-			-- 			disabled = function() return not E.db.enhanced.timerTracker.enable or not E.db.enhanced.timerTracker.dbm end
-			-- 		}
-			-- 	}
+			--	order = 5,
+			--	type = "group",
+			--	name = L["Timer Tracker"],
+			--	get = function(info) return E.db.enhanced.timerTracker[info[#info]] end,
+			--	args = {
+			--		header = {
+			--			order = 1,
+			--			type = "header",
+			--			name = L["Timer Tracker"]
+			--		},
+			--		enable = {
+			--			order = 2,
+			--			type = "toggle",
+			--			name = L["Enable"],
+			--			set = function(info, value)
+			--				E.db.enhanced.timerTracker.enable = value
+			--				E:GetModule("Enhanced_TimerTracker"):ToggleState()
+			--			end
+			--		},
+			--		dbm = {
+			--			order = 3,
+			--			type = "toggle",
+			--			name = L["Hook DBM"],
+			--			set = function(info, value)
+			--				E.db.enhanced.timerTracker.dbm = value
+			--				E:GetModule("Enhanced_TimerTracker"):HookDBM()
+			--			end,
+			--			disabled = function() return not E.db.enhanced.timerTracker.enable end
+			--		},
+			--		dbmTimerType = {
+			--			order = 8,
+			--			type = "select",
+			--			name = L["DBM Timer Type"],
+			--			set = function(info, value)
+			--				E.db.enhanced.timerTracker.dbmTimerType = value
+			--			end,
+			--			values = {
+			--				[1] = L["PvP"],
+			--				[2] = L["Challenge Mode"],
+			--				[3] = L["Player Countdown"]
+			--			},
+			--			disabled = function() return not E.db.enhanced.timerTracker.enable or not E.db.enhanced.timerTracker.dbm end
+			--		}
+			--	}
 			-- },
 			watchframe = {
 				order = 6,
@@ -1734,10 +1734,10 @@ local function LoseControlOptions()
 				end,
 			},
 			-- compactMode = {
-			-- 	order = 2,
-			-- 	type = "toggle",
-			-- 	name = L["Compact mode"],
-			-- 	disabled = function() return not E.private.enhanced.loseControl.enable end
+			--	order = 2,
+			--	type = "toggle",
+			--	name = L["Compact mode"],
+			--	disabled = function() return not E.private.enhanced.loseControl.enable end
 			-- },
 			frameScale = {
 				order = 2,
@@ -1785,28 +1785,28 @@ local function LoseControlOptions()
 				end,
 			},
 			-- xOffsetCooldownFrame = {
-			-- 	order = 7,
-			-- 	type = "range",
-			-- 	min = -500, max = 500, step = 1,
-			-- 	name = L["X-Offset"],
-			-- 	get = function(info) return E.private.enhanced.loseControl.xOffsetCooldownFrame end,
-			-- 	set = function(info, value)
-			-- 		E.private.enhanced.loseControl.xOffsetCooldownFrame = value
-			-- 		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
-			-- 	end,
-			-- 	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
+			--	order = 7,
+			--	type = "range",
+			--	min = -500, max = 500, step = 1,
+			--	name = L["X-Offset"],
+			--	get = function(info) return E.private.enhanced.loseControl.xOffsetCooldownFrame end,
+			--	set = function(info, value)
+			--		E.private.enhanced.loseControl.xOffsetCooldownFrame = value
+			--		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+			--	end,
+			--	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
 			-- },
 			-- yOffsetCooldownFrame = {
-			-- 	order = 8,
-			-- 	type = "range",
-			-- 	min = -500, max = 500, step = 1,
-			-- 	name = L["Y-Offset"],
-			-- 	get = function(info) return E.private.enhanced.loseControl.yOffsetCooldownFrame end,
-			-- 	set = function(info, value)
-			-- 		E.private.enhanced.loseControl.yOffsetCooldownFrame = value
-			-- 		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
-			-- 	end,
-			-- 	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
+			--	order = 8,
+			--	type = "range",
+			--	min = -500, max = 500, step = 1,
+			--	name = L["Y-Offset"],
+			--	get = function(info) return E.private.enhanced.loseControl.yOffsetCooldownFrame end,
+			--	set = function(info, value)
+			--		E.private.enhanced.loseControl.yOffsetCooldownFrame = value
+			--		E:GetModule("Enhanced_LoseControl"):UpdateSettings()
+			--	end,
+			--	disabled = function() return not E.private.enhanced.loseControl.enableCooldownFrame end
 			-- },
 			spacer3 = {
 				order = 9,
@@ -2000,45 +2000,45 @@ local function LoseControlOptions()
 			},
 
 			-- typeGroup = {
-			-- 	order = 4,
-			-- 	type = "group",
-			-- 	name = TYPE,
-			-- 	guiInline = true,
-			-- 	get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
-			-- 	set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
-			-- 	disabled = function() return not E.private.enhanced.loseControl.enable end,
-			-- 	args = {
-			-- 		CC = {
-			-- 			order = 1,
-			-- 			type = "toggle",
-			-- 			name = L["CC"]
-			-- 		},
-			-- 		PvE = {
-			-- 			order = 2,
-			-- 			type = "toggle",
-			-- 			name = L["PvE"]
-			-- 		},
-			-- 		Silence = {
-			-- 			order = 3,
-			-- 			type = "toggle",
-			-- 			name = L["Silence"]
-			-- 		},
-			-- 		Disarm = {
-			-- 			order = 4,
-			-- 			type = "toggle",
-			-- 			name = L["Disarm"]
-			-- 		},
-			-- 		Root = {
-			-- 			order = 5,
-			-- 			type = "toggle",
-			-- 			name = L["Root"]
-			-- 		},
-			-- 		Snare = {
-			-- 			order = 6,
-			-- 			type = "toggle",
-			-- 			name = L["Snare"]
-			-- 		}
-			-- 	}
+			--	order = 4,
+			--	type = "group",
+			--	name = TYPE,
+			--	guiInline = true,
+			--	get = function(info) return E.db.enhanced.loseControl[info[#info]] end,
+			--	set = function(info, value) E.db.enhanced.loseControl[info[#info]] = value end,
+			--	disabled = function() return not E.private.enhanced.loseControl.enable end,
+			--	args = {
+			--		CC = {
+			--			order = 1,
+			--			type = "toggle",
+			--			name = L["CC"]
+			--		},
+			--		PvE = {
+			--			order = 2,
+			--			type = "toggle",
+			--			name = L["PvE"]
+			--		},
+			--		Silence = {
+			--			order = 3,
+			--			type = "toggle",
+			--			name = L["Silence"]
+			--		},
+			--		Disarm = {
+			--			order = 4,
+			--			type = "toggle",
+			--			name = L["Disarm"]
+			--		},
+			--		Root = {
+			--			order = 5,
+			--			type = "toggle",
+			--			name = L["Root"]
+			--		},
+			--		Snare = {
+			--			order = 6,
+			--			type = "toggle",
+			--			name = L["Snare"]
+			--		}
+			--	}
 			-- }
 		}
 	}
@@ -2196,55 +2196,55 @@ local function UnitFrameOptions()
 				name = EE:ColorizeSettingName(L["UnitFrames"])
 			},
 			-- general = {
-			-- 	order = 2,
-			-- 	type = "group",
-			-- 	name = L["General"],
-			-- 	args = {
-			-- 		header = {
-			-- 			order = 1,
-			-- 			type = "header",
-			-- 			name = L["General"]
-			-- 		},
-			-- 		-- portraitHDModelFix = {
-			-- 		-- 	order = 2,
-			-- 		-- 	type = "group",
-			-- 		-- 	guiInline = true,
-			-- 		-- 	name = L["Portrait HD Fix"],
-			-- 		-- 	get = function(info) return E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] end,
-			-- 		-- 	set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] = value end,
-			-- 		-- 	disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end,
-			-- 		-- 	args = {
-			-- 		-- 		-- enable = {
-			-- 		-- 		-- 	order = 1,
-			-- 		-- 		-- 	type = "toggle",
-			-- 		-- 		-- 	name = L["Enable"],
-			-- 		-- 		-- 	set = function(info, value)
-			-- 		-- 		-- 		E.db.enhanced.unitframe.portraitHDModelFix.enable = value
-			-- 		-- 		-- 		E:GetModule("Enhanced_PortraitHDModelFix"):ToggleState()
-			-- 		-- 		-- 	end,
-			-- 		-- 		-- 	disabled = false
-			-- 		-- 		-- },
-			-- 		-- 		-- debug = {
-			-- 		-- 		-- 	order = 2,
-			-- 		-- 		-- 	type = "toggle",
-			-- 		-- 		-- 	name = L["Debug"],
-			-- 		-- 		-- 	desc = L["Print to chat model names of units with enabled 3D portraits."]
-			-- 		-- 		-- },
-			-- 		-- 		-- modelsToFix = {
-			-- 		-- 		-- 	order = 3,
-			-- 		-- 		-- 	type = "input",
-			-- 		-- 		-- 	name = L["Models to fix"],
-			-- 		-- 		-- 	desc = L["List of models with broken portrait camera. Separete each model name with ';' simbol"],
-			-- 		-- 		-- 	width = "full",
-			-- 		-- 		-- 	multiline = true,
-			-- 		-- 		-- 	set = function(info, value)
-			-- 		-- 		-- 		E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix = value
-			-- 		-- 		-- 		E:GetModule("Enhanced_PortraitHDModelFix"):UpdatePortraits()
-			-- 		-- 		-- 	end
-			-- 		-- 		-- }
-			-- 		-- 	}
-			-- 		-- }
-			-- 	}
+			--	order = 2,
+			--	type = "group",
+			--	name = L["General"],
+			--	args = {
+			--		header = {
+			--			order = 1,
+			--			type = "header",
+			--			name = L["General"]
+			--		},
+			--		-- portraitHDModelFix = {
+			--		--	order = 2,
+			--		--	type = "group",
+			--		--	guiInline = true,
+			--		--	name = L["Portrait HD Fix"],
+			--		--	get = function(info) return E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] end,
+			--		--	set = function(info, value) E.db.enhanced.unitframe.portraitHDModelFix[info[#info]] = value end,
+			--		--	disabled = function() return not E.db.enhanced.unitframe.portraitHDModelFix.enable end,
+			--		--	args = {
+			--		--		-- enable = {
+			--		--		--	order = 1,
+			--		--		--	type = "toggle",
+			--		--		--	name = L["Enable"],
+			--		--		--	set = function(info, value)
+			--		--		--		E.db.enhanced.unitframe.portraitHDModelFix.enable = value
+			--		--		--		E:GetModule("Enhanced_PortraitHDModelFix"):ToggleState()
+			--		--		--	end,
+			--		--		--	disabled = false
+			--		--		-- },
+			--		--		-- debug = {
+			--		--		--	order = 2,
+			--		--		--	type = "toggle",
+			--		--		--	name = L["Debug"],
+			--		--		--	desc = L["Print to chat model names of units with enabled 3D portraits."]
+			--		--		-- },
+			--		--		-- modelsToFix = {
+			--		--		--	order = 3,
+			--		--		--	type = "input",
+			--		--		--	name = L["Models to fix"],
+			--		--		--	desc = L["List of models with broken portrait camera. Separete each model name with ';' simbol"],
+			--		--		--	width = "full",
+			--		--		--	multiline = true,
+			--		--		--	set = function(info, value)
+			--		--		--		E.db.enhanced.unitframe.portraitHDModelFix.modelsToFix = value
+			--		--		--		E:GetModule("Enhanced_PortraitHDModelFix"):UpdatePortraits()
+			--		--		--	end
+			--		--		-- }
+			--		--	}
+			--		-- }
+			--	}
 			-- },
 			player = {
 				order = 3,

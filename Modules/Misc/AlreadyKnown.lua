@@ -73,44 +73,44 @@ local function MerchantFrame_UpdateBuybackInfo()
 end
 
 -- local function AuctionFrameBrowse_Update()
--- 	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
--- 	-- print("112312312")
+--	local offset = FauxScrollFrame_GetOffset(BrowseScrollFrame)
+--	-- print("112312312")
 
--- 	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
--- 		-- print(i)
--- 		if (_G["BrowseButton"..i.."Item"] and _G["BrowseButton"..i.."ItemIconTexture"]) or _G["BrowseButton"..i].id then -- Something to do with ARL?
--- 			local itemLink
--- 			if _G["BrowseButton"..i].id then
--- 				itemLink = GetAuctionItemLink('list', _G["BrowseButton"..i].id)
--- 			else
--- 				itemLink = GetAuctionItemLink('list', offset + i)
--- 			end
+--	for i=1, _G.NUM_BROWSE_TO_DISPLAY do
+--		-- print(i)
+--		if (_G["BrowseButton"..i.."Item"] and _G["BrowseButton"..i.."ItemIconTexture"]) or _G["BrowseButton"..i].id then -- Something to do with ARL?
+--			local itemLink
+--			if _G["BrowseButton"..i].id then
+--				itemLink = GetAuctionItemLink('list', _G["BrowseButton"..i].id)
+--			else
+--				itemLink = GetAuctionItemLink('list', offset + i)
+--			end
 
--- 			if itemLink and _checkIfKnown(itemLink) then
--- 				if _G["BrowseButton"..i].id then
--- 					_G["BrowseButton"..i].Icon:SetVertexColor(db.r, db.g, db.b)
--- 				else
--- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(db.r, db.g, db.b)
--- 				end
+--			if itemLink and _checkIfKnown(itemLink) then
+--				if _G["BrowseButton"..i].id then
+--					_G["BrowseButton"..i].Icon:SetVertexColor(db.r, db.g, db.b)
+--				else
+--					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(db.r, db.g, db.b)
+--				end
 
--- 				if db.monochrome then
--- 					if _G["BrowseButton"..i].id then
--- 						_G["BrowseButton"..i].Icon:SetDesaturated(true)
--- 					else
--- 						_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(true)
--- 					end
--- 				end
--- 			else
--- 				if _G["BrowseButton"..i].id then
--- 					_G["BrowseButton"..i].Icon:SetVertexColor(1, 1, 1)
--- 					_G["BrowseButton"..i].Icon:SetDesaturated(false)
--- 				else
--- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(1, 1, 1)
--- 					_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(false)
--- 				end
--- 			end
--- 		end
--- 	end
+--				if db.monochrome then
+--					if _G["BrowseButton"..i].id then
+--						_G["BrowseButton"..i].Icon:SetDesaturated(true)
+--					else
+--						_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(true)
+--					end
+--				end
+--			else
+--				if _G["BrowseButton"..i].id then
+--					_G["BrowseButton"..i].Icon:SetVertexColor(1, 1, 1)
+--					_G["BrowseButton"..i].Icon:SetDesaturated(false)
+--				else
+--					_G["BrowseButton"..i.."ItemIconTexture"]:SetVertexColor(1, 1, 1)
+--					_G["BrowseButton"..i.."ItemIconTexture"]:SetDesaturated(false)
+--				end
+--			end
+--		end
+--	end
 -- end
 
 local function AuctionFrameBid_Update()
@@ -118,18 +118,18 @@ local function AuctionFrameBid_Update()
 	-- local offset = FauxScrollFrame_GetOffset(BidScrollFrame)
 
 	-- for i = 1, NUM_BIDS_TO_DISPLAY do
-	-- 	local index = offset + i
-	-- 	if index > numItems then return end
+	--	local index = offset + i
+	--	if index > numItems then return end
 
-	-- 	local texture = _G["BidButton"..i.."ItemIconTexture"]
+	--	local texture = _G["BidButton"..i.."ItemIconTexture"]
 
-	-- 	if texture and texture:IsShown() then
-	-- 		local _, _, _, _, canUse = GetAuctionItemInfo("bidder", index)
+	--	if texture and texture:IsShown() then
+	--		local _, _, _, _, canUse = GetAuctionItemInfo("bidder", index)
 
-	-- 		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("bidder", index)) then
-	-- 			texture:SetVertexColor(knownColor.r, knownColor.g, knownColor.b)
-	-- 		end
-	-- 	end
+	--		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("bidder", index)) then
+	--			texture:SetVertexColor(knownColor.r, knownColor.g, knownColor.b)
+	--		end
+	--	end
 	-- end
 end
 
@@ -138,23 +138,23 @@ local function AuctionFrameAuctions_Update()
 	-- local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
 
 	-- for i = 1, NUM_AUCTIONS_TO_DISPLAY do
-	-- 	local index = offset + i
-	-- 	if index > numItems then return end
+	--	local index = offset + i
+	--	if index > numItems then return end
 
-	-- 	local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
+	--	local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
 
-	-- 	if texture and texture:IsShown() then
-	-- 		local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
+	--	if texture and texture:IsShown() then
+	--		local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
 
-	-- 		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
-	-- 			local r, g, b = knownColor.r, knownColor.g, knownColor.b
-	-- 			if saleStatus == 1 then
-	-- 				r, g, b = r * 0.5, g * 0.5, b * 0.5
-	-- 			end
+	--		if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
+	--			local r, g, b = knownColor.r, knownColor.g, knownColor.b
+	--			if saleStatus == 1 then
+	--				r, g, b = r * 0.5, g * 0.5, b * 0.5
+	--			end
 
-	-- 			texture:SetVertexColor(r, g, b)
-	-- 		end
-	-- 	end
+	--			texture:SetVertexColor(r, g, b)
+	--		end
+	--	end
 	-- end
 end
 
@@ -175,28 +175,28 @@ local function GuildBankFrame_Update()
 		end
 	end
 
--- 	local numItems = GetNumAuctionItems("owner")
--- 	-- local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
+--	local numItems = GetNumAuctionItems("owner")
+--	-- local offset = FauxScrollFrame_GetOffset(AuctionsScrollFrame)
 
--- 	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
--- 		local index = offset + i
--- 		if index > numItems then return end
+--	for i = 1, NUM_AUCTIONS_TO_DISPLAY do
+--		local index = offset + i
+--		if index > numItems then return end
 
--- 		local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
+--		local texture = _G["AuctionHouseFrameBrowseResultsFrameItemListScrollFrameButton"..i]
 
--- 		if texture and texture:IsShown() then
--- 			local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
+--		if texture and texture:IsShown() then
+--			local _, _, _, _, canUse, _, _, _, _, _, _, _, saleStatus = GetAuctionItemInfo("owner", index)
 
--- 			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
--- 				local r, g, b = knownColor.r, knownColor.g, knownColor.b
--- 				if saleStatus == 1 then
--- 					r, g, b = r * 0.5, g * 0.5, b * 0.5
--- 				end
+--			if canUse and AK:IsAlreadyKnown(GetAuctionItemLink("owner", index)) then
+--				local r, g, b = knownColor.r, knownColor.g, knownColor.b
+--				if saleStatus == 1 then
+--					r, g, b = r * 0.5, g * 0.5, b * 0.5
+--				end
 
--- 				texture:SetVertexColor(r, g, b)
--- 			end
--- 		end
--- 	end
+--				texture:SetVertexColor(r, g, b)
+--			end
+--		end
+--	end
 end
 
 function AK:IsAlreadyKnown(itemLink)

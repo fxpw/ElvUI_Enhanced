@@ -56,30 +56,30 @@ P.enhanced = {
 		-- GemsSize = 20,
 		-- ------------------
 		-- ArmoryConfigBackgroundValues = {
-		-- 	BackgroundValues = {
-		-- 		['HIDE'] = HIDE,
-		-- 		['CUSTOM'] = CUSTOM,
-		-- 		['Space'] = 'Space',
-		-- 		-- ['TheEmpire'] = 'The Empire',
-		-- 		['Castle'] = 'Castle',
-		-- 		['Alliance-text'] = FACTION_ALLIANCE,
-		-- 		['Horde-text'] = FACTION_HORDE,
-		-- 		['Arena-bliz'] = ARENA,
-		-- 		['CLASS'] = CLASS,
-		-- 		-- ['FXPW'] = "FXPW",
-		-- 		-- ['Covenant'] = L["Covenant"],
-		-- 		-- ['Covenant2'] = L["Covenant"]..' 2',
-		-- 	},
-		-- 	BlizzardBackdropList = {
-		-- 		['Arena-bliz'] = [[Interface\PVPFrame\PvpBg-NagrandArena-ToastBG]]
-		-- 	},
-		-- 	-- Covenants = {
-		-- 	-- 	[0] = 'None',
-		-- 	-- 	[1] = 'Kyrian',
-		-- 	-- 	[2] = 'Venthyr',
-		-- 	-- 	[3] = 'NightFae',
-		-- 	-- 	[4] = 'Necrolord',
-		-- 	-- },
+		--	BackgroundValues = {
+		--		['HIDE'] = HIDE,
+		--		['CUSTOM'] = CUSTOM,
+		--		['Space'] = 'Space',
+		--		-- ['TheEmpire'] = 'The Empire',
+		--		['Castle'] = 'Castle',
+		--		['Alliance-text'] = FACTION_ALLIANCE,
+		--		['Horde-text'] = FACTION_HORDE,
+		--		['Arena-bliz'] = ARENA,
+		--		['CLASS'] = CLASS,
+		--		-- ['FXPW'] = "FXPW",
+		--		-- ['Covenant'] = L["Covenant"],
+		--		-- ['Covenant2'] = L["Covenant"]..' 2',
+		--	},
+		--	BlizzardBackdropList = {
+		--		['Arena-bliz'] = [[Interface\PVPFrame\PvpBg-NagrandArena-ToastBG]]
+		--	},
+		--	-- Covenants = {
+		--	--	[0] = 'None',
+		--	--	[1] = 'Kyrian',
+		--	--	[2] = 'Venthyr',
+		--	--	[3] = 'NightFae',
+		--	--	[4] = 'Necrolord',
+		--	-- },
 		-- }
 		------------------
 	},
@@ -283,8 +283,8 @@ P.enhanced = {
 		},
 		units = {
 			-- player = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
-			-- 	-- roleIcon = CopyTable(RoleIcon),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- roleIcon = CopyTable(RoleIcon),
 			-- },
 			target = {
 				-- absorbPrediction = CopyTable(AbsorbPrediction),
@@ -297,28 +297,28 @@ P.enhanced = {
 				}
 			},
 			-- focus = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
-			-- 	-- roleIcon = CopyTable(RoleIcon),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- roleIcon = CopyTable(RoleIcon),
 			-- },
 			-- pet = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
 			-- },
 			-- arena = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
-			-- 	-- roleIcon = CopyTable(RoleIcon),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- roleIcon = CopyTable(RoleIcon),
 			-- },
 			-- party = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
 			-- },
 			-- raid = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
 			-- },
 			-- raid40 = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
-			-- 	-- roleIcon = CopyTable(RoleIcon),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- roleIcon = CopyTable(RoleIcon),
 			-- },
 			-- raidpet = {
-			-- 	-- absorbPrediction = CopyTable(AbsorbPrediction),
+			--	-- absorbPrediction = CopyTable(AbsorbPrediction),
 			-- },
 		},
 	},

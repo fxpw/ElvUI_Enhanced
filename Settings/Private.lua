@@ -60,11 +60,11 @@ V.enhanced = {
 				['Arena-bliz'] = [[Interface\PVPFrame\PvpBg-NagrandArena-ToastBG]]
 			},
 			-- Covenants = {
-			-- 	[0] = 'None',
-			-- 	[1] = 'Kyrian',
-			-- 	[2] = 'Venthyr',
-			-- 	[3] = 'NightFae',
-			-- 	[4] = 'Necrolord',
+			--	[0] = 'None',
+			--	[1] = 'Kyrian',
+			--	[2] = 'Venthyr',
+			--	[3] = 'NightFae',
+			--	[4] = 'Necrolord',
 			-- },
 		}
 	},

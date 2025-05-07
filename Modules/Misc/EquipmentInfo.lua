@@ -259,7 +259,7 @@ end
 function EI:Initialize()
 	if not E.db.enhanced.equipment.enable then return end
 	-- ItemSocketingFrame:HookScript("OnHide",function()
-	-- 	C_Timer.After(0.05,update)
+	--	C_Timer.After(0.05,update)
 	-- end)
 	self:ToggleState(true)
 end
@@ -270,11 +270,3 @@ local function InitializeCallback()
 end
 
 E:RegisterModule(EI:GetName(), InitializeCallback)
-
-
-
-
-
-
-
-

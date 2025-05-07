@@ -19,19 +19,19 @@ License: Public Domain
 --
 -- local minRange, maxRange = rc:GetRange('target')
 -- if not minRange then
---     print("cannot get range estimate for target")
+--    print("cannot get range estimate for target")
 -- elseif not maxRange then
---     print("target is over " .. minRange .. " yards")
+--    print("target is over " .. minRange .. " yards")
 -- else
---     print("target is between " .. minRange .. " and " .. maxRange .. " yards")
+--    print("target is between " .. minRange .. " and " .. maxRange .. " yards")
 -- end
 --
 -- local meleeChecker = rc:GetFriendMaxChecker(rc.MeleeRange) -- 5 yds
 -- for i = 1, 4 do
---     -- TODO: check if unit is valid, etc
---     if meleeChecker("party" .. i) then
---         print("Party member " .. i .. " is in Melee range")
---     end
+--    -- TODO: check if unit is valid, etc
+--	if meleeChecker("party" .. i) then
+--	   print("Party member " .. i .. " is in Melee range")
+--    end
 -- end
 --
 -- local safeDistanceChecker = rc:GetHarmMinChecker(30)
@@ -63,14 +63,14 @@ local DefaultInteractList = {
 -- interact list overrides for races
 local InteractLists = {
     ["Tauren"] = {
-        [3] = 6,
-        [2] = 7,
-        [4] = 25,
+	  [3] = 6,
+	  [2] = 7,
+	  [4] = 25,
     },
     ["Scourge"] = {
-        [3] = 7,
-        [2] = 8,
-        [4] = 27,
+	  [3] = 7,
+	  [2] = 8,
+	  [4] = 27,
     },
 }
 
@@ -200,109 +200,109 @@ HarmSpells["WARLOCK"] = {
 
 local FriendItems  = {
     [5] = {
-        37727, -- Ruby Acorn
+	  37727, -- Ruby Acorn
     },
     [8] = {
-        34368, -- Attuned Crystal Cores
-        33278, -- Burning Torch
+	  34368, -- Attuned Crystal Cores
+	  33278, -- Burning Torch
     },
     [10] = {
-        32321, -- Sparrowhawk Net
+	  32321, -- Sparrowhawk Net
     },
     [15] = {
-        1251, -- Linen Bandage
-        2581, -- Heavy Linen Bandage
-        3530, -- Wool Bandage
-        3531, -- Heavy Wool Bandage
-        6450, -- Silk Bandage
-        6451, -- Heavy Silk Bandage
-        8544, -- Mageweave Bandage
-        8545, -- Heavy Mageweave Bandage
-        14529, -- Runecloth Bandage
-        14530, -- Heavy Runecloth Bandage
-        21990, -- Netherweave Bandage
-        21991, -- Heavy Netherweave Bandage
-        34721, -- Frostweave Bandage
-        34722, -- Heavy Frostweave Bandage
---        38643, -- Thick Frostweave Bandage
---        38640, -- Dense Frostweave Bandage
+	  1251, -- Linen Bandage
+	  2581, -- Heavy Linen Bandage
+	  3530, -- Wool Bandage
+	  3531, -- Heavy Wool Bandage
+	  6450, -- Silk Bandage
+	  6451, -- Heavy Silk Bandage
+	  8544, -- Mageweave Bandage
+	  8545, -- Heavy Mageweave Bandage
+	  14529, -- Runecloth Bandage
+	  14530, -- Heavy Runecloth Bandage
+	  21990, -- Netherweave Bandage
+	  21991, -- Heavy Netherweave Bandage
+	  34721, -- Frostweave Bandage
+	  34722, -- Heavy Frostweave Bandage
+--	  38643, -- Thick Frostweave Bandage
+--	  38640, -- Dense Frostweave Bandage
     },
     [20] = {
-        21519, -- Mistletoe
+	  21519, -- Mistletoe
     },
     [25] = {
-        31463, -- Zezzak's Shard
+	  31463, -- Zezzak's Shard
     },
     [30] = {
-        1180, -- Scroll of Stamina
-        1478, -- Scroll of Protection II
-        3012, -- Scroll of Agility
-        1712, -- Scroll of Spirit II
-        2290, -- Scroll of Intellect II
-        1711, -- Scroll of Stamina II
-        34191, -- Handful of Snowflakes
+	  1180, -- Scroll of Stamina
+	  1478, -- Scroll of Protection II
+	  3012, -- Scroll of Agility
+	  1712, -- Scroll of Spirit II
+	  2290, -- Scroll of Intellect II
+	  1711, -- Scroll of Stamina II
+	  34191, -- Handful of Snowflakes
     },
     [35] = {
-        18904, -- Zorbin's Ultra-Shrinker
+	  18904, -- Zorbin's Ultra-Shrinker
     },
     [40] = {
-        34471, -- Vial of the Sunwell
+	  34471, -- Vial of the Sunwell
     },
     [45] = {
-        32698, -- Wrangling Rope
+	  32698, -- Wrangling Rope
     },
     [60] = {
-        32825, -- Soul Cannon
-        37887, -- Seeds of Nature's Wrath
+	  32825, -- Soul Cannon
+	  37887, -- Seeds of Nature's Wrath
     },
     [80] = {
-        35278, -- Reinforced Net
+	  35278, -- Reinforced Net
     },
 }
 
 local HarmItems = {
     [5] = {
-        37727, -- Ruby Acorn
+	  37727, -- Ruby Acorn
     },
     [8] = {
-        34368, -- Attuned Crystal Cores
-        33278, -- Burning Torch
+	  34368, -- Attuned Crystal Cores
+	  33278, -- Burning Torch
     },
     [10] = {
-        32321, -- Sparrowhawk Net
+	  32321, -- Sparrowhawk Net
     },
     [15] = {
-        33069, -- Sturdy Rope
+	  33069, -- Sturdy Rope
     },
     [20] = {
-        10645, -- Gnomish Death Ray
+	  10645, -- Gnomish Death Ray
     },
     [25] = {
-        24268, -- Netherweave Net
-        41509, -- Frostweave Net
-        31463, -- Zezzak's Shard
+	  24268, -- Netherweave Net
+	  41509, -- Frostweave Net
+	  31463, -- Zezzak's Shard
     },
     [30] = {
-        835, -- Large Rope Net
-        7734, -- Six Demon Bag
-        34191, -- Handful of Snowflakes
+	  835, -- Large Rope Net
+	  7734, -- Six Demon Bag
+	  34191, -- Handful of Snowflakes
     },
     [35] = {
-        24269, -- Heavy Netherweave Net
-        18904, -- Zorbin's Ultra-Shrinker
+	  24269, -- Heavy Netherweave Net
+	  18904, -- Zorbin's Ultra-Shrinker
     },
     [40] = {
-        28767, -- The Decapitator
+	  28767, -- The Decapitator
     },
     [45] = {
-        32698, -- Wrangling Rope
+	  32698, -- Wrangling Rope
     },
     [60] = {
-        32825, -- Soul Cannon
-        37887, -- Seeds of Nature's Wrath
+	  32825, -- Soul Cannon
+	  37887, -- Seeds of Nature's Wrath
     },
     [80] = {
-        35278, -- Reinforced Net
+	  35278, -- Reinforced Net
     },
 }
 
@@ -361,46 +361,46 @@ local minRangeCheck = function(unit) return CheckInteractDistance(unit, 2) end
 
 local checkers_Spell = setmetatable({}, {
     __index = function(t, spellIdx)
-        local func = function(unit)
-            if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-                 return true
-            end
-        end
-        t[spellIdx] = func
-        return func
+	  local func = function(unit)
+		if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
+		    return true
+		end
+	  end
+	  t[spellIdx] = func
+	  return func
     end
 })
 local checkers_SpellWithMin = setmetatable({}, {
     __index = function(t, spellIdx)
-        local func = function(unit)
-            if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
-                return true
-            elseif minRangeCheck(unit) then
-                return true, true
-            end
-        end
-        t[spellIdx] = func
-        return func
+	  local func = function(unit)
+		if IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1 then
+		   return true
+		elseif minRangeCheck(unit) then
+		   return true, true
+		end
+	  end
+	  t[spellIdx] = func
+	  return func
     end
 })
 local checkers_Item = setmetatable({}, {
     __index = function(t, item)
-        local func = function(unit)
-            return (IsItemInRange(item, unit) == 1)
-        end
-        t[item] = func
-        return func
+	  local func = function(unit)
+		return (IsItemInRange(item, unit) == 1)
+	  end
+	  t[item] = func
+	  return func
     end
 })
 local checkers_Interact = setmetatable({}, {
     __index = function(t, index)
-        local func = function(unit)
-            if CheckInteractDistance(unit, index) then
-                 return true
-            end
-        end
-        t[index] = func
-        return func
+	  local func = function(unit)
+		if CheckInteractDistance(unit, index) then
+		    return true
+		end
+	  end
+	  t[index] = func
+	  return func
     end
 })
 
@@ -409,12 +409,12 @@ local checkers_Interact = setmetatable({}, {
 local function copyTable(src, dst)
     if type(dst) ~= "table" then dst = {} end
     if type(src) == "table" then
-        for k, v in pairs(src) do
-            if type(v) == "table" then
-                v = copyTable(v, dst[k])
-            end
-            dst[k] = v
-        end
+	  for k, v in pairs(src) do
+		if type(v) == "table" then
+		   v = copyTable(v, dst[k])
+		end
+		dst[k] = v
+	  end
     end
     return dst
 end
@@ -436,10 +436,10 @@ end
 local function findSpellIdx(spellName)
     local i = 1
     while true do
-        local spell, rank = GetSpellName(i, BOOKTYPE_SPELL)
-        if not spell then return nil end
-        if spell == spellName then return i end
-        i = i + 1
+	  local spell, rank = GetSpellName(i, BOOKTYPE_SPELL)
+	  if not spell then return nil end
+	  if spell == spellName then return i end
+	  i = i + 1
     end
     return nil
 end
@@ -448,12 +448,12 @@ end
 local function addChecker(t, range, minRange, checker)
     local rc = { ["range"] = range, ["minRange"] = minRange, ["checker"] = checker }
     for i = 1, #t do
-        local v = t[i]
-        if rc.range == v.range then return end
-        if rc.range > v.range then
-            tinsert(t, i, rc)
-            return
-        end
+	  local v = t[i]
+	  if rc.range == v.range then return end
+	  if rc.range > v.range then
+		tinsert(t, i, rc)
+		return
+	  end
     end
     tinsert(t, rc)
 end
@@ -461,45 +461,45 @@ end
 local function createCheckerList(spellList, itemList, interactList)
     local res = {}
     if spellList then
-        for i = 1, #spellList do
-            local sid = spellList[i]
-            local name, _, _, _, _, _, _, minRange, range = GetSpellInfo(sid)
-            local spellIdx = findSpellIdx(name)
-            if spellIdx and range then
-                minRange = math_floor(minRange + 0.5)
-                range = math_floor(range + 0.5)
-                -- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
-                if minRange == 0 then -- getRange() expects minRange to be nil in this case
-                    minRange = nil
-                end
-                if range == 0 then
-                    range = MeleeRange
-                end
-                if minRange then
-                    addChecker(res, range, minRange, checkers_SpellWithMin[spellIdx])
-                else
-                    addChecker(res, range, minRange, checkers_Spell[spellIdx])
-                end
-            end
-        end
+	  for i = 1, #spellList do
+		local sid = spellList[i]
+		local name, _, _, _, _, _, _, minRange, range = GetSpellInfo(sid)
+		local spellIdx = findSpellIdx(name)
+		if spellIdx and range then
+		   minRange = math_floor(minRange + 0.5)
+		   range = math_floor(range + 0.5)
+		   -- print("### spell: " .. tostring(name) .. ", " .. tostring(minRange) .. " - " ..  tostring(range))
+		   if minRange == 0 then -- getRange() expects minRange to be nil in this case
+			 minRange = nil
+		   end
+		   if range == 0 then
+			 range = MeleeRange
+		   end
+		   if minRange then
+			 addChecker(res, range, minRange, checkers_SpellWithMin[spellIdx])
+		   else
+			 addChecker(res, range, minRange, checkers_Spell[spellIdx])
+		   end
+		end
+	  end
     end
 
     if itemList then
-        for range, items in pairs(itemList) do
-            for i = 1, #items do
-                local item = items[i]
-                if GetItemInfo(item) then
-                    addChecker(res, range, nil, checkers_Item[item])
-                    break
-                end
-            end
-        end
+	  for range, items in pairs(itemList) do
+		for i = 1, #items do
+		   local item = items[i]
+		   if GetItemInfo(item) then
+			 addChecker(res, range, nil, checkers_Item[item])
+			 break
+		   end
+		end
+	  end
     end
 
     if interactList and not next(res) then
-        for index, range in pairs(interactList) do
-            addChecker(res, range, nil,  checkers_Interact[index])
-        end
+	  for index, range in pairs(interactList) do
+		addChecker(res, range, nil,  checkers_Interact[index])
+	  end
     end
 
     return res
@@ -509,85 +509,85 @@ end
 local function getRange(unit, checkerList)
     local min, max = 0, nil
     for i = 1, #checkerList do
-        local rc = checkerList[i]
-        if not max or max > rc.range then
-            if rc.minRange then
-                local inRange, inMinRange = rc.checker(unit)
-                if inMinRange then
-                    max = rc.minRange
-                elseif inRange then
-                    min, max = rc.minRange, rc.range
-                elseif min > rc.range then
-                    return min, max
-                else
-                    return rc.range, max
-                end
-            elseif rc.checker(unit) then
-                max = rc.range
-            elseif min > rc.range then
-                return min, max
-            else
-                return rc.range, max
-            end
-        end
+	  local rc = checkerList[i]
+	  if not max or max > rc.range then
+		if rc.minRange then
+		   local inRange, inMinRange = rc.checker(unit)
+		   if inMinRange then
+			 max = rc.minRange
+		   elseif inRange then
+			 min, max = rc.minRange, rc.range
+		   elseif min > rc.range then
+			 return min, max
+		   else
+			 return rc.range, max
+		   end
+		elseif rc.checker(unit) then
+		   max = rc.range
+		elseif min > rc.range then
+		   return min, max
+		else
+		   return rc.range, max
+		end
+	  end
     end
     return min, max
 end
 
 local function updateCheckers(origList, newList)
     if #origList ~= #newList then
-        wipe(origList)
-        copyTable(newList, origList)
-        return true
+	  wipe(origList)
+	  copyTable(newList, origList)
+	  return true
     end
     for i = 1, #origList do
-        if origList[i].range ~= newList[i].range or origList[i].checker ~= newList[i].checker then
-            wipe(origList)
-            copyTable(newList, origList)
-            return true
-        end
+	  if origList[i].range ~= newList[i].range or origList[i].checker ~= newList[i].checker then
+		wipe(origList)
+		copyTable(newList, origList)
+		return true
+	  end
     end
 end
 
 local function rcIterator(checkerList)
     local curr = #checkerList
     return function()
-        local rc = checkerList[curr]
-        if not rc then
-             return nil
-        end
-        curr = curr - 1
-        return rc.range, rc.checker
+	  local rc = checkerList[curr]
+	  if not rc then
+		 return nil
+	  end
+	  curr = curr - 1
+	  return rc.range, rc.checker
     end
 end
 
 local function getMinChecker(checkerList, range)
     local checker, checkerRange
     for i = 1, #checkerList do
-        local rc = checkerList[i]
-        if rc.range < range then
-            return checker, checkerRange
-        end
-        checker, checkerRange = rc.checker, rc.range
+	  local rc = checkerList[i]
+	  if rc.range < range then
+		return checker, checkerRange
+	  end
+	  checker, checkerRange = rc.checker, rc.range
     end
     return checker, checkerRange
 end
 
 local function getMaxChecker(checkerList, range)
     for i = 1, #checkerList do
-        local rc = checkerList[i]
-        if rc.range <= range then
-            return rc.checker, rc.range
-        end
+	  local rc = checkerList[i]
+	  if rc.range <= range then
+		return rc.checker, rc.range
+	  end
     end
 end
 
 local function getChecker(checkerList, range)
     for i = 1, #checkerList do
-        local rc = checkerList[i]
-        if rc.range == range then
-            return rc.checker
-        end
+	  local rc = checkerList[i]
+	  if rc.range == range then
+		return rc.checker
+	  end
     end
 end
 
@@ -599,19 +599,19 @@ local function createSmartChecker(friendChecker, harmChecker, miscChecker)
     friendChecker = friendChecker or miscChecker
     harmChecker = harmChecker or miscChecker
     return function(unit)
-        if not UnitExists(unit) then
-            return nil
-        end
-        if UnitIsDeadOrGhost(unit) then
-            return miscChecker(unit)
-        end
-        if UnitCanAttack("player", unit) then
-            return harmChecker(unit)
-        elseif UnitCanAssist("player", unit) then
-            return friendChecker(unit)
-        else
-            return miscChecker(unit)
-        end
+	  if not UnitExists(unit) then
+		return nil
+	  end
+	  if UnitIsDeadOrGhost(unit) then
+		return miscChecker(unit)
+	  end
+	  if UnitCanAttack("player", unit) then
+		return harmChecker(unit)
+	  elseif UnitCanAssist("player", unit) then
+		return friendChecker(unit)
+	  else
+		return miscChecker(unit)
+	  end
     end
 end
 
@@ -642,7 +642,7 @@ lib.MeleeRange = MeleeRange
 
 function lib:findSpellIndex(spell)
     if type(spell) == 'number' then
-        spell = GetSpellInfo(spell)
+	  spell = GetSpellInfo(spell)
     end
     if not spell then return nil end
     return findSpellIdx(spell)
@@ -655,7 +655,7 @@ function lib:getRangeAsString(unit, checkVisible, showOutOfRange)
     local minRange, maxRange = self:getRange(unit)
     if not minRange then return nil end
     if not maxRange then
-        return showOutOfRange and minRange .. " +" or nil
+	  return showOutOfRange and minRange .. " +" or nil
     end
     return minRange .. " - " .. maxRange
 end
@@ -663,7 +663,7 @@ end
 -- initialize RangeCheck if not yet initialized or if "forced"
 function lib:init(forced)
     if self.initialized and (not forced) then
-        return
+	  return
     end
     self.initialized = true
     local _, playerClass = UnitClass("player")
@@ -672,64 +672,64 @@ function lib:init(forced)
     minRangeCheck = nil
     -- first try to find a nice item we can use for minRangeCheck
     if HarmItems[15] then
-        local items = HarmItems[15]
-        for i = 1, #items do
-            local item = items[i]
-            if GetItemInfo(item) then
-                minRangeCheck = function(unit)
-                    return (IsItemInRange(item, unit) == 1)
-                end
-                break
-            end
-        end
+	  local items = HarmItems[15]
+	  for i = 1, #items do
+		local item = items[i]
+		if GetItemInfo(item) then
+		   minRangeCheck = function(unit)
+			 return (IsItemInRange(item, unit) == 1)
+		   end
+		   break
+		end
+	  end
     end
     if not minRangeCheck then
-        -- ok, then try to find some class specific spell
-        if playerClass == "WARRIOR" then
-            -- for warriors, use Intimidating Shout if available
-            local name = GetSpellInfo(5246) -- ["Intimidating Shout"]
-            local spellIdx = findSpellIdx(name)
-            if spellIdx then
-                minRangeCheck = function(unit)
-                    return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
-                end
-            end
-        elseif playerClass == "ROGUE" then
-            -- for rogues, use Blind if available
-            local name = GetSpellInfo(2094) -- ["Blind"]
-            local spellIdx = findSpellIdx(name)
-            if spellIdx then
-                minRangeCheck = function(unit)
-                    return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
-                end
-            end
-        end
+	  -- ok, then try to find some class specific spell
+	  if playerClass == "WARRIOR" then
+		-- for warriors, use Intimidating Shout if available
+		local name = GetSpellInfo(5246) -- ["Intimidating Shout"]
+		local spellIdx = findSpellIdx(name)
+		if spellIdx then
+		   minRangeCheck = function(unit)
+			 return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
+		   end
+		end
+	  elseif playerClass == "ROGUE" then
+		-- for rogues, use Blind if available
+		local name = GetSpellInfo(2094) -- ["Blind"]
+		local spellIdx = findSpellIdx(name)
+		if spellIdx then
+		   minRangeCheck = function(unit)
+			 return (IsSpellInRange(spellIdx, BOOKTYPE_SPELL, unit) == 1)
+		   end
+		end
+	  end
     end
     if not minRangeCheck then
-        -- fall back to interact distance checks
-        if playerClass == "HUNTER" or playerRace == "Tauren" then
-            -- for hunters, use interact4 as it's safer
-            -- for Taurens interact4 is actually closer than 25yd and interact2 is closer than 8yd, so we can't use that
-            minRangeCheck = checkers_Interact[4]
-        else
-            minRangeCheck = checkers_Interact[2]
-        end
+	  -- fall back to interact distance checks
+	  if playerClass == "HUNTER" or playerRace == "Tauren" then
+		-- for hunters, use interact4 as it's safer
+		-- for Taurens interact4 is actually closer than 25yd and interact2 is closer than 8yd, so we can't use that
+		minRangeCheck = checkers_Interact[4]
+	  else
+		minRangeCheck = checkers_Interact[2]
+	  end
     end
 
     local interactList = InteractLists[playerRace] or DefaultInteractList
     self.handSlotItem = GetInventoryItemLink("player", HandSlotId)
     local changed = false
     if updateCheckers(self.friendRC, createCheckerList(FriendSpells[playerClass], FriendItems, interactList)) then
-        changed = true
+	  changed = true
     end
     if updateCheckers(self.harmRC, createCheckerList(HarmSpells[playerClass], HarmItems, interactList)) then
-        changed = true
+	  changed = true
     end
     if updateCheckers(self.miscRC, createCheckerList(nil, nil, interactList)) then
-        changed = true
+	  changed = true
     end
     if changed and self.callbacks then
-        self.callbacks:Fire(self.CHECKERS_CHANGED)
+	  self.callbacks:Fire(self.CHECKERS_CHANGED)
     end
 end
 
@@ -816,9 +816,9 @@ end
 -- @return **checker** function.
 function lib:GetSmartMinChecker(range)
     return createSmartChecker(
-        getMinChecker(self.friendRC, range),
-        getMinChecker(self.harmRC, range),
-        getMinChecker(self.miscRC, range))
+	  getMinChecker(self.friendRC, range),
+	  getMinChecker(self.harmRC, range),
+	  getMinChecker(self.miscRC, range))
 end
 
 --- Return a checker suitable for in-of-range checking that checks the unit type and calls the appropriate checker (friend/harm/misc).
@@ -826,9 +826,9 @@ end
 -- @return **checker** function.
 function lib:GetSmartMaxChecker(range)
     return createSmartChecker(
-        getMaxChecker(self.friendRC, range),
-        getMaxChecker(self.harmRC, range),
-        getMaxChecker(self.miscRC, range))
+	  getMaxChecker(self.friendRC, range),
+	  getMaxChecker(self.harmRC, range),
+	  getMaxChecker(self.miscRC, range))
 end
 
 --- Return a checker for the given range that checks the unit type and calls the appropriate checker (friend/harm/misc).
@@ -837,9 +837,9 @@ end
 -- @return **checker** function.
 function lib:GetSmartChecker(range, fallback)
     return createSmartChecker(
-        getChecker(self.friendRC, range) or fallback,
-        getChecker(self.harmRC, range) or fallback,
-        getChecker(self.miscRC, range) or fallback)
+	  getChecker(self.friendRC, range) or fallback,
+	  getChecker(self.harmRC, range) or fallback,
+	  getChecker(self.miscRC, range) or fallback)
 end
 
 --- Get a range estimate as **minRange**, **maxRange**.
@@ -851,17 +851,17 @@ end
 -- local minRange, maxRange = rc:GetRange('target')
 function lib:GetRange(unit)
     if not UnitExists(unit) then
-        return nil
+	  return nil
     end
     if UnitIsDeadOrGhost(unit) then
-        return getRange(unit, self.miscRC)
+	  return getRange(unit, self.miscRC)
     end
     if UnitCanAttack("player", unit) then
-        return getRange(unit, self.harmRC)
+	  return getRange(unit, self.harmRC)
     elseif UnitCanAssist("player", unit) then
-        return getRange(unit, self.friendRC)
+	  return getRange(unit, self.friendRC)
     else
-        return getRange(unit, self.miscRC)
+	  return getRange(unit, self.miscRC)
     end
 end
 
@@ -872,7 +872,7 @@ lib.getRange = lib.GetRange
 
 function lib:OnEvent(event, ...)
     if type(self[event]) == 'function' then
-        self[event](self, event, ...)
+	  self[event](self, event, ...)
     end
 end
 
@@ -902,67 +902,67 @@ end
 
 function lib:UNIT_INVENTORY_CHANGED(event, unit)
     if self.initialized and unit == "player" and self.handSlotItem ~= GetInventoryItemLink("player", HandSlotId) then
-        self:scheduleInit()
+	  self:scheduleInit()
     end
 end
 local last
 function lib:processItemRequests(itemRequests)
     while true do
-        local range, items = next(itemRequests)
-        if not range then return end
-        while true do
-            local i, item = next(items)
-            if not i then
-                itemRequests[range] = nil
-                break
-            elseif self.failedItemRequests[item] then
-                tremove(items, i)
-            elseif GetItemInfo(item) then
-                if itemRequestTimeoutAt then
-                    foundNewItems = true
-                    itemRequestTimeoutAt = nil
-                end
-                if not cacheAllItems then
-                    itemRequests[range] = nil
-                    break
-                end
-                tremove(items, i)
-            elseif not itemRequestTimeoutAt then
-                requestItemInfo(item)
-                -- print()
-                itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
-                return true
-            elseif GetTime() > itemRequestTimeoutAt then
-                if cacheAllItems then
-                    print(MAJOR_VERSION .. ": timeout for item: " .. tostring(item))
-                end
-                self.failedItemRequests[item] = true
-                itemRequestTimeoutAt = nil
-                tremove(items, i)
-            else
-                return true -- still waiting for server response
-            end
-        end
+	  local range, items = next(itemRequests)
+	  if not range then return end
+	  while true do
+		local i, item = next(items)
+		if not i then
+		   itemRequests[range] = nil
+		   break
+		elseif self.failedItemRequests[item] then
+		   tremove(items, i)
+		elseif GetItemInfo(item) then
+		   if itemRequestTimeoutAt then
+			 foundNewItems = true
+			 itemRequestTimeoutAt = nil
+		   end
+		   if not cacheAllItems then
+			 itemRequests[range] = nil
+			 break
+		   end
+		   tremove(items, i)
+		elseif not itemRequestTimeoutAt then
+		   requestItemInfo(item)
+		   -- print()
+		   itemRequestTimeoutAt = GetTime() + ItemRequestTimeout
+		   return true
+		elseif GetTime() > itemRequestTimeoutAt then
+		   if cacheAllItems then
+			 print(MAJOR_VERSION .. ": timeout for item: " .. tostring(item))
+		   end
+		   self.failedItemRequests[item] = true
+		   itemRequestTimeoutAt = nil
+		   tremove(items, i)
+		else
+		   return true -- still waiting for server response
+		end
+	  end
     end
 end
 
 function lib:initialOnUpdate()
     self:init()
     if friendItemRequests then
-        if self:processItemRequests(friendItemRequests) then return end
-        friendItemRequests = nil
+	  if self:processItemRequests(friendItemRequests) then return end
+	  friendItemRequests = nil
     end
     if harmItemRequests then
-        if self:processItemRequests(harmItemRequests) then return end
-        harmItemRequests = nil
+	  if self:processItemRequests(harmItemRequests) then return end
+	  harmItemRequests = nil
     end
     if foundNewItems then
-        self:init(true)
-        foundNewItems = nil
+	  self:init(true)
+	  foundNewItems = nil
     end
     if cacheAllItems then
-        print(MAJOR_VERSION .. ": finished cache")
-        cacheAllItems = nil
+	  print(MAJOR_VERSION .. ": finished cache")
+	  cacheAllItems = nil
     end
     self.frame:Hide()
 end
@@ -978,29 +978,29 @@ end
 
 function lib:activate()
     if not self.frame then
-        local frame = CreateFrame("Frame")
-        self.frame = frame
-        frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
-        frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
-        frame:RegisterEvent("PLAYER_TALENT_UPDATE")
-        frame:RegisterEvent("GLYPH_ADDED")
-        frame:RegisterEvent("GLYPH_REMOVED")
-        frame:RegisterEvent("GLYPH_UPDATED")
-        local _, playerClass = UnitClass("player")
-        if playerClass == "MAGE" or playerClass == "SHAMAN" then
-            -- Mage and Shaman gladiator gloves modify spell ranges
-            frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
-        end
+	  local frame = CreateFrame("Frame")
+	  self.frame = frame
+	  frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+	  frame:RegisterEvent("CHARACTER_POINTS_CHANGED")
+	  frame:RegisterEvent("PLAYER_TALENT_UPDATE")
+	  frame:RegisterEvent("GLYPH_ADDED")
+	  frame:RegisterEvent("GLYPH_REMOVED")
+	  frame:RegisterEvent("GLYPH_UPDATED")
+	  local _, playerClass = UnitClass("player")
+	  if playerClass == "MAGE" or playerClass == "SHAMAN" then
+		-- Mage and Shaman gladiator gloves modify spell ranges
+		frame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+	  end
     end
     initItemRequests()
     self.frame:SetScript("OnEvent", function(frame, ...) self:OnEvent(...) end)
     self.frame:SetScript("OnUpdate", function(frame, elapsed)
-        lastUpdate = lastUpdate + elapsed
-        if lastUpdate < UpdateDelay then
-            return
-        end
-        lastUpdate = 0
-        self:initialOnUpdate()
+	  lastUpdate = lastUpdate + elapsed
+	  if lastUpdate < UpdateDelay then
+		return
+	  end
+	  lastUpdate = 0
+	  self:initialOnUpdate()
     end)
     self:scheduleInit()
 end
@@ -1018,11 +1018,11 @@ do
     -- rc.RegisterCallback(self, "CHECKERS_CHANGED", someCallbackFunction)
     -- @see CallbackHandler-1.0 documentation for more details
     lib.RegisterCallback = lib.RegisterCallback or function(...)
-        local CBH = LibStub("CallbackHandler-1.0")
-        lib.RegisterCallback = nil -- extra safety, we shouldn't get this far if CBH is not found, but better an error later than an infinite recursion now
-        lib.callbacks = CBH:New(lib)
-        -- ok, CBH hopefully injected or new shiny RegisterCallback
-        return lib.RegisterCallback(...)
+	  local CBH = LibStub("CallbackHandler-1.0")
+	  lib.RegisterCallback = nil -- extra safety, we shouldn't get this far if CBH is not found, but better an error later than an infinite recursion now
+	  lib.callbacks = CBH:New(lib)
+	  -- ok, CBH hopefully injected or new shiny RegisterCallback
+	  return lib.RegisterCallback(...)
     end
 end
 

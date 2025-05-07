@@ -410,8 +410,8 @@ end
 
 -- local functionForHook = LossOfControlFrame_SetUpDisplay
 -- function LossOfControlFrame_SetUpDisplay(...)
---	 functionForHook(...)
---	 LC:UpdateSettings()
+--	functionForHook(...)
+--	LC:UpdateSettings()
 -- end
 
 

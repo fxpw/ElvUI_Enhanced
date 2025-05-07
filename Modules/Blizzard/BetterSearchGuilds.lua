@@ -86,17 +86,17 @@ ScrollBar:SetPoint("RIGHT", ScrollParent, "RIGHT", -35, 0)
 
 
 -- local function LogRecordToString(record,i)
---	 -- if record <= #historyRB then return "---------" end
---	 -- local timestamp, name, message = unpack(record)
---	 -- local timestamp = record.timespam
---	 -- local name = record.namespam
---	 -- local raid = record.raid
---	 -- print(timestamp, name, message)
---	 -- if not timestamp or not name or not raid then
---	 -- 	return "NAIDI MENYA"
---	 -- else
---		 return record[1]
---	 -- end
+--	-- if record <= #historyRB then return "---------" end
+--	-- local timestamp, name, message = unpack(record)
+--	-- local timestamp = record.timespam
+--	-- local name = record.namespam
+--	-- local raid = record.raid
+--	-- print(timestamp, name, message)
+--	-- if not timestamp or not name or not raid then
+--	-- 	return "NAIDI MENYA"
+--	-- else
+--		return record[1]
+--	-- end
 -- end
 local guildId = 1
 
@@ -343,7 +343,7 @@ MainFrame:SetScript("OnEvent",function(self,...)
 		table.insert(self.history,guildInfo)
 		-- cardIndex = cardIndex + 1
 		-- if cardIndex == 4 then
-		--	 cardIndex = 1
+		--	cardIndex = 1
 		-- end
 	end
 	LogChanged()
@@ -427,7 +427,7 @@ LoadManyGuilds:SetText("Загрузить много")
 LoadManyGuilds:SetScript("OnClick",function()
 	C_Timer:NewTicker(0.2,function()
 		UpdateGuildSearch()
-	 end,20)
+	end,20)
 end)
 
 S:HandleButton(LoadManyGuilds)

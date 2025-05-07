@@ -93,7 +93,7 @@ ScrollBar:SetPoint("RIGHT", ScrollParent, "RIGHT", -35, 0)
 --	-- local raid = record.raid
 --	-- print(timestamp, name, message)
 --	-- if not timestamp or not name or not raid then
---	-- 	return "NAIDI MENYA"
+--	--	return "NAIDI MENYA"
 --	-- else
 --		return record[1]
 --	-- end

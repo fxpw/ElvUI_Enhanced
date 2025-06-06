@@ -10,4 +10,5 @@
 	<Script file="Stamina.lua"/>
 	<Script file="Strength.lua"/>
 	<Script file="Range.lua"/>
+	<Script file="BattlePass.lua"/>
 </Ui>

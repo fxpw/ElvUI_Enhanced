@@ -10,12 +10,12 @@ bpFrame:SetPoint("CENTER",UIParent)
 bpFrame:CreateBackdrop("Transparent")
 bpFrame:Hide()
 
-local lastPanel
+-- local lastPanel
 
 local function OnEvent(self)
 
 
-	lastPanel = self
+	-- lastPanel = self
 end
 
 local function OnEnter(self)

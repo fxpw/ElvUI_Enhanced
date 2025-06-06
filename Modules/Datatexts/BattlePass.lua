@@ -3,7 +3,6 @@ local DT = E:GetModule("DataTexts")
 local EE = E:GetModule("ElvUI_Enhanced")
 
 
-
 local lastPanel
 
 local function OnEvent(self)
@@ -15,6 +14,9 @@ end
 local function OnEnter(self)
 
 end
+
+
+
 
 local function OnClick(_, btn)
 	if btn == "LeftButton" then

@@ -44,6 +44,7 @@ ignore = {
 globals = {
 	-- enchansed 
 	"EnhancedDB",
+	"DisableStrengthenFrame",
 	"CharacterNamesText",
 	"CharacterStrengthenButton_OnClick",
 	"CharacterStrengthenButton_OnEnter",

@@ -2218,6 +2218,7 @@ function module:Initialize()
 	CharacterAttributesFrame:Kill()
 	CharacterResistanceFrame:Kill()
 	GearManagerToggleButton:Kill()
+	DisableStrengthenFrame:Kill()
 
 	PaperDollSidebarTabs:Kill()
 	PaperDollFrameStrengthenFrame:SetAlpha(0)

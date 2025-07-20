@@ -89,16 +89,16 @@ function WF:UpdateSettings()
 	-- end
 end
 
-local function ShowLevel()
-	if true then return end
-	-- for _, button in ipairs(WATCHFRAME_LINKBUTTONS) do
-	-- 	if button.type == "QUEST" then
-	-- 		local questIndex = GetQuestIndexForWatch(button.index)
-	-- 		local title, level = GetQuestLogTitle(questIndex)
-	-- 		WATCHFRAME_QUESTLINES[button.startLine].text:SetFormattedText("[%d] %s", level, title)
-	-- 	end
-	-- end
-end
+-- local function ShowLevel()
+-- 	if true then return end
+-- 	-- for _, button in ipairs(WATCHFRAME_LINKBUTTONS) do
+-- 	-- 	if button.type == "QUEST" then
+-- 	-- 		local questIndex = GetQuestIndexForWatch(button.index)
+-- 	-- 		local title, level = GetQuestLogTitle(questIndex)
+-- 	-- 		WATCHFRAME_QUESTLINES[button.startLine].text:SetFormattedText("[%d] %s", level, title)
+-- 	-- 	end
+-- 	-- end
+-- end
 
 function WF:QuestLevelToggle()
 	if true then return end

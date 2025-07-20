@@ -1,37 +1,37 @@
 local E, L, V, P, G = unpack(ElvUI)
 local WF = E:NewModule("Enhanced_WatchFrame", "AceHook-3.0", "AceEvent-3.0")
 
-local ipairs = ipairs
+-- local ipairs = ipairs
 
-local GetQuestIndexForWatch = GetQuestIndexForWatch
-local GetQuestLogTitle = GetQuestLogTitle
-local IsInInstance = IsInInstance
-local IsResting = IsResting
-local UnitAffectingCombat = UnitAffectingCombat
+-- local GetQuestIndexForWatch = GetQuestIndexForWatch
+-- local GetQuestLogTitle = GetQuestLogTitle
+-- local IsInInstance = IsInInstance
+-- local IsResting = IsResting
+-- local UnitAffectingCombat = UnitAffectingCombat
 
-local WATCHFRAME_LINKBUTTONS = WATCHFRAME_LINKBUTTONS
-local WATCHFRAME_QUESTLINES = WATCHFRAME_QUESTLINES
+-- local WATCHFRAME_LINKBUTTONS = WATCHFRAME_LINKBUTTONS
+-- local WATCHFRAME_QUESTLINES = WATCHFRAME_QUESTLINES
 
-local WatchFrame = WatchFrame
+-- local WatchFrame = WatchFrame
 
-local statedriver = {
-	["EXPAND"] = function()
-		WatchFrame:Show()
-		WatchFrame.userCollapsed = false
-		WatchFrame_Expand(WatchFrame)
-	end,
-	["COLLAPSE"] = function()
-		WatchFrame:Show()
-		WatchFrame.userCollapsed = true
-		WatchFrame_Collapse(WatchFrame)
-	end,
-	["HIDE"] = function()
-		WatchFrame:Hide()
-	end,
-	["NONE"] = function()
-		-- WatchFrame:Hide()
-	end
-}
+-- local statedriver = {
+-- 	["EXPAND"] = function()
+-- 		WatchFrame:Show()
+-- 		WatchFrame.userCollapsed = false
+-- 		WatchFrame_Expand(WatchFrame)
+-- 	end,
+-- 	["COLLAPSE"] = function()
+-- 		WatchFrame:Show()
+-- 		WatchFrame.userCollapsed = true
+-- 		WatchFrame_Collapse(WatchFrame)
+-- 	end,
+-- 	["HIDE"] = function()
+-- 		WatchFrame:Hide()
+-- 	end,
+-- 	["NONE"] = function()
+-- 		-- WatchFrame:Hide()
+-- 	end
+-- }
 
 function WF:ChangeState()
 	if true then return end

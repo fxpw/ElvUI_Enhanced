@@ -34,7 +34,7 @@ local statedriver = {
 }
 
 function WF:ChangeState()
-	if not WatchFrame then return end
+	if true then return end
 	if UnitAffectingCombat("player") then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState")
 		self.inCombat = true
@@ -79,7 +79,7 @@ function WF:ChangeState()
 end
 
 function WF:UpdateSettings()
-	if not WatchFrame then return end
+	if true then return end
 	if self.db.enable then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ChangeState")
 		self:RegisterEvent("PLAYER_UPDATE_RESTING", "ChangeState")
@@ -90,7 +90,7 @@ function WF:UpdateSettings()
 end
 
 local function ShowLevel()
-	if not WatchFrame then return end
+	if true then return end
 	for _, button in ipairs(WATCHFRAME_LINKBUTTONS) do
 		if button.type == "QUEST" then
 			local questIndex = GetQuestIndexForWatch(button.index)
@@ -101,7 +101,7 @@ local function ShowLevel()
 end
 
 function WF:QuestLevelToggle()
-	if not WatchFrame then return end
+	if true then return end
 	if self.db.level and not self:IsHooked("WatchFrame_Update") then
 		self:SecureHook("WatchFrame_Update", ShowLevel)
 	elseif not self.db.level and self:IsHooked("WatchFrame_Update") then
@@ -112,7 +112,7 @@ function WF:QuestLevelToggle()
 end
 
 function WF:Initialize()
-	if not WatchFrame then return end
+	if true then return end
 	self.db = E.db.enhanced.watchframe
 
 	self:UpdateSettings()

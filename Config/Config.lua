@@ -193,16 +193,16 @@ end
 
 local function BlizzardOptions()
 	local B = E:GetModule("Enhanced_Blizzard")
-	-- local WF = E:GetModule("Enhanced_WatchFrame")
+	local WF = E:GetModule("Enhanced_WatchFrame")
 	-- local TAM = E:GetModule("Enhanced_TakeAllMail")
 	-- local CHAR = E:GetModule("Enhanced_CharacterFrame")
 
-	-- local choices = {
-	-- 	["EXPAND"] = L["Expand"],
-	-- 	["COLLAPSE"] = L["Collapse"],
-	-- 	["HIDE"] = L["Hidden"],
-	-- 	["NONE"] = L["No action"],
-	-- }
+	local choices = {
+		["EXPAND"] = L["Expand"],
+		["COLLAPSE"] = L["Collapse"],
+		["HIDE"] = L["Hidden"],
+		["NONE"] = L["No action"],
+	}
 
 	return {
 		type = "group",
@@ -596,94 +596,93 @@ local function BlizzardOptions()
 			-- 		}
 			-- 	}
 			-- },
-			-- TODO watchframe
-			-- watchframe = {
-			-- 	order = 6,
-			-- 	type = "group",
-			-- 	name = L["Watch Frame"],
-			-- 	get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
-			-- 	set = function(info, value)
-			-- 		E.db.enhanced.watchframe[info[#info]] = value
-			-- 		WF:UpdateSettings()
-			-- 	end,
-			-- 	args = {
-			-- 		header = {
-			-- 			order = 1,
-			-- 			type = "header",
-			-- 			name = L["Watch Frame"],
-			-- 		},
-			-- 		intro = {
-			-- 			order = 2,
-			-- 			type = "description",
-			-- 			name = L["WATCHFRAME_DESC"]
-			-- 		},
-			-- 		enable = {
-			-- 			order = 3,
-			-- 			type = "toggle",
-			-- 			name = L["Enable"]
-			-- 		},
-			-- 		-- level = {
-			-- 		-- 	order = 4,
-			-- 		-- 	type = "toggle",
-			-- 		-- 	name = L["Show Quest Level"],
-			-- 		-- 	desc = L["Display quest levels at Quest Tracker."],
-			-- 		-- 	set = function(info, value)
-			-- 		-- 		E.db.enhanced.watchframe.level = value
-			-- 		-- 		WF:QuestLevelToggle()
-			-- 		-- 	end
-			-- 		-- },
-			-- 		-- settings = {
-			-- 		-- 	order = 5,
-			-- 		-- 	type = "group",
-			-- 		-- 	name = L["Visibility State"],
-			-- 		-- 	guiInline = true,
-			-- 		-- 	get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
-			-- 		-- 	set = function(info, value)
-			-- 		-- 		E.db.enhanced.watchframe[info[#info]] = value
-			-- 		-- 		WF:ChangeState()
-			-- 		-- 	end,
-			-- 		-- 	disabled = function() return not E.db.enhanced.watchframe.enable end,
-			-- 		-- 	args = {
-			-- 		-- 		city = {
-			-- 		-- 			order = 1,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["City (Resting)"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 		pvp = {
-			-- 		-- 			order = 2,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["PvP"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 		arena = {
-			-- 		-- 			order = 3,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["Arena"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 		party = {
-			-- 		-- 			order = 4,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["Party"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 		raid = {
-			-- 		-- 			order = 5,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["Raid"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 		noOne = {
-			-- 		-- 			order = 6,
-			-- 		-- 			type = "select",
-			-- 		-- 			name = L["None of the previous ones"],
-			-- 		-- 			values = choices
-			-- 		-- 		},
-			-- 		-- 	}
-			-- 		-- }
-			-- 	}
-			-- },
+			watchframe = {
+				order = 6,
+				type = "group",
+				name = L["Watch Frame"],
+				get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
+				set = function(info, value)
+					E.db.enhanced.watchframe[info[#info]] = value
+					WF:UpdateSettings()
+				end,
+				args = {
+					header = {
+						order = 1,
+						type = "header",
+						name = L["Watch Frame"],
+					},
+					intro = {
+						order = 2,
+						type = "description",
+						name = L["WATCHFRAME_DESC"]
+					},
+					enable = {
+						order = 3,
+						type = "toggle",
+						name = L["Enable"]
+					},
+					level = {
+						order = 4,
+						type = "toggle",
+						name = L["Show Quest Level"],
+						desc = L["Display quest levels at Quest Tracker."],
+						set = function(info, value)
+							E.db.enhanced.watchframe.level = value
+							WF:QuestLevelToggle()
+						end
+					},
+					settings = {
+						order = 5,
+						type = "group",
+						name = L["Visibility State"],
+						guiInline = true,
+						get = function(info) return E.db.enhanced.watchframe[info[#info]] end,
+						set = function(info, value)
+							E.db.enhanced.watchframe[info[#info]] = value
+							WF:ChangeState()
+						end,
+						disabled = function() return not E.db.enhanced.watchframe.enable end,
+						args = {
+							city = {
+								order = 1,
+								type = "select",
+								name = L["City (Resting)"],
+								values = choices
+							},
+							pvp = {
+								order = 2,
+								type = "select",
+								name = L["PvP"],
+								values = choices
+							},
+							arena = {
+								order = 3,
+								type = "select",
+								name = L["Arena"],
+								values = choices
+							},
+							party = {
+								order = 4,
+								type = "select",
+								name = L["Party"],
+								values = choices
+							},
+							raid = {
+								order = 5,
+								type = "select",
+								name = L["Raid"],
+								values = choices
+							},
+							noOne = {
+								order = 6,
+								type = "select",
+								name = L["None of the previous ones"],
+								values = choices
+							},
+						}
+					}
+				}
+			},
 			errorFrame = {
 				order = 7,
 				type = "group",

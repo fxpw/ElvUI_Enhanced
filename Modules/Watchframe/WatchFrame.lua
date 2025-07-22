@@ -81,14 +81,51 @@ function WF:UpdateSettings()
 	end
 end
 
+local function UpdateHighlight(self)
+	local headerColor, dashColor;
+	if self.isHighlighted then
+		headerColor = OBJECTIVE_TRACKER_COLOR["HeaderHighlight"];
+		dashColor = OBJECTIVE_TRACKER_COLOR["NormalHighlight"];
+	else
+		if self.index then
+			local questLogIndex = GetQuestIndexForWatch(self.index)
+			local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questLogIndex)
+			headerColor = GetQuestDifficultyColor(level)
+		else
+			headerColor = OBJECTIVE_TRACKER_COLOR["Header"];
+		end
+		dashColor = OBJECTIVE_TRACKER_COLOR["Normal"];
+	end
+
+	if self.HeaderText then
+		self.HeaderText:SetTextColor(headerColor.r, headerColor.g, headerColor.b);
+		self.HeaderText.colorStyle = headerColor;
+	end
+
+	for objectiveKey, line in pairs(self.usedLines) do
+		local colorStyle = line.Text.colorStyle.reverse;
+		if colorStyle then
+			line.Text:SetTextColor(colorStyle.r, colorStyle.g, colorStyle.b);
+			line.Text.colorStyle = colorStyle;
+			if line.Dash then
+				line.Dash:SetTextColor(dashColor.r, dashColor.g, dashColor.b);
+			end
+		end
+	end
+end
+
 local function ShowLevel(self, index)
 	-- local numWatches = GetNumQuestWatches()
 	-- for index = 1, numWatches do
 	local questLogIndex = GetQuestIndexForWatch(index)
 	local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questLogIndex)
-	local levelTextColor = GetQuestDifficultyColor(level)
+	local colorStyle = GetQuestDifficultyColor(level)
 	local block, isExistingBlock = self.usedBlocks[self.blockTemplate][questID]
-	block.HeaderText:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b);
+	if block.HeaderText.colorStyle ~= colorStyle then
+		block.HeaderText:SetTextColor(colorStyle.r, colorStyle.g, colorStyle.b);
+		block.HeaderText.colorStyle = colorStyle;
+	end
+	block.UpdateHighlight = UpdateHighlight;
 	block.HeaderText:SetFormattedText("[%d] %s", level, title)
 	block.height = block.HeaderText:GetStringHeight();
 	-- end

@@ -89,7 +89,7 @@ local function UpdateHighlight(self)
 	else
 		if self.index then
 			local questLogIndex = GetQuestIndexForWatch(self.index)
-			local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questLogIndex)
+			local _, level = GetQuestLogTitle(questLogIndex)
 			headerColor = GetQuestDifficultyColor(level)
 		else
 			headerColor = OBJECTIVE_TRACKER_COLOR["Header"];
@@ -102,7 +102,7 @@ local function UpdateHighlight(self)
 		self.HeaderText.colorStyle = headerColor;
 	end
 
-	for objectiveKey, line in pairs(self.usedLines) do
+	for _, line in pairs(self.usedLines) do
 		local colorStyle = line.Text.colorStyle.reverse;
 		if colorStyle then
 			line.Text:SetTextColor(colorStyle.r, colorStyle.g, colorStyle.b);
@@ -118,9 +118,9 @@ local function ShowLevel(self, index)
 	-- local numWatches = GetNumQuestWatches()
 	-- for index = 1, numWatches do
 	local questLogIndex = GetQuestIndexForWatch(index)
-	local title, level, questTag, suggestedGroup, isHeader, isCollapsed, isComplete, isDaily, questID = GetQuestLogTitle(questLogIndex)
+	local title, level, _, _, _, _, _, _, questID = GetQuestLogTitle(questLogIndex)
 	local colorStyle = GetQuestDifficultyColor(level)
-	local block, isExistingBlock = self.usedBlocks[self.blockTemplate][questID]
+	local block = self.usedBlocks[self.blockTemplate][questID]
 	if block.HeaderText.colorStyle ~= colorStyle then
 		block.HeaderText:SetTextColor(colorStyle.r, colorStyle.g, colorStyle.b);
 		block.HeaderText.colorStyle = colorStyle;

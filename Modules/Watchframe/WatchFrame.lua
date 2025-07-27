@@ -89,8 +89,10 @@ local function UpdateHighlight(self)
 	else
 		if self.index then
 			local questLogIndex = GetQuestIndexForWatch(self.index)
-			local _, level = GetQuestLogTitle(questLogIndex)
-			headerColor = GetQuestDifficultyColor(level)
+			if(questLogIndex and self.index)then
+				local _, level = GetQuestLogTitle(questLogIndex)
+				headerColor = GetQuestDifficultyColor(level)
+			end
 		else
 			headerColor = OBJECTIVE_TRACKER_COLOR["Header"];
 		end

@@ -209,7 +209,6 @@ frame:SetScript("OnShow", function(self)
 		end
 		return;
 	end
-	
 	for _, v in pairs(Custom_RouletteFrame.rewardList or {}) do
 		if (v and type(v) == "table" and v.amountMin) then
 			local key = string.format("%i:%i:%i", v.itemID, v.amountMin and v.amountMin or 0, v.isJackpot and 1 or 0);

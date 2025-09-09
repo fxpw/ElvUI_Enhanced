@@ -495,7 +495,33 @@ local function StatFrame_OnEnter()
 	PaperDollStatTooltip("player")
 end
 
-function module:CharacterStatFrame(button)
+
+local function OnPlusButtonClick(frame,click)
+	local bonusStatIndex = frame.id
+	if IsModifiedClick("SHIFT") then
+		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, 10)
+	elseif IsModifiedClick("CTRL") then
+		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, 100)
+	elseif IsModifiedClick("ALT") then
+		local totalUps, maxUps, availableUps, availableUpsNew = C_PlayerInfo.GetBonusStatPointInfo()
+		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, availableUps)
+	else
+		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, 1)
+	end
+end
+
+local function OnPlusButtonEnter(frame)
+	GameTooltip:SetOwner(frame, "ANCHOR_RIGHT")
+	GameTooltip:SetText(PAPERDOLLFRAME_UPS, 1.0, 1.0, 1.0)
+	GameTooltip:AddLine(string.format(PAPERDOLLFRAME_UPS_TOOLTIP_HELP_1, frame.multiplier), NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+	GameTooltip:AddLine(PAPERDOLLFRAME_UPS_TOOLTIP_HELP_2, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+	GameTooltip:AddLine(PAPERDOLLFRAME_UPS_TOOLTIP_HELP_3, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+	GameTooltip:AddLine(PAPERDOLLFRAME_UPS_TOOLTIP_HELP_4, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+	GameTooltip:AddLine("При зажатой Alt вложить все.", NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, 1)
+	GameTooltip:Show()
+end
+
+function module:CharacterStatFrame(button,id)
 	button:Size(SCROLL_WIDTH_SIRUS_STATS, 15)
 
 	button.Label = button:CreateFontString("$parentLabel", "OVERLAY", "GameFontNormalSmall")
@@ -508,6 +534,9 @@ function module:CharacterStatFrame(button)
 	button.Value:SetPoint("RIGHT", -3, 0)
 
 	button.Plus = CreateFrame("Button", nil, button)
+	button.Plus.id = id
+	local name, value, baseValue, multiplier = C_PlayerInfo.GetBonusStatInfo(id)
+	button.Plus.multiplier = multiplier
 	button.Plus:Hide()
 	button.Plus:Size(19)
 	button.Plus:SetPoint("RIGHT", -3, 0)
@@ -516,10 +545,10 @@ function module:CharacterStatFrame(button)
 	button.Plus.Texture:SetAllPoints()
 	button.Plus.Texture:SetTexture(E.Media.Textures.Plus)
 
-	button.Plus:SetScript("OnClick", CharacterStrengthenButton_OnClick)
+	button.Plus:SetScript("OnClick", OnPlusButtonClick)
 	button.Plus:SetScript("OnShow", PlusButton_OnShow)
 	button.Plus:SetScript("OnHide", PlusButton_OnHide)
-	button.Plus:SetScript("OnEnter", CharacterStrengthenButton_OnEnter)
+	button.Plus:SetScript("OnEnter", OnPlusButtonEnter)
 	button.Plus:SetScript("OnLeave", GameTooltip_Hide)
 	button.Plus:SetScript("OnEnable", PlusButton_OnEnable)
 	button.Plus:SetScript("OnDisable", PlusButton_OnDisable)
@@ -1337,7 +1366,7 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 				local statFrame = categoryFrame.Stats[numVisible + 1]
 				if not statFrame then
 					statFrame = CreateFrame("Button", "$parentStat"..numVisible + 1, categoryFrame)
-					module:CharacterStatFrame(statFrame)
+					module:CharacterStatFrame(statFrame,numVisible + 1)
 					if prevStatFrame then
 						statFrame:SetPoint("TOPLEFT", prevStatFrame, "BOTTOMLEFT")
 						statFrame:SetPoint("TOPRIGHT", prevStatFrame, "BOTTOMRIGHT")
@@ -2397,7 +2426,7 @@ function module:Initialize()
 		button.Stats[1] = CreateFrame("Button", "$parentStat1", button)
 		button.Stats[1]:Point("TOPLEFT", 0, -25)
 		button.Stats[1]:Point("RIGHT", -4, 0)
-		module:CharacterStatFrame(button.Stats[1])
+		module:CharacterStatFrame(button.Stats[1],1)
 
 		statsPane.Categories[i] = button
 	end

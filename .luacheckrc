@@ -53,6 +53,7 @@ globals = {
 	"CharacterStatsPaneScrollChild",
 	"PaperDoll_SaveStatCategoryOrder",
 	"AtlasButton_Toggle",
+	"C_PlayerInfo",
     "PaperDollEquipmentManagerPaneSaveSet",
     "PaperDollEquipmentManagerPaneEquipSet",
     "PaperDollEquipmentManagerPane",

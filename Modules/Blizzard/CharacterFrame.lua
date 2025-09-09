@@ -503,7 +503,7 @@ local function OnPlusButtonClick(frame,click)
 	elseif IsModifiedClick("CTRL") then
 		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, 100)
 	elseif IsModifiedClick("ALT") then
-		local totalUps, maxUps, availableUps, availableUpsNew = C_PlayerInfo.GetBonusStatPointInfo()
+		local _, _, availableUps = C_PlayerInfo.GetBonusStatPointInfo()
 		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, availableUps)
 	else
 		C_PlayerInfo.InceaseBonusStat(bonusStatIndex, 1)
@@ -535,7 +535,7 @@ function module:CharacterStatFrame(button,id)
 
 	button.Plus = CreateFrame("Button", nil, button)
 	button.Plus.id = id
-	local name, value, baseValue, multiplier = C_PlayerInfo.GetBonusStatInfo(id)
+	local _, _, _, multiplier = C_PlayerInfo.GetBonusStatInfo(id)
 	button.Plus.multiplier = multiplier
 	button.Plus:Hide()
 	button.Plus:Size(19)

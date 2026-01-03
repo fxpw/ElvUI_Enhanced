@@ -102,7 +102,7 @@ local guildId = 1
 
 local function SendMessageForRecrutingGuild(text)
 
-    local value = tonumber(C_CVar:GetValue("C_CVAR_FL_GUILD_SETTINGS2")) or 0;
+    local value = tonumber(C_CVAR_FL_GUILD_SETTINGS2) or 0
 
     local interests, availability, classRoles, activityTimes = 0, 0, 0, 0;
 
@@ -375,7 +375,7 @@ S:HandleButton(clearButton)
 
 
 local function UpdateGuildSearch()
-    local value = tonumber(C_CVar:GetValue("C_CVAR_FL_GUILD_SETTINGS2")) or 0;
+    local value = tonumber(C_CVAR_FL_GUILD_SETTINGS2) or 0
 
 	local interests, availability, classRoles, activityTimes, guildSize = 0, 0, 0, 0, 0;
 

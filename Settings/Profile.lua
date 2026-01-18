@@ -13,6 +13,7 @@ P.enhanced = {
 		trainAllSkills = false,
 		undressButton = false,
 		alreadyKnown = false,
+		deleteFortuneCookie = false,
 	},
 	actionbar = {
 		keyPressAnimation = {

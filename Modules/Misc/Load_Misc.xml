@@ -12,4 +12,5 @@
 	<Script file="AddonsCompatibility.lua"/>
 	<Script file="MerchantBuyStack.lua"/>
 	<Script file="InterruptTracker.lua"/>
+	<Script file="FortuneCookieDeletion.lua"/>
 </Ui>

@@ -88,6 +88,8 @@ L["Track Reputation"] = true
 L["Train All Button"] = true
 L["Undress Button"] = true
 L["Undress"] = true
+L["Delete Fortune Cookie"] = true
+L["Also delete 'Fortune Cookie Prediction' items when using Vendor/Delete Grays button."] = true
 
 -- HD Models Portrait Fix
 L["Debug"] = true

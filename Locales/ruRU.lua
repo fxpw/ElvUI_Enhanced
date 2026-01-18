@@ -89,6 +89,8 @@ L["Track Reputation"] = "Отслеживание репутации"
 L["Train All Button"] = "Кнопка выучить все"
 L["Undress Button"] = "Кнопка для раздевания"
 L["Undress"] = "Раздеть"
+L["Delete Fortune Cookie"] = "Удалять предсказания из печенья"
+L["Also delete 'Fortune Cookie Prediction' items when using Vendor/Delete Grays button."] = "Также удалять предметы 'Предсказание из печенья' при использовании кнопки Продать/удалить серые предметы."
 
 -- HD Models Portrait Fix
 L["Debug"] = true

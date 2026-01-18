@@ -77,6 +77,17 @@ local function GeneralOptions()
 					M:BuyStackToggle()
 				end
 			},
+			deleteFortuneCookie = {
+				type = "toggle",
+				name = L["Delete Fortune Cookie"],
+				desc = L["Also delete 'Fortune Cookie Prediction' items when using Vendor/Delete Grays button."],
+				set = function(info, value)
+					E.db.enhanced.general[info[#info]] = value
+					if value then
+						M:InitFortuneCookieDeletion()
+					end
+				end
+			},
 			-- trainAllSkills = {
 			-- 	type = "toggle",
 			-- 	name = L["Train All Button"],

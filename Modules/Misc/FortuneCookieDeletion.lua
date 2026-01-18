@@ -24,7 +24,7 @@ function M:HookVendorGrays()
 		end
 
 		local itemList = self.SellFrame.Info.itemList
-		
+
 		for bag = 0, 4 do
 			for slot = 1, GetContainerNumSlots(bag) do
 				local itemID = GetContainerItemID(bag, slot)

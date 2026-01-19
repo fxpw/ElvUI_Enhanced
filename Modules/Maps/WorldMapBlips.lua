@@ -74,8 +74,35 @@ function WMB:Initialize()
 	Minimap:SetClassBlipTexture("Interface\\Addons\\ElvUI_Enhanced\\Media\\Textures\\PartyRaidBlips")
 end
 
+function WMB:InitializeBattlefieldMinimap()
+	local frame
+
+	for i = 1, MAX_PARTY_MEMBERS do
+		frame = _G["BattlefieldMinimapParty"..i]
+		if frame then
+			frame.icon:SetTexture("Interface\\Addons\\ElvUI_Enhanced\\Media\\Textures\\PartyRaidBlips")
+			frame:Size(16)
+			frame:HookScript("OnShow", OnShowParty)
+		end
+	end
+
+	for i = 1, MAX_RAID_MEMBERS do
+		frame = _G["BattlefieldMinimapRaid"..i]
+		if frame then
+			frame.icon:SetTexture("Interface\\Addons\\ElvUI_Enhanced\\Media\\Textures\\PartyRaidBlips")
+			frame:Size(16)
+			frame:HookScript("OnShow", OnShowRaid)
+		end
+	end
+end
+
 local function InitializeCallback()
 	WMB:Initialize()
 end
 
 E:RegisterModule(WMB:GetName(), InitializeCallback)
+
+local S = E:GetModule("Skins")
+S:AddCallbackForAddon("Blizzard_BattlefieldMinimap", "Enhanced_BattlefieldMinimapBlips", function()
+	WMB:InitializeBattlefieldMinimap()
+end)

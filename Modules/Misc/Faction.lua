@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule("Enhanced_Misc")
 
-local find, match = string.find, string.match
+local match = string.match
 
 local GetFactionInfo = GetFactionInfo
 local GetNumFactions = GetNumFactions

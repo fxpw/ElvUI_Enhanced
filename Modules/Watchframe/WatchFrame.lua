@@ -27,6 +27,13 @@ local statedriver = {
 	end
 }
 
+local cachedInstanceType = nil
+
+function WF:UpdateInstanceType()
+	local _, instanceType = IsInInstance()
+	cachedInstanceType = instanceType
+end
+
 function WF:ChangeState()
 	if UnitAffectingCombat("player") then
 		self:RegisterEvent("PLAYER_REGEN_ENABLED", "ChangeState")
@@ -36,11 +43,10 @@ function WF:ChangeState()
 
 	if IsResting() then
 		if statedriver[self.db.city] then
-			-- print(43,self.db.city)
 			statedriver[self.db.city]()
 		end
 	else
-		local _, instanceType = IsInInstance()
+		local instanceType = cachedInstanceType
 		if instanceType == "pvp" then
 			if self.db.pvp and statedriver[self.db.pvp] then
 				statedriver[self.db.pvp]()
@@ -58,7 +64,6 @@ function WF:ChangeState()
 				statedriver[self.db.raid]()
 			end
 		else
-			-- print(61)
 			if self.db.noOne and statedriver[self.db.noOne] then
 				statedriver[self.db.noOne]()
 			end
@@ -71,13 +76,20 @@ function WF:ChangeState()
 	end
 end
 
+function WF:ZONE_CHANGED_NEW_AREA()
+	self:UpdateInstanceType()
+	self:ChangeState()
+end
+
 function WF:UpdateSettings()
 	if self.db.enable then
-		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ChangeState")
+		self:RegisterEvent("PLAYER_ENTERING_WORLD", "ZONE_CHANGED_NEW_AREA")
 		self:RegisterEvent("PLAYER_UPDATE_RESTING", "ChangeState")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	else
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 		self:UnregisterEvent("PLAYER_UPDATE_RESTING")
+		self:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
 	end
 end
 

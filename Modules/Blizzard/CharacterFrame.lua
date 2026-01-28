@@ -1303,10 +1303,10 @@ end
 
 local function StrengthenCategory_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-	local total, max = C_PlayerInfo.GetBonusStatPointInfo()
+	local total, maxPoints = C_PlayerInfo.GetBonusStatPointInfo()
 	GameTooltip:SetText(PAPERDOLLFRAME_UPS_TOOLTIP_1, 1, 1, 1)
 	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_2, total or 0), 1, .82, 0, 1)
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, max or 0), 1, .82, 0, 1)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, maxPoints or 0), 1, .82, 0, 1)
 	GameTooltip:Show()
 end
 
@@ -1349,12 +1349,12 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 			categoryFrame.ResetStatButton = CreateFrame("Button", nil, categoryFrame)
 			categoryFrame.ResetStatButton:Size(14)
 			categoryFrame.ResetStatButton:Point("TOPRIGHT", categoryFrame, "TOPRIGHT", -10, -5)
-			
+
 			categoryFrame.ResetStatButton.Icon = categoryFrame.ResetStatButton:CreateTexture(nil, "ARTWORK")
 			categoryFrame.ResetStatButton.Icon:SetAllPoints()
 			categoryFrame.ResetStatButton.Icon:SetTexture([[Interface\Buttons\UI-RefreshButton]])
 			categoryFrame.ResetStatButton.Icon:SetDesaturated(true)
-			
+
 			categoryFrame.ResetStatButton:SetScript("OnClick", StrengthenCategoryReset_OnClick)
 			categoryFrame.ResetStatButton:SetScript("OnEnter", function(self)
 				self.Icon:SetDesaturated(false)

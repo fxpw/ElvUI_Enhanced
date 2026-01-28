@@ -912,52 +912,32 @@ function module:SetLabelAndText(statFrame, label, text, isPercentage)
 end
 
 local StrengthenStats = {SPELL_STAT1_NAME, SPELL_STAT2_NAME, SPELL_STAT3_NAME, SPELL_STAT4_NAME, SPELL_STAT5_NAME, PAPERDOLLFRAME_UPS_SPELL_POWER, ATTACK_POWER}
-local StrengthenData = {}
-
-local EventHandlerFrame = CreateFrame("Frame")
-EventHandlerFrame:RegisterEvent("CHAT_MSG_ADDON")
-EventHandlerFrame:SetScript("OnEvent", function(_, _, opcode, msg)
-	if opcode == "UPS_INFO" then
-		local total, maximum, current = strsplit(":", msg)
-		current = tonumber(current)
-
-		StrengthenData.Total = total
-		StrengthenData.Maximum = maximum
-		StrengthenData.Current = current
-	elseif opcode == "BONUS_STATS" then
-		local splitstat = {strsplit(";", msg)}
-
-		for i = 1, #StrengthenStats do
-			StrengthenData[i] = {splitstat[i] / 2, splitstat[i]}
-			if i == 3 then
-				StrengthenData[i] = {splitstat[i] / 3, splitstat[i]}
-			elseif i == 6 then
-				StrengthenData[i] = {splitstat[i] / 2.3, splitstat[i]}
-			elseif i == 7 then
-				StrengthenData[i] = {splitstat[i] / 4, splitstat[i]}
-			end
-		end
-	end
-end)
 
 function module:StrengthenStat(statFrame, unit, statIndex)
 	statFrame.Label:SetText(StrengthenStats[statIndex])
 
-	if StrengthenData[statIndex] then
+	local _, value, baseValue, multiplier = C_PlayerInfo.GetBonusStatInfo(statIndex)
+
+	if value then
 		if statIndex == 6 then
-			statFrame.Value:SetFormattedText(tonumber(StrengthenData[statIndex][2]) > 0 and "%.0f (+|cff00FF00%.1f|r)" or "%.0f (+|cff00FF00%.0f|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+			statFrame.Value:SetFormattedText(value > 0 and "%.0f (+|cff00FF00%.1f|r)" or "%.0f (+|cff00FF00%.0f|r)", value, baseValue)
 		else
-			statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", StrengthenData[statIndex][1], StrengthenData[statIndex][2])
+			statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", value, baseValue)
 		end
 	else
 		statFrame.Value:SetText(0)
 	end
 
-	if StrengthenData.Current == 0 then
+	local _, _, availableUps = C_PlayerInfo.GetBonusStatPointInfo()
+
+	if availableUps == 0 then
 		statFrame.Plus:Disable()
 	else
 		statFrame.Plus:Enable()
 	end
+
+	statFrame.Plus.multiplier = multiplier
+
 
 	statFrame.Plus:Show()
 end
@@ -1299,6 +1279,9 @@ local function PaperDollFrame_CollapseStatCategory(categoryFrame)
 	if not categoryFrame.collapsed then
 		categoryFrame.collapsed = true
 		categoryFrame.Toolbar.Background:Hide()
+		if categoryFrame.ResetStatButton then
+			categoryFrame.ResetStatButton:Hide()
+		end
 		local index = 1
 		while categoryFrame.Stats[index] do
 			categoryFrame.Stats[index]:Hide()
@@ -1320,9 +1303,24 @@ end
 
 local function StrengthenCategory_OnEnter(self)
 	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	local total, max = C_PlayerInfo.GetBonusStatPointInfo()
 	GameTooltip:SetText(PAPERDOLLFRAME_UPS_TOOLTIP_1, 1, 1, 1)
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_2, StrengthenData.Total or 0), 1, .82, 0, 1)
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, StrengthenData.Maximum or 0), 1, .82, 0, 1)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_2, total or 0), 1, .82, 0, 1)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_UPS_TOOLTIP_3, max or 0), 1, .82, 0, 1)
+	GameTooltip:Show()
+end
+
+local function StrengthenCategoryReset_OnClick(self)
+	C_PlayerInfo.ResetBonusStats()
+end
+
+local function StrengthenCategoryReset_OnEnter(self)
+	GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+	GameTooltip:SetText(RESET, 1, 1, 1)
+	local cost = C_PlayerInfo.GetResetBonusStatsCost()
+	if cost and cost > 0 then
+		SetTooltipMoney(GameTooltip, cost)
+	end
 	GameTooltip:Show()
 end
 -- local function PaperDollFrame_QueuedUpdate(self)
@@ -1342,9 +1340,36 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	if categoryInfo == PAPERDOLL_STATCATEGORIES["RESISTANCE"] then
 		categoryFrame.NameText:SetText(L["Resistance"])
 	elseif categoryInfo == PAPERDOLL_STATCATEGORIES["STRENGTHEN"] then
-		categoryFrame.NameText:SetFormattedText(PAPERDOLLFRAME_UPS_AVAILABLE, StrengthenData.Current or 0)
+		local _, _, available = C_PlayerInfo.GetBonusStatPointInfo()
+		categoryFrame.NameText:SetFormattedText(PAPERDOLLFRAME_UPS_AVAILABLE, available or 0)
 		categoryFrame.Toolbar:SetScript("OnEnter", StrengthenCategory_OnEnter)
 		categoryFrame.Toolbar:SetScript("OnLeave", GameTooltip_Hide)
+
+		if not categoryFrame.ResetStatButton then
+			categoryFrame.ResetStatButton = CreateFrame("Button", nil, categoryFrame)
+			categoryFrame.ResetStatButton:Size(14)
+			categoryFrame.ResetStatButton:Point("TOPRIGHT", categoryFrame, "TOPRIGHT", -10, -5)
+			
+			categoryFrame.ResetStatButton.Icon = categoryFrame.ResetStatButton:CreateTexture(nil, "ARTWORK")
+			categoryFrame.ResetStatButton.Icon:SetAllPoints()
+			categoryFrame.ResetStatButton.Icon:SetTexture([[Interface\Buttons\UI-RefreshButton]])
+			categoryFrame.ResetStatButton.Icon:SetDesaturated(true)
+			
+			categoryFrame.ResetStatButton:SetScript("OnClick", StrengthenCategoryReset_OnClick)
+			categoryFrame.ResetStatButton:SetScript("OnEnter", function(self)
+				self.Icon:SetDesaturated(false)
+				StrengthenCategoryReset_OnEnter(self)
+			end)
+			categoryFrame.ResetStatButton:SetScript("OnLeave", function(self)
+				self.Icon:SetDesaturated(true)
+				GameTooltip_Hide()
+			end)
+		end
+		if categoryFrame.collapsed then
+			categoryFrame.ResetStatButton:Hide()
+		else
+			categoryFrame.ResetStatButton:Show()
+		end
 	else
 		categoryFrame.NameText:SetText(_G["PLAYERSTAT_"..categoryFrame.Category])
 	end
@@ -1352,6 +1377,9 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 	if categoryInfo ~= PAPERDOLL_STATCATEGORIES["STRENGTHEN"] then
 		categoryFrame.Toolbar:SetScript("OnEnter", nil)
 		categoryFrame.Toolbar:SetScript("OnLeave", nil)
+		if categoryFrame.ResetStatButton then
+			categoryFrame.ResetStatButton:Hide()
+		end
 	end
 
 	if categoryFrame.collapsed then return end

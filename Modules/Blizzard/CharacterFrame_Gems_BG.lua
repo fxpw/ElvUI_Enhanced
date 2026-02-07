@@ -104,6 +104,7 @@ Gems.superBlackSockets = {
     [100843] = true,
     [100844] = true,
     [100845] = true,
+    [100846] = true,
     [100847] = true,
     [100848] = true,
     [100849] = true,

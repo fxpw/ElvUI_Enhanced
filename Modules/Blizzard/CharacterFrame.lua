@@ -2305,17 +2305,14 @@ function module:Initialize()
 		end
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
 
-		SCROLL_WIDTH_SIRUS_STATS = 145
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 245
-
 		if PAPERDOLL_STATCATEGORIES[1] and PAPERDOLL_STATCATEGORIES[1].id ~= 1 then
 		end
 		if #PAPERDOLL_STATCATEGORIES > 0 then
 		end
-	else
-		SCROLL_WIDTH_SIRUS_STATS = 233
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 304
 	end
+
+	SCROLL_WIDTH_SIRUS_STATS = 145
+	SCROLL_WIDTH_SIRUS_STATS_CHILD = 245
 	-- if E.db.enhanced.character.SocetsEnable then
 	-- 	module:SocOnInit()
 	-- end

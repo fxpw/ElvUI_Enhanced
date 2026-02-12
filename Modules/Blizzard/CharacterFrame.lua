@@ -154,7 +154,7 @@ local STAT_RESILIENCE = STAT_RESILIENCE
 -- GLOBALS: EQUIPSET_EQUIP, SAVE
 local C_PlayerInfo = C_PlayerInfo
 
-local CHARACTERFRAME_EXPANDED_WIDTH = 197
+local CHARACTERFRAME_EXPANDED_WIDTH = 252
 
 local STATCATEGORY_MOVING_INDENT = 4
 local MOVING_STAT_CATEGORY
@@ -2305,16 +2305,16 @@ function module:Initialize()
 		end
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
 
-		SCROLL_WIDTH_SIRUS_STATS = 90
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190
+		SCROLL_WIDTH_SIRUS_STATS = 145
+		SCROLL_WIDTH_SIRUS_STATS_CHILD = 245
 
 		if PAPERDOLL_STATCATEGORIES[1] and PAPERDOLL_STATCATEGORIES[1].id ~= 1 then
 		end
 		if #PAPERDOLL_STATCATEGORIES > 0 then
 		end
 	else
-		SCROLL_WIDTH_SIRUS_STATS = 168
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 239
+		SCROLL_WIDTH_SIRUS_STATS = 233
+		SCROLL_WIDTH_SIRUS_STATS_CHILD = 304
 	end
 	-- if E.db.enhanced.character.SocetsEnable then
 	-- 	module:SocOnInit()
@@ -2426,7 +2426,7 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
-	statsPaneScrollChild:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 0)
+	statsPaneScrollChild:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18, 0)
 	statsPaneScrollChild:Point("TOPLEFT")
 
 	for i = 1, 8 do
@@ -2435,7 +2435,7 @@ function module:Initialize()
 
 		button.Toolbar = CreateFrame("Button", nil, button)
 		button.Toolbar:RegisterForDrag("LeftButton")
-		button.Toolbar:Size(186, 24)
+		button.Toolbar:Size(251, 24)
 		button.Toolbar:Point("TOP")
 
 		button.Toolbar.Background = button.Toolbar:CreateTexture(nil, "BACKGROUND")
@@ -2476,27 +2476,29 @@ function module:Initialize()
 	CharacterStatsPaneScrollBar.Show = function(self)
 		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
+		statsPaneScrollChild:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		for _, button in next, statsPane.Categories do
 			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
-			button.Toolbar:Width(186 - 18)
+			button.Toolbar:Width(241 - 18)
 		end
 		getmetatable(self).__index.Show(self)
 	end
 
 	CharacterStatsPaneScrollBar.Hide = function(self)
-		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
+		statsPaneScrollChild:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 		for _, button in next, statsPane.Categories do
-			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
-			button.Toolbar:Width(186)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
+			button.Toolbar:Width(246)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
 
-	statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+	statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 	statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 	for _, button in next, statsPane.Categories do
-		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 	end
 
 	statsPane:SetScript("OnShow", function(self)

@@ -1706,12 +1706,21 @@ function module:PaperDollFrame_UpdateSidebarTabs()
 	end
 end
 
+local function SidebarFadeOutFinished(frame)
+	frame:Hide()
+end
+
 function module:PaperDollFrame_SetSidebar(button, index)
 	if not _G[PAPERDOLL_SIDEBARS[index].frame]:IsShown() then
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			if i ~= index and _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
 				if E.db.enhanced.character.animations then
-					E:UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
+					local frame = _G[PAPERDOLL_SIDEBARS[i].frame]
+					E:UIFrameFadeOut(frame, 0.2, 1, 0)
+					if frame.fadeInfo then
+						frame.fadeInfo.finishedFunc = SidebarFadeOutFinished
+						frame.fadeInfo.finishedArg1 = frame
+					end
 				else
 					_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
 				end
@@ -1721,9 +1730,14 @@ function module:PaperDollFrame_SetSidebar(button, index)
 			end
 		end
 
-		_G[PAPERDOLL_SIDEBARS[index].frame]:Show()
+		local newFrame = _G[PAPERDOLL_SIDEBARS[index].frame]
+		newFrame:Show()
 		if E.db.enhanced.character.animations then
-			E:UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
+			E:UIFrameFadeIn(newFrame, 0.2, 0, 1)
+			if newFrame.fadeInfo then
+				newFrame.fadeInfo.finishedFunc = nil
+				newFrame.fadeInfo.finishedArg1 = nil
+			end
 		end
 		PaperDollFrame.currentSideBar = _G[PAPERDOLL_SIDEBARS[index].frame]
 

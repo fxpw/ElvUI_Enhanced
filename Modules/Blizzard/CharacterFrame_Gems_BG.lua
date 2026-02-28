@@ -155,7 +155,7 @@ local function SafeGetItemLink(unit, slotID)
 	local link = GetInventoryItemLink(unit, slotID)
 	if not link then return nil end
 	local _, itemLink = GetItemInfo(link)
-	return itemLink
+	return itemLink or link
 end
 
 local function GetSlotLink(who, slotID)
@@ -493,7 +493,8 @@ local function InitGemFrames(who)
 
 	for slotName in pairs(Gems.Slots) do
 		local frame = _G[format("%s%s", who, slotName)]
-		if not frame then break end
+		if not frame then
+		elseif true then
 
 		frame.Gems = frame.Gems or {}
 
@@ -548,6 +549,7 @@ local function InitGemFrames(who)
 				HideUIPanel(ItemSocketingFrame)
 			end
 		end
+		end
 	end
 end
 
@@ -561,6 +563,17 @@ local function GemsOnInitInspect()
 	InitGemFrames("Inspect")
 	initInspect = true
 	Gems:UpdateGearTextures("Inspect")
+end
+
+local function GemsOnResetInspect()
+	initInspect = false
+	for slotName in pairs(Gems.Slots) do
+		local frame = _G["Inspect" .. slotName]
+		if frame and frame.Gems then
+			frame.Gems.ItemLink = "empty"
+			HideGemTextures(frame)
+		end
+	end
 end
 
 ---------------------------------------------------------------------------
@@ -679,6 +692,7 @@ function Gems:Initialize()
 		Gems:UpdateInspectBG()
 
 		if E.private.enhanced.character.GemsEnable then
+			GemsOnResetInspect()
 			C_Timer:After(0.55, GemsOnInitInspect)
 			C_Timer:After(0.57, function() UpdateAllGems("Inspect") end)
 		end

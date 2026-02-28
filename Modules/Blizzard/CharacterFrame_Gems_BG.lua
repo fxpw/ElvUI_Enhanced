@@ -255,14 +255,14 @@ end
 ---------------------------------------------------------------------------
 local function GemsOnClick(button, frame, socketNum)
 	if button == "RightButton" then
-		-- Use C_ItemSocketInfo API for removing legendary gems
-		SocketInventoryItem(frame.containerID)
-		if C_ItemSocketInfo and C_ItemSocketInfo.CanRemoveGem(socketNum) then
-			C_ItemSocketInfo.RemoveGem(socketNum)
-		else
-			CloseSocketInfo()
-			if ItemSocketingFrame and ItemSocketingFrame:IsShown() then
-				HideUIPanel(ItemSocketingFrame)
+		local rawLink = GetInventoryItemLink("player", frame:GetID())
+		if rawLink then
+			local _, gemLink = GetItemGem(rawLink, socketNum)
+			if gemLink then
+				local _, _, quality = GetItemInfo(gemLink)
+				if quality == 5 then
+					SendServerMessage("ACMSG_REMOVE_SOCKET_FROM_ITEM", string.format("%d:%d:%d", -1, frame.containerID, socketNum))
+				end
 			end
 		end
 	elseif button == "LeftButton" then
@@ -270,7 +270,6 @@ local function GemsOnClick(button, frame, socketNum)
 		local existing = GetExistingSocketInfo(socketNum)
 		local socketType = GetSocketTypes(socketNum)
 		if not existing then
-			-- Try super-black sockets first, then regular black sockets
 			local socketTables
 			if socketType == "Meta" then
 				socketTables = {Gems.metaBlackSockets}
@@ -304,17 +303,14 @@ end
 ---------------------------------------------------------------------------
 local function UpdateLink(frame, link, who)
 	if who == "Character" then
+		CloseSocketInfo()
 		SocketInventoryItem(frame.containerID)
 		frame.Gems.MaxGems = GetNumSockets() or 0
 		for i = 1, frame.Gems.MaxGems do
 			frame.Gems["Gem" .. i].GemColor = GetSocketTypes(i)
 		end
 		CloseSocketInfo()
-		if ItemSocketingFrame and ItemSocketingFrame:IsShown() then
-			HideUIPanel(ItemSocketingFrame)
-		end
 	elseif who == "Inspect" then
-		-- For inspect we can only count visible gems
 		frame.Gems.MaxGems = CountGemsInLink(link)
 	end
 	frame.Gems.ItemLink = link
@@ -394,7 +390,6 @@ local function UpdateGems(frame, link, who)
 				GameTooltip:Hide()
 			end)
 
-			-- Click handler (character only)
 			if who == "Character" then
 				gem:SetScript("OnClick", function(_, button)
 					GemsOnClick(button, frame, i)
@@ -421,12 +416,10 @@ local function UpdateAllGems(who)
 			local link = GetSlotLink(who, frame:GetID())
 			if link then
 				if link ~= frame.Gems.ItemLink then
-					-- Item changed — full update
 					UpdateLink(frame, link, who)
 					HideGemTextures(frame)
 					UpdateGems(frame, link, who)
 				else
-					-- Same item — check if gems changed
 					for i = 1, 3 do
 						local gemName, gemLink = GetItemGem(link, i)
 						local gem = frame.Gems["Gem" .. i]
@@ -446,9 +439,6 @@ local function UpdateAllGems(who)
 
 	if who == "Character" then
 		S:ColorItemCharacterBorder()
-		if ItemSocketingFrame and ItemSocketingFrame:IsShown() then
-			HideUIPanel(ItemSocketingFrame)
-		end
 	elseif who == "Inspect" then
 		S:ColorItemInspectBorder()
 	end
@@ -504,8 +494,8 @@ local function InitGemFrames(who)
 
 		local link = GetSlotLink(who, frame:GetID())
 
-		-- Determine socket count
 		if who == "Character" and link then
+			CloseSocketInfo()
 			SocketInventoryItem(frame.containerID)
 			frame.Gems.MaxGems = GetNumSockets() or 0
 		elseif who == "Inspect" and link then
@@ -514,7 +504,6 @@ local function InitGemFrames(who)
 			frame.Gems.MaxGems = 0
 		end
 
-		-- Create 3 gem button frames
 		for i = 1, 3 do
 			if not frame.Gems["Gem" .. i] then
 				frame.Gems["Gem" .. i] = CreateFrame("Button", nil, frame)
@@ -539,7 +528,6 @@ local function InitGemFrames(who)
 			Gems:UpdateSize(frame, i)
 		end
 
-		-- Close socketing UI after reading socket data
 		if who == "Character" and link then
 			CloseSocketInfo()
 			if ItemSocketingFrame and ItemSocketingFrame:IsShown() then
@@ -629,24 +617,13 @@ function Gems:Initialize()
 	if not E.private.enhanced.character.enable then return end
 
 	if E.private.enhanced.character.GemsEnable then
-		-- Delayed init so that inventory data is loaded
 		C_Timer:After(0.55, GemsOnInitCharacter)
 
-		-- Event frame for equipment changes and socket updates
 		local eventFrame = CreateFrame("Frame", nil, UIParent)
 		eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 		eventFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
-		eventFrame:RegisterEvent("SOCKET_INFO_UPDATE")
-		eventFrame:RegisterEvent("SOCKET_INFO_CLOSE")
 		eventFrame:SetScript("OnEvent", function(_, event, unit)
-			if event == "SOCKET_INFO_UPDATE" then
-				-- Instant refresh after gem insert/remove
-				C_Timer:After(0.05, function() UpdateAllGems("Character") end)
-			elseif event == "SOCKET_INFO_CLOSE" then
-				if ItemSocketingFrame and ItemSocketingFrame:IsShown() then
-					HideUIPanel(ItemSocketingFrame)
-				end
-			elseif (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
+			if (event == "UNIT_INVENTORY_CHANGED" and unit == "player") or event == "PLAYER_EQUIPMENT_CHANGED" then
 				if E.private.enhanced.character.GemsEnable then
 					C_Timer:After(0.05, function() UpdateAllGems("Character") end)
 				end
@@ -656,11 +633,9 @@ function Gems:Initialize()
 			end
 		end)
 
-		-- Initial update after a short delay
 		C_Timer:After(1, function() UpdateAllGems("Character") end)
 	end
 
-	-- Paper doll frame hooks
 	PaperDollFrame:HookScript("OnShow", function()
 		CharacterModelFrame:ClearAllPoints()
 		CharacterModelFrame:SetPoint('TOPLEFT', CharacterHeadSlot, 0, 5)
@@ -708,7 +683,6 @@ end
 ---------------------------------------------------------------------------
 local function InitializeCallback()
 	Gems:Initialize()
-	-- Auto-hide any lingering frames from initialization
 	C_Timer:After(4, function()
 		if CharacterFrame:IsShown() then HideUIPanel(CharacterFrame) end
 		if ItemSocketingFrame and ItemSocketingFrame:IsShown() then HideUIPanel(ItemSocketingFrame) end

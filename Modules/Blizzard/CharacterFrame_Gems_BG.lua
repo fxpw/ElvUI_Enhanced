@@ -181,6 +181,18 @@ local function CountGemsInLink(link)
 	return count
 end
 
+local function GetVerifiedSocketCount(link)
+	local numSockets = GetNumSockets() or 0
+	if numSockets > 0 then
+		local socketItemName = GetSocketItemInfo()
+		local itemName = GetItemInfo(link)
+		if not socketItemName or socketItemName ~= itemName then
+			return CountGemsInLink(link)
+		end
+	end
+	return numSockets
+end
+
 ---------------------------------------------------------------------------
 -- Determine anchor direction for a slot
 ---------------------------------------------------------------------------
@@ -305,7 +317,7 @@ local function UpdateLink(frame, link, who)
 	if who == "Character" then
 		CloseSocketInfo()
 		SocketInventoryItem(frame.containerID)
-		frame.Gems.MaxGems = GetNumSockets() or 0
+		frame.Gems.MaxGems = GetVerifiedSocketCount(link)
 		for i = 1, frame.Gems.MaxGems do
 			frame.Gems["Gem" .. i].GemColor = GetSocketTypes(i)
 		end
@@ -497,7 +509,7 @@ local function InitGemFrames(who)
 		if who == "Character" and link then
 			CloseSocketInfo()
 			SocketInventoryItem(frame.containerID)
-			frame.Gems.MaxGems = GetNumSockets() or 0
+			frame.Gems.MaxGems = GetVerifiedSocketCount(link)
 		elseif who == "Inspect" and link then
 			frame.Gems.MaxGems = CountGemsInLink(link)
 		else
@@ -521,8 +533,10 @@ local function InitGemFrames(who)
 				gem.GemLink = "n"
 			end
 
-			if who == "Character" then
+			if who == "Character" and i <= (frame.Gems.MaxGems or 0) then
 				gem.GemColor = GetSocketTypes(i)
+			else
+				gem.GemColor = nil
 			end
 
 			Gems:UpdateSize(frame, i)

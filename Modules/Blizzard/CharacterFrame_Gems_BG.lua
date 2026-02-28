@@ -485,6 +485,28 @@ function Gems:UpdateSize(frame, i)
 	end
 end
 
+function Gems:UpdateAllSizes()
+	for slotName in pairs(Gems.Slots) do
+		local charFrame = _G["Character" .. slotName]
+		if charFrame and charFrame.Gems then
+			for i = 1, 3 do
+				if charFrame.Gems["Gem" .. i] then
+					self:UpdateSize(charFrame, i)
+				end
+			end
+		end
+
+		local inspectFrame = _G["Inspect" .. slotName]
+		if inspectFrame and inspectFrame.Gems then
+			for i = 1, 3 do
+				if inspectFrame.Gems["Gem" .. i] then
+					self:UpdateSize(inspectFrame, i)
+				end
+			end
+		end
+	end
+end
+
 ---------------------------------------------------------------------------
 -- Unified init function for gem frames
 ---------------------------------------------------------------------------

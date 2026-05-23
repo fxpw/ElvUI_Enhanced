@@ -41,7 +41,7 @@ local tableModelList = {
 	["scourgefemale_hd.m2"] = true,
 	["dwarfmale_hd.m2"] = true,
 	["vulperafemale.m2"] = true,
-	["worgenmale.m2"] = true,
+	["worgenmale.m2"] = false,
 	["vulperamale.m2"] = true,
 	["humanfemale_hd.m2"] = true,
 	["darkirondwarfmale.m2"] = true,
@@ -52,7 +52,7 @@ local tableModelList = {
 	["skeleton_hd.m2"] = true,
 	["taurenmale_hd.m2"] = true,
 	["gnomemale_hd.m2"] = true,
-	["gnomefemale_hd.m2"] = true,
+	["gnomefemale_hd.m2"] = false,
 }
 
 local pattern = "[^\\]*%.m2$"

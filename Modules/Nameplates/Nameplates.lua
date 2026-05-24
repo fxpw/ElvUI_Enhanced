@@ -429,7 +429,7 @@ function ENP:UpdateAllSettings()
 		end
 	end
 	if E.db.enhanced.nameplates.chatBubblesEnable then
-		if not ENP:IsHooked(NP, "OnShow") then
+		if NP.OnShow and not ENP:IsHooked(NP, "OnShow") then
 			ENP:RawHook(NP, "OnShow", OnShowHook, true)
 		end
 	else

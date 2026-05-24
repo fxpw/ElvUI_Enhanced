@@ -23,9 +23,10 @@ local UNKNOWN = UNKNOWN
 local npcTitleMap = {}
 
 local function UpdateNameplateByName(name)
+	if not NP.VisiblePlates or not next(NP.VisiblePlates) then return end
 	for frame in pairs(NP.VisiblePlates) do
 		if frame.UnitName == name then
-			NP.OnShow(frame:GetParent(), nil, true)
+			NP:Update_Name(frame)
 		end
 	end
 end
@@ -85,7 +86,7 @@ local function Update_NameHook(self, frame)
 
 	if (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
-			frame.Title = frame:CreateFontString(nil, "OVERLAY")
+			frame.Title = frame.RaisedElement:CreateFontString(nil, "OVERLAY")
 			frame.Title:SetWordWrap(false)
 		end
 

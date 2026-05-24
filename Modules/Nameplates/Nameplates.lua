@@ -10,8 +10,8 @@ local sub, gsub = string.sub, string.gsub
 local match, gmatch, format, lower, find = string.match, string.gmatch, string.format, string.lower, string.find
 local tinsert, tremove = table.insert, table.remove
 
-local IsInInstance = IsInInstance
-local IsResting = IsResting
+-- local IsInInstance = IsInInstance
+-- local IsResting = IsResting
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
@@ -357,36 +357,33 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	end
 end
 
-local function OnShowHook(frame, ...)
-	ENP.hooks[NP].OnShow(frame, ...)
+local function NamePlateCallBackHook(self, nameplate, event, unit)
+	if event == 'NAME_PLATE_UNIT_ADDED' then
+		if E.db.enhanced.nameplates.chatBubblesEnable then
+			if nameplate.bubbleFrame then
+				nameplate.bubbleFrame = nil
+			end
 
-	if frame.UnitFrame.bubbleFrame then
-		frame.UnitFrame.bubbleFrame = nil
-	end
-
-	if #bubbleList > 0 then
-		for _, bubbleFrame in ipairs(bubbleList) do
-			if frame.UnitFrame.UnitName == bubbleFrame.author then
-				frame.UnitFrame.bubbleFrame = bubbleFrame
-				bubbleFrame.parent = frame.UnitFrame
-
-				bubbleFrame.text:ClearAllPoints()
-				bubbleFrame.text:SetPoint("BOTTOM", frame.UnitFrame, "TOP", 0, 20)
-				bubbleFrame:Show()
-				break
+			if #bubbleList > 0 then
+				for _, bubbleFrame in ipairs(bubbleList) do
+					if nameplate.UnitName == bubbleFrame.author then
+						nameplate.bubbleFrame = bubbleFrame
+						bubbleFrame.parent = nameplate
+						bubbleFrame.text:ClearAllPoints()
+						bubbleFrame.text:SetPoint("BOTTOM", nameplate, "TOP", 0, 20)
+						bubbleFrame:Show()
+						break
+					end
+				end
 			end
 		end
-	end
-end
-
-local function OnHideHook(frame)
-	if frame and frame.UnitFrame then
-		if frame.UnitFrame.bubbleFrame then
-			frame.UnitFrame.bubbleFrame:Hide()
+	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
+		if nameplate.bubbleFrame then
+			nameplate.bubbleFrame:Hide()
 		end
-		if frame.UnitFrame.Title then
-			frame.UnitFrame.Title:SetText()
-			frame.UnitFrame.Title:Hide()
+		if nameplate.Title then
+			nameplate.Title:SetText()
+			nameplate.Title:Hide()
 		end
 	end
 end
@@ -420,21 +417,12 @@ function ENP:UpdateAllSettings()
 	end
 
 	if E.db.enhanced.nameplates.chatBubblesEnable or E.db.enhanced.nameplates.titleCache then
-		if NP.OnHide and not ENP:IsHooked(NP, "OnHide") then
-			ENP:Hook(NP, "OnHide", OnHideHook, true)
+		if not ENP:IsHooked(NP, "NamePlateCallBack") then
+			ENP:Hook(NP, "NamePlateCallBack", NamePlateCallBackHook)
 		end
 	elseif not E.db.enhanced.nameplates.chatBubblesEnable and not E.db.enhanced.nameplates.titleCache then
-		if ENP:IsHooked(NP, "OnHide") then
-			ENP:Unhook(NP, "OnHide")
-		end
-	end
-	if E.db.enhanced.nameplates.chatBubblesEnable then
-		if NP.OnShow and not ENP:IsHooked(NP, "OnShow") then
-			ENP:RawHook(NP, "OnShow", OnShowHook, true)
-		end
-	else
-		if ENP:IsHooked(NP, "OnShow") then
-			ENP:Unhook(NP, "OnShow")
+		if ENP:IsHooked(NP, "NamePlateCallBack") then
+			ENP:Unhook(NP, "NamePlateCallBack")
 		end
 	end
 end

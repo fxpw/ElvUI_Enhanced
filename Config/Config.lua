@@ -1620,12 +1620,14 @@ local function LoseControlOptions()
 				type = "range",
 				min = 0.5, max = 1.5, step = 0.05,
 				name = L["frameScale"],
-				get = function(info) return E.private.enhanced.loseControl.frameScale end,
+				get = function(info) return E.private.enhanced.loseControl.frameScale or 1 end,
 				set = function(info, value)
-					E.private.enhanced.loseControl.frameScale = value;
-					C_CVar:SetValue("C_CVAR_LOSS_OF_CONTROL_SCALE", tostring(value));
-					LossOfControlFrame_SetScale(LossOfControlFrame, value);
-					E:GetModule("Enhanced_LoseControl"):UpdateSettings();
+					E.private.enhanced.loseControl.frameScale = value
+					if C_CVar and C_CVar.SetValue then
+						C_CVar:SetValue("C_CVAR_LOSS_OF_CONTROL_SCALE", tostring(value))
+					end
+					E:GetModule("Enhanced_LoseControl"):ApplyFrameScale(value)
+					E:GetModule("Enhanced_LoseControl"):UpdateSettings()
 				end,
 				disabled = function() return not E.private.enhanced.loseControl.enable end
 			},

@@ -279,6 +279,20 @@ end
 -- 	end
 -- end
 
+function LC:ApplyFrameScale(scale)
+	if not self.frame then return end
+
+	scale = scale or E.private.enhanced.loseControl.frameScale or 1
+	if self.appliedFrameScale == scale then return end
+
+	self.appliedFrameScale = scale
+	if LossOfControlFrame_SetScale then
+		LossOfControlFrame_SetScale(self.frame, scale)
+	else
+		self.frame:SetScale(scale)
+	end
+end
+
 function LC:ToggleState()
 	if E.private.enhanced.loseControl.enable then
 		if not self.initialized then
@@ -343,6 +357,7 @@ function LC:UpdateSettings(testFrame)
     local abilityName = self.frame.AbilityName; -- название спела
     local numberText = self.frame.TimeLeft.NumberText; -- время
     local secondsText = self.frame.TimeLeft.SecondsText; -- текст [секунд]
+	self:ApplyFrameScale()
 	frame:Size(self.db.iconSize);
 	cooldown:Size(self.db.iconSize);
 	icon:Size(self.db.iconSize);

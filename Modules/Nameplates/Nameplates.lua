@@ -6,17 +6,12 @@ local CH = E:GetModule("Chat")
 
 local _G = _G
 local ipairs, next, pairs = ipairs, next, pairs
-local sub, gsub, floor = string.sub, string.gsub, math.floor
+local sub, gsub = string.sub, string.gsub
 local match, gmatch, format, lower, find = string.match, string.gmatch, string.format, string.lower, string.find
 local tinsert, tremove = table.insert, table.remove
 
-local GetGuildInfo = GetGuildInfo
-local IsInGuild = IsInGuild
-local IsInInstance = IsInInstance
-local IsResting = IsResting
-local UnitClass = UnitClass
-local UnitInParty = UnitInParty
-local UnitInRaid = UnitInRaid
+-- local IsInInstance = IsInInstance
+-- local IsResting = IsResting
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
@@ -25,14 +20,13 @@ local ICON_LIST = ICON_LIST
 local ICON_TAG_LIST = ICON_TAG_LIST
 local UNKNOWN = UNKNOWN
 
-local classMap = {}
-local guildMap = {}
 local npcTitleMap = {}
 
 local function UpdateNameplateByName(name)
-	for frame in pairs(NP.VisiblePlates) do
+	if not NP.Plates or not next(NP.Plates) then return end
+	for frame in pairs(NP.Plates) do
 		if frame.UnitName == name then
-			NP.OnShow(frame:GetParent(), nil, true)
+			NP:Update_Name(frame)
 		end
 	end
 end
@@ -42,35 +36,6 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 		local name, realm = UnitName("mouseover")
 		if realm or not name or name == UNKNOWN then return end
 
-		if E.db.enhanced.nameplates.classCache then
-			local _, class = UnitClass("mouseover")
-			class = classMap[class]
-
-			if EnhancedDB.UnitClass[name] ~= class then
-				EnhancedDB.UnitClass[name] = class
-			end
-		end
-
-		if E.db.enhanced.nameplates.titleCache then
-			local guildName = GetGuildInfo("mouseover")
-			if not guildName then
-				if EnhancedDB.UnitTitle[name] then
-					EnhancedDB.UnitTitle[name] = nil
-					UpdateNameplateByName(name)
-				end
-				return
-			end
-
-			if not guildMap[guildName] then
-				tinsert(EnhancedDB.GuildList, guildName)
-				guildMap[guildName] = #EnhancedDB.GuildList
-			end
-
-			if EnhancedDB.UnitTitle[name] ~= guildMap[guildName] then
-				EnhancedDB.UnitTitle[name] = guildMap[guildName]
-				UpdateNameplateByName(name)
-			end
-		end
 	else
 		self.scanner:ClearLines()
 		self.scanner:SetUnit("mouseover")
@@ -99,44 +64,6 @@ function ENP:UPDATE_MOUSEOVER_UNIT()
 	end
 end
 
--- Class Cache
-local grenColorToClass = {}
-for class, color in pairs(RAID_CLASS_COLORS) do
-	grenColorToClass[color.g] = class
-end
-
-local function UnitClassHook(self, frame, unitType)
-	if unitType == "FRIENDLY_PLAYER" then
-		local unitName = frame.UnitName
-		local unit = self[unitType][unitName]
-		if unit then
-			local _, class = UnitClass(unit)
-			if class then
-				return class
-			end
-		elseif EnhancedDB.UnitClass[unitName] then
-			return CLASS_SORT_ORDER[EnhancedDB.UnitClass[unitName]]
-		else
-			return NP:GetUnitClassByGUID(frame)
-		end
-	elseif unitType == "ENEMY_PLAYER" then
-		local _, g = frame.oldHealthBar:GetStatusBarColor()
-		return grenColorToClass[floor(g*100 + 0.5) / 100]
-	end
-end
-
-function ENP:ClassCache()
-	if E.db.enhanced.nameplates.classCache then
-		if not self:IsHooked(NP, "UnitClass") then
-			self:RawHook(NP, "UnitClass", UnitClassHook)
-		end
-	else
-		if self:IsHooked(NP, "UnitClass") then
-			self:Unhook(NP, "UnitClass")
-		end
-	end
-end
-
 -- Title Cache
 local separatorMap = {
 	[" "] = "%s",
@@ -157,57 +84,9 @@ local function Update_NameHook(self, frame)
 		return
 	end
 
-	local guildName = EnhancedDB.GuildList[EnhancedDB.UnitTitle[frame.UnitName]]
-	if frame.UnitType == "FRIENDLY_PLAYER" and guildName then
-		local db = E.db.enhanced.nameplates.guild
-
-		local shown
-		if IsResting() then
-			shown = db.visibility.city
-		else
-			local _, instanceType = IsInInstance()
-			if instanceType == "pvp" then
-				shown = db.visibility.pvp
-			elseif instanceType == "arena" then
-				shown = db.visibility.arena
-			elseif instanceType == "party" then
-				shown = db.visibility.party
-			elseif instanceType == "raid" then
-				shown = db.visibility.raid
-			else
-				shown = true
-			end
-		end
-
-		if shown then
-			if not frame.Title then
-				frame.Title = frame:CreateFontString(nil, "OVERLAY")
-				frame.Title:SetWordWrap(false)
-			end
-
-			frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
-
-			local color
-			if UnitInRaid(frame.UnitName) then
-				color = db.colors.raid
-			elseif UnitInParty(frame.UnitName) then
-				color = db.colors.party
-			elseif IsInGuild and GetGuildInfo("player") == guildName then
-				color = db.colors.guild
-			else
-				color = db.colors.none
-			end
-
-			frame.Title:SetTextColor(color.r, color.g, color.b)
-			frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
-			frame.Title:SetFormattedText(separatorMap[db.separator], guildName)
-			frame.Title:Show()
-		elseif frame.Title then
-			frame.Title:Hide()
-		end
-	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
+	if (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
-			frame.Title = frame:CreateFontString(nil, "OVERLAY")
+			frame.Title = frame.RaisedElement:CreateFontString(nil, "OVERLAY")
 			frame.Title:SetWordWrap(false)
 		end
 
@@ -424,7 +303,7 @@ end
 
 function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID, _, _, _, guid)
 	if author == UnitName("player") or not author then return end
-	if not next(NP.VisiblePlates) then return end
+	if not NP.Plates or not next(NP.Plates) then return end
 
 	local chatType = sub(event, 10)
 	if sub(chatType, 1, 7) == "CHANNEL" then
@@ -434,7 +313,7 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	local info = ChatTypeInfo[chatType]
 	if not info then return end
 
-	for frame in pairs(NP.VisiblePlates) do
+	for frame in pairs(NP.Plates) do
 		if frame.UnitName == author then
 			local bubbleFrame
 			if not frame.bubbleFrame then
@@ -479,36 +358,33 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	end
 end
 
-local function OnShowHook(frame, ...)
-	ENP.hooks[NP].OnShow(frame, ...)
+local function NamePlateCallBackHook(self, nameplate, event, unit)
+	if event == 'NAME_PLATE_UNIT_ADDED' then
+		if E.db.enhanced.nameplates.chatBubblesEnable then
+			if nameplate.bubbleFrame then
+				nameplate.bubbleFrame = nil
+			end
 
-	if frame.UnitFrame.bubbleFrame then
-		frame.UnitFrame.bubbleFrame = nil
-	end
-
-	if #bubbleList > 0 then
-		for _, bubbleFrame in ipairs(bubbleList) do
-			if frame.UnitFrame.UnitName == bubbleFrame.author then
-				frame.UnitFrame.bubbleFrame = bubbleFrame
-				bubbleFrame.parent = frame.UnitFrame
-
-				bubbleFrame.text:ClearAllPoints()
-				bubbleFrame.text:SetPoint("BOTTOM", frame.UnitFrame, "TOP", 0, 20)
-				bubbleFrame:Show()
-				break
+			if #bubbleList > 0 then
+				for _, bubbleFrame in ipairs(bubbleList) do
+					if nameplate.UnitName == bubbleFrame.author then
+						nameplate.bubbleFrame = bubbleFrame
+						bubbleFrame.parent = nameplate
+						bubbleFrame.text:ClearAllPoints()
+						bubbleFrame.text:SetPoint("BOTTOM", nameplate, "TOP", 0, 20)
+						bubbleFrame:Show()
+						break
+					end
+				end
 			end
 		end
-	end
-end
-
-local function OnHideHook(frame)
-	if frame and frame.UnitFrame then
-		if frame.UnitFrame.bubbleFrame then
-			frame.UnitFrame.bubbleFrame:Hide()
+	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
+		if nameplate.bubbleFrame then
+			nameplate.bubbleFrame:Hide()
 		end
-		if frame.UnitFrame.Title then
-			frame.UnitFrame.Title:SetText()
-			frame.UnitFrame.Title:Hide()
+		if nameplate.Title then
+			nameplate.Title:SetText()
+			nameplate.Title:Hide()
 		end
 	end
 end
@@ -526,11 +402,10 @@ function ENP:ChatBubbles()
 end
 
 function ENP:UpdateAllSettings()
-	self:ClassCache()
 	self:ChatBubbles()
 	self:TitleCache()
 
-	if E.db.enhanced.nameplates.titleCache or E.db.enhanced.nameplates.classCache then
+	if E.db.enhanced.nameplates.titleCache then
 		if not self.scanner then
 			self.scanner = CreateFrame("GameTooltip", "Enhanced_ScanningTooltip", nil, "GameTooltipTemplate")
 			self.scanner:SetOwner(WorldFrame, "ANCHOR_NONE")
@@ -538,52 +413,32 @@ function ENP:UpdateAllSettings()
 
 		self:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 
-	elseif not E.db.enhanced.nameplates.titleCache and not E.db.enhanced.nameplates.classCache then
+	else
 		self:UnregisterEvent("UPDATE_MOUSEOVER_UNIT")
 	end
 
 	if E.db.enhanced.nameplates.chatBubblesEnable or E.db.enhanced.nameplates.titleCache then
-		if not ENP:IsHooked(NP, "OnHide") then
-			ENP:Hook(NP, "OnHide", OnHideHook)
+		if not ENP:IsHooked(NP, "NamePlateCallBack") then
+			ENP:Hook(NP, "NamePlateCallBack", NamePlateCallBackHook)
 		end
 	elseif not E.db.enhanced.nameplates.chatBubblesEnable and not E.db.enhanced.nameplates.titleCache then
-		if ENP:IsHooked(NP, "OnHide") then
-			ENP:Unhook(NP, "OnHide")
-		end
-	end
-	if E.db.enhanced.nameplates.chatBubblesEnable then
-		if not ENP:IsHooked(NP, "OnShow") then
-			ENP:RawHook(NP, "OnShow", OnShowHook, true)
-		end
-	else
-		if ENP:IsHooked(NP, "OnShow") then
-			ENP:Unhook(NP, "OnShow")
+		if ENP:IsHooked(NP, "NamePlateCallBack") then
+			ENP:Unhook(NP, "NamePlateCallBack")
 		end
 	end
 end
 
 function ENP:Initialize()
-	EnhancedDB.UnitClass = EnhancedDB.UnitClass or {}
+	EnhancedDB.UnitClass = nil -- removed class caching
+	EnhancedDB.GuildList = nil -- removed guild caching
 	EnhancedDB.UnitTitle = EnhancedDB.UnitTitle or {}
 
-	if EnhancedDB.GuildList then
-		for i, guildName in ipairs(EnhancedDB.GuildList) do
-			guildMap[guildName] = i
-		end
-	else
-		EnhancedDB.GuildList = {}
-	end
-
 	if EnhancedDB.NPCList then
-		for i, guildName in ipairs(EnhancedDB.NPCList) do
-			npcTitleMap[guildName] = i
+		for i, npcTitle in ipairs(EnhancedDB.NPCList) do
+			npcTitleMap[npcTitle] = i
 		end
 	else
 		EnhancedDB.NPCList = {}
-	end
-
-	for i, class in ipairs(CLASS_SORT_ORDER) do
-		classMap[class] = i
 	end
 
 	ENP:UpdateAllSettings()

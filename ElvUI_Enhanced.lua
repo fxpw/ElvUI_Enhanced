@@ -96,23 +96,6 @@ function addon:DBConversions()
 		P.unitframe.units.target.portrait.detachedHeight = nil
 	end
 
-	if E.db.enhanced.nameplates.cacheUnitClass ~= nil then
-		E.db.enhanced.nameplates.classCache = true
-	end
-	if EnhancedDB and EnhancedDB.UnitClass and next(EnhancedDB.UnitClass) then
-		local classMap = {}
-		for i, class in ipairs(CLASS_SORT_ORDER) do
-			classMap[class] = i
-		end
-		for name, class in pairs(EnhancedDB.UnitClass) do
-			if type(class) == "string" then
-				EnhancedDB.UnitClass[name] = classMap[class]
-			end
-		end
-
-		EnhancedDB.UnitClass[UNKNOWN] = nil
-	end
-
 	if E.db.general.minimap.buttons then
 		E.private.enhanced.minimapButtonGrabber = true
 

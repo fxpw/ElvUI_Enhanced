@@ -25,7 +25,7 @@ local npcTitleMap = {}
 local function UpdateNameplateByName(name)
 	if not NP.Plates or not next(NP.Plates) then return end
 	for frame in pairs(NP.Plates) do
-		if frame.UnitName == name then
+		if frame.UnitName == name and frame.Health and not frame.Health:IsShown() then
 			NP:Update_Name(frame)
 		end
 	end

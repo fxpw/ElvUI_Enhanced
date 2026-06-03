@@ -368,8 +368,7 @@ local function BlizzardOptions()
 						get = function(info) return E.private.enhanced.character.GemsEnableScal end,
 						set = function(info, value)
 							E.private.enhanced.character.GemsEnableScal = value
-							E:StaticPopup_Show("PRIVATE_RL")
-							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+							Gems:UpdateAllSizes()
 						end,
 						disabled = function() return not E.private.enhanced.character.GemsEnable or not E.private.enhanced.character.enable  end
 					},
@@ -381,8 +380,7 @@ local function BlizzardOptions()
 						get = function(info) return E.private.enhanced.character.GemsSize end,
 						set = function(info, value)
 							E.private.enhanced.character.GemsSize = value
-							E:StaticPopup_Show("PRIVATE_RL")
-							-- E:GetModule("Enhanced_UndressButtons"):ToggleState()
+							Gems:UpdateAllSizes()
 						end,
 						disabled = function() return E.private.enhanced.character.GemsEnableScal or not E.private.enhanced.character.enable   end
 					},

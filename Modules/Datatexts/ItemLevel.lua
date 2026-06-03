@@ -9,7 +9,7 @@ local join = string.join
 local GetInventoryItemLink = GetInventoryItemLink
 local GetInventorySlotInfo = GetInventorySlotInfo
 local GetItemQualityColor = GetItemQualityColor
-local GetItemInfo = GetItemInfo
+local GetItemInfo = C_Item.GetItemInfo
 
 local displayString = ""
 local lastPanel
@@ -41,25 +41,7 @@ local levelColors = {
 }
 
 local function GetItemLvL()
-	local total, item = 0, 0
-	local itemLink, itemLevel
-
-	for i = 1, #slots do
-		itemLink = GetInventoryItemLink("player", GetInventorySlotInfo(slots[i][1]))
-		if itemLink then
-			itemLevel = select(4, GetItemInfo(itemLink))
-			if itemLevel and itemLevel > 0 then
-				item = item + 1
-				total = total + itemLevel
-			end
-		end
-	end
-
-	if total < 1 then
-		return "0"
-	end
-
-	return floor(total / item)
+	return floor(GetAverageItemLevel() or 0)
 end
 
 local function OnEvent(self)
@@ -104,4 +86,4 @@ local function ValueColorUpdate(hex)
 end
 E.valueColorUpdateFuncs[ValueColorUpdate] = true
 
-DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED"}, OnEvent, nil, nil, OnEnter, nil, EE:ColorizeSettingName(L["Item Level"]))
+DT:RegisterDatatext("Item Level", {"PLAYER_ENTERING_WORLD", "PLAYER_EQUIPMENT_CHANGED", "UNIT_INVENTORY_CHANGED", "PLAYER_AVG_ITEM_LEVEL_READY"}, OnEvent, nil, nil, OnEnter, nil, EE:ColorizeSettingName(L["Item Level"]))

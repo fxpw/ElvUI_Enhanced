@@ -152,8 +152,9 @@ local STAT_RESILIENCE = STAT_RESILIENCE
 -- GLOBALS: PetPaperDollFramePetFrame, PetPaperDollFrame_Update, PetPaperDollFrame_UpdateCompanionCooldowns, PetPaperDollFrame_UpdateTabs, PetResistanceFrame, PlayerTitleFrame
 -- GLOBALS: PlayerTitlePickerFrame, SetButtonPulse, SetCVar, StaticPopup_Hide, UIFrameFadeIn, UIFrameFadeOut, hooksecurefunc, table
 -- GLOBALS: EQUIPSET_EQUIP, SAVE
+local C_PlayerInfo = C_PlayerInfo
 
-local CHARACTERFRAME_EXPANDED_WIDTH = 197
+local CHARACTERFRAME_EXPANDED_WIDTH = 252
 
 local STATCATEGORY_MOVING_INDENT = 4
 local MOVING_STAT_CATEGORY
@@ -922,10 +923,14 @@ function module:StrengthenStat(statFrame, unit, statIndex)
 		if statIndex == 6 then
 			statFrame.Value:SetFormattedText(value > 0 and "%.0f (+|cff00FF00%.1f|r)" or "%.0f (+|cff00FF00%.0f|r)", value, baseValue)
 		else
-			statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", value, baseValue)
+			if value == floor(value) and baseValue == floor(baseValue) then
+				statFrame.Value:SetFormattedText("%d (+|cff00FF00%d|r)", value, baseValue)
+			else
+				statFrame.Value:SetFormattedText("%.1f (+|cff00FF00%.1f|r)", value, baseValue)
+			end
 		end
 	else
-		statFrame.Value:SetText(0)
+		statFrame.Value:SetText("0")
 	end
 
 	local _, _, availableUps = C_PlayerInfo.GetBonusStatPointInfo()
@@ -1321,6 +1326,7 @@ local function StrengthenCategoryReset_OnEnter(self)
 	if cost and cost > 0 then
 		SetTooltipMoney(GameTooltip, cost)
 	end
+	GameTooltip:AddLine("Сбросить все очки усилений", 1, 0.82, 0)
 	GameTooltip:Show()
 end
 -- local function PaperDollFrame_QueuedUpdate(self)
@@ -1349,6 +1355,7 @@ function module:PaperDollFrame_UpdateStatCategory(categoryFrame)
 			categoryFrame.ResetStatButton = CreateFrame("Button", nil, categoryFrame)
 			categoryFrame.ResetStatButton:Size(14)
 			categoryFrame.ResetStatButton:Point("TOPRIGHT", categoryFrame, "TOPRIGHT", -10, -5)
+			categoryFrame.ResetStatButton:SetFrameLevel(categoryFrame.Toolbar:GetFrameLevel() + 1)
 
 			categoryFrame.ResetStatButton.Icon = categoryFrame.ResetStatButton:CreateTexture(nil, "ARTWORK")
 			categoryFrame.ResetStatButton.Icon:SetAllPoints()
@@ -1699,12 +1706,21 @@ function module:PaperDollFrame_UpdateSidebarTabs()
 	end
 end
 
+local function SidebarFadeOutFinished(frame)
+	frame:Hide()
+end
+
 function module:PaperDollFrame_SetSidebar(button, index)
 	if not _G[PAPERDOLL_SIDEBARS[index].frame]:IsShown() then
 		for i = 1, #PAPERDOLL_SIDEBARS do
 			if i ~= index and _G[PAPERDOLL_SIDEBARS[i].frame]:IsShown() then
 				if E.db.enhanced.character.animations then
-					E:UIFrameFadeOut(_G[PAPERDOLL_SIDEBARS[i].frame], 0.2, 1, 0)
+					local frame = _G[PAPERDOLL_SIDEBARS[i].frame]
+					E:UIFrameFadeOut(frame, 0.2, 1, 0)
+					if frame.fadeInfo then
+						frame.fadeInfo.finishedFunc = SidebarFadeOutFinished
+						frame.fadeInfo.finishedArg1 = frame
+					end
 				else
 					_G[PAPERDOLL_SIDEBARS[i].frame]:Hide()
 				end
@@ -1714,9 +1730,14 @@ function module:PaperDollFrame_SetSidebar(button, index)
 			end
 		end
 
-		_G[PAPERDOLL_SIDEBARS[index].frame]:Show()
+		local newFrame = _G[PAPERDOLL_SIDEBARS[index].frame]
+		newFrame:Show()
 		if E.db.enhanced.character.animations then
-			E:UIFrameFadeIn(_G[PAPERDOLL_SIDEBARS[index].frame], 0.2, 0, 1)
+			E:UIFrameFadeIn(newFrame, 0.2, 0, 1)
+			if newFrame.fadeInfo then
+				newFrame.fadeInfo.finishedFunc = nil
+				newFrame.fadeInfo.finishedArg1 = nil
+			end
 		end
 		PaperDollFrame.currentSideBar = _G[PAPERDOLL_SIDEBARS[index].frame]
 
@@ -2286,24 +2307,26 @@ function module:Initialize()
 			frame:Kill()
 		end
 	end
-	if GetRealmName():match("x4") then
+	local realmName = GetRealmName()
+	if realmName == "Sirus x5 - 3.3.5a+" or realmName:match("x4") or realmName:match("x5") or realmName:match("x2") then
 		PaperDollFrameStatsFrameLeftCategory:Kill()
 		PaperDollFrameStatsFrameRightCategory:Kill()
-		-- PaperDollFrameStatsFrameItemLevelCategory:Kill()
-		CharacterItemLevelFrame:ClearAllPoints()
-		CharacterItemLevelFrame:SetParent(CharacterModelFrame)
-		CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
+		
+		if CharacterItemLevelFrame then
+			CharacterItemLevelFrame:ClearAllPoints()
+			CharacterItemLevelFrame:SetParent(CharacterModelFrame)
+			CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
+		end
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
 
-		SCROLL_WIDTH_SIRUS_STATS = 90
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 190
-
-		table.remove(PAPERDOLL_STATCATEGORIES, 0)
-		table.remove(PAPERDOLL_STATCATEGORY_DEFAULTORDER, 0)
-	else
-		SCROLL_WIDTH_SIRUS_STATS = 168
-		SCROLL_WIDTH_SIRUS_STATS_CHILD = 239
+		if PAPERDOLL_STATCATEGORIES[1] and PAPERDOLL_STATCATEGORIES[1].id ~= 1 then
+		end
+		if #PAPERDOLL_STATCATEGORIES > 0 then
+		end
 	end
+
+	SCROLL_WIDTH_SIRUS_STATS = 145
+	SCROLL_WIDTH_SIRUS_STATS_CHILD = 245
 	-- if E.db.enhanced.character.SocetsEnable then
 	-- 	module:SocOnInit()
 	-- end
@@ -2414,7 +2437,7 @@ function module:Initialize()
 	CreateSmoothScrollAnimation(CharacterStatsPaneScrollBar)
 
 	local statsPaneScrollChild = CreateFrame("Frame", "CharacterStatsPaneScrollChild", statsPane)
-	statsPaneScrollChild:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD, 0)
+	statsPaneScrollChild:SetSize(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18, 0)
 	statsPaneScrollChild:Point("TOPLEFT")
 
 	for i = 1, 8 do
@@ -2423,7 +2446,7 @@ function module:Initialize()
 
 		button.Toolbar = CreateFrame("Button", nil, button)
 		button.Toolbar:RegisterForDrag("LeftButton")
-		button.Toolbar:Size(186, 24)
+		button.Toolbar:Size(251, 24)
 		button.Toolbar:Point("TOP")
 
 		button.Toolbar.Background = button.Toolbar:CreateTexture(nil, "BACKGROUND")
@@ -2464,27 +2487,29 @@ function module:Initialize()
 	CharacterStatsPaneScrollBar.Show = function(self)
 		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -24, -55)
+		statsPaneScrollChild:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
 		for _, button in next, statsPane.Categories do
 			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
-			button.Toolbar:Width(186 - 18)
+			button.Toolbar:Width(241 - 18)
 		end
 		getmetatable(self).__index.Show(self)
 	end
 
 	CharacterStatsPaneScrollBar.Hide = function(self)
-		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+		statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 		statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
+		statsPaneScrollChild:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 		for _, button in next, statsPane.Categories do
-			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
-			button.Toolbar:Width(186)
+			button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
+			button.Toolbar:Width(246)
 		end
 		getmetatable(self).__index.Hide(self)
 	end
 
-	statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+	statsPane:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 	statsPane:Point("TOPRIGHT", CharacterFrame, -6, -55)
 	for _, button in next, statsPane.Categories do
-		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD)
+		button:Width(SCROLL_WIDTH_SIRUS_STATS_CHILD + 18)
 	end
 
 	statsPane:SetScript("OnShow", function(self)

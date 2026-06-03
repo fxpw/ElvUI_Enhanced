@@ -23,9 +23,9 @@ local UNKNOWN = UNKNOWN
 local npcTitleMap = {}
 
 local function UpdateNameplateByName(name)
-	if not NP.VisiblePlates or not next(NP.VisiblePlates) then return end
-	for frame in pairs(NP.VisiblePlates) do
-		if frame.UnitName == name then
+	if not NP.Plates or not next(NP.Plates) then return end
+	for frame in pairs(NP.Plates) do
+		if frame.UnitName == name and frame.Health and not frame.Health:IsShown() then
 			NP:Update_Name(frame)
 		end
 	end
@@ -303,7 +303,7 @@ end
 
 function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID, _, _, _, guid)
 	if author == UnitName("player") or not author then return end
-	if not NP.VisiblePlates or not next(NP.VisiblePlates) then return end
+	if not NP.Plates or not next(NP.Plates) then return end
 
 	local chatType = sub(event, 10)
 	if sub(chatType, 1, 7) == "CHANNEL" then
@@ -313,7 +313,7 @@ function ENP:FindNameplateByChatMsg(event, msg, author, _, _, _, _, _, channelID
 	local info = ChatTypeInfo[chatType]
 	if not info then return end
 
-	for frame in pairs(NP.VisiblePlates) do
+	for frame in pairs(NP.Plates) do
 		if frame.UnitName == author then
 			local bubbleFrame
 			if not frame.bubbleFrame then

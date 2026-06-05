@@ -22,7 +22,6 @@ local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local ICON_LIST = ICON_LIST
 local ICON_TAG_LIST = ICON_TAG_LIST
-local UNKNOWN = UNKNOWN
 
 local npcTitleMap = {}
 

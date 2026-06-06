@@ -10,22 +10,25 @@ local sub, gsub = string.sub, string.gsub
 local match, gmatch, format, lower, find = string.match, string.gmatch, string.format, string.lower, string.find
 local tinsert, tremove = table.insert, table.remove
 
--- local IsInInstance = IsInInstance
--- local IsResting = IsResting
+local GetGuildInfo = GetGuildInfo
+local IsInGuild = IsInGuild
+local IsInInstance = IsInInstance
+local IsResting = IsResting
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local ICON_LIST = ICON_LIST
 local ICON_TAG_LIST = ICON_TAG_LIST
-local UNKNOWN = UNKNOWN
 
 local npcTitleMap = {}
 
 local function UpdateNameplateByName(name)
 	if not NP.Plates or not next(NP.Plates) then return end
 	for frame in pairs(NP.Plates) do
-		if frame.UnitName == name and frame.Health and not frame.Health:IsShown() then
+		if frame.UnitName == name and not NP:Health_IsVisible(frame) then
 			NP:Update_Name(frame)
 		end
 	end
@@ -33,9 +36,7 @@ end
 
 function ENP:UPDATE_MOUSEOVER_UNIT()
 	if UnitIsPlayer("mouseover") and UnitReaction("mouseover", "player") ~= 2 then
-		local name, realm = UnitName("mouseover")
-		if realm or not name or name == UNKNOWN then return end
-
+		return
 	else
 		self.scanner:ClearLines()
 		self.scanner:SetUnit("mouseover")
@@ -74,9 +75,7 @@ local separatorMap = {
 }
 local r,g,b
 local function Update_NameHook(self, frame)
-	if not E.db.enhanced.nameplates.titleCache then return end
-
-	if frame.Health:IsShown() then
+	if not E.db.enhanced.nameplates.titleCache then
 		if frame.Title then
 			frame.Title:SetText()
 			frame.Title:Hide()
@@ -84,7 +83,63 @@ local function Update_NameHook(self, frame)
 		return
 	end
 
-	if (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
+	if NP:Health_IsVisible(frame) then
+		if frame.Title then
+			frame.Title:SetText()
+			frame.Title:Hide()
+		end
+		return
+	end
+
+	local guildName = frame.unit and GetGuildInfo(frame.unit)
+	if frame.UnitType == "FRIENDLY_PLAYER" and guildName then
+		local db = E.db.enhanced.nameplates.guild
+
+		local shown
+		if IsResting() then
+			shown = db.visibility.city
+		else
+			local _, instanceType = IsInInstance()
+			if instanceType == "pvp" then
+				shown = db.visibility.pvp
+			elseif instanceType == "arena" then
+				shown = db.visibility.arena
+			elseif instanceType == "party" then
+				shown = db.visibility.party
+			elseif instanceType == "raid" then
+				shown = db.visibility.raid
+			else
+				shown = true
+			end
+		end
+
+		if shown then
+			if not frame.Title then
+				frame.Title = frame.RaisedElement:CreateFontString(nil, "OVERLAY")
+				frame.Title:SetWordWrap(false)
+			end
+
+			frame.Title:SetFont(E.LSM:Fetch("font", db.font), db.fontSize, db.fontOutline)
+
+			local color
+			if UnitInRaid(frame.unit) then
+				color = db.colors.raid
+			elseif UnitInParty(frame.unit) then
+				color = db.colors.party
+			elseif IsInGuild() and GetGuildInfo("player") == guildName then
+				color = db.colors.guild
+			else
+				color = db.colors.none
+			end
+
+			frame.Title:SetTextColor(color.r, color.g, color.b)
+			frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
+			frame.Title:SetFormattedText(separatorMap[db.separator], guildName)
+			frame.Title:Show()
+		elseif frame.Title then
+			frame.Title:Hide()
+		end
+	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
 		if not frame.Title then
 			frame.Title = frame.RaisedElement:CreateFontString(nil, "OVERLAY")
 			frame.Title:SetWordWrap(false)
@@ -121,15 +176,11 @@ local function Update_NameHook(self, frame)
 end
 
 function ENP:TitleCache()
-	if E.db.enhanced.nameplates.titleCache then
-		if not self:IsHooked(NP, "Update_Name") then
-			self:Hook(NP, "Update_Name", Update_NameHook)
-		end
-	else
-		if self:IsHooked(NP, "Update_Name") then
-			self:Unhook(NP, "Update_Name")
-		end
-	end
+	if self.titleHooked then return end
+	self.titleHooked = true
+	hooksecurefunc(NP, "Update_Name", Update_NameHook)
+	hooksecurefunc(NP, "UpdatePlateName", Update_NameHook)
+	hooksecurefunc(NP, "Update_Health", Update_NameHook)
 end
 
 -- Chat Bubbles
@@ -430,7 +481,13 @@ end
 
 function ENP:Initialize()
 	EnhancedDB.UnitClass = nil -- removed class caching
-	EnhancedDB.GuildList = nil -- removed guild caching
+	EnhancedDB.GuildList = nil
+
+	if not EnhancedDB.guildCacheCleaned then
+		EnhancedDB.guildCacheCleaned = true
+		EnhancedDB.UnitTitle = nil
+	end
+
 	EnhancedDB.UnitTitle = EnhancedDB.UnitTitle or {}
 
 	if EnhancedDB.NPCList then

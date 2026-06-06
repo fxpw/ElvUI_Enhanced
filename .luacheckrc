@@ -54,6 +54,8 @@ globals = {
 	"PaperDoll_SaveStatCategoryOrder",
 	"AtlasButton_Toggle",
 	"C_PlayerInfo",
+	"C_Item",
+	"GetAverageItemLevel",
     "PaperDollEquipmentManagerPaneSaveSet",
     "PaperDollEquipmentManagerPaneEquipSet",
     "PaperDollEquipmentManagerPane",

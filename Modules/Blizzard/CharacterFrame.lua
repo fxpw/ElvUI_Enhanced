@@ -2311,18 +2311,13 @@ function module:Initialize()
 	if realmName == "Sirus x5 - 3.3.5a+" or realmName:match("x4") or realmName:match("x5") or realmName:match("x2") then
 		PaperDollFrameStatsFrameLeftCategory:Kill()
 		PaperDollFrameStatsFrameRightCategory:Kill()
-		
+
 		if CharacterItemLevelFrame then
 			CharacterItemLevelFrame:ClearAllPoints()
 			CharacterItemLevelFrame:SetParent(CharacterModelFrame)
 			CharacterItemLevelFrame:SetPoint("CENTER",CharacterModelFrame,"CENTER",0,-100)
 		end
 		PaperDollFrameStatsFrameItemLevelCategory:Kill()
-
-		if PAPERDOLL_STATCATEGORIES[1] and PAPERDOLL_STATCATEGORIES[1].id ~= 1 then
-		end
-		if #PAPERDOLL_STATCATEGORIES > 0 then
-		end
 	end
 
 	SCROLL_WIDTH_SIRUS_STATS = 145

@@ -1320,8 +1320,7 @@ local function NamePlatesOptions()
 						name = L["Enable"],
 						set = function(info, value)
 							E.db.enhanced.nameplates[info[#info]] = value
-							E:GetModule("Enhanced_NamePlates"):UpdateAllSettings()
-							E:GetModule("NamePlates"):ConfigureAll()
+							E:StaticPopup_Show("CONFIG_RL")
 						end
 					},
 					guildGroup = {

@@ -25,6 +25,27 @@ local ICON_TAG_LIST = ICON_TAG_LIST
 
 local npcTitleMap = {}
 
+local function ScanPlateTitle(frame)
+	if not frame.unit or not ENP.scanner then return end
+	if UnitIsPlayer(frame.unit) or UnitPlayerControlled(frame.unit) then
+		frame.npcTitle = nil
+		return
+	end
+	ENP.scanner:ClearLines()
+	ENP.scanner:SetUnit(frame.unit)
+	local name = _G["Enhanced_ScanningTooltipTextLeft1"] and _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
+	local description = _G["Enhanced_ScanningTooltipTextLeft2"] and _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
+	if not name or not description then
+		frame.npcTitle = nil
+		return
+	end
+	if match(description, UNIT_LEVEL_TEMPLATE) or find(description, "труп существа") then
+		frame.npcTitle = nil
+		return
+	end
+	frame.npcTitle = description
+end
+
 local function UpdateNameplateByName(name)
 	if not NP.Plates or not next(NP.Plates) then return end
 	for frame in pairs(NP.Plates) do
@@ -35,32 +56,14 @@ local function UpdateNameplateByName(name)
 end
 
 function ENP:UPDATE_MOUSEOVER_UNIT()
-	if UnitIsPlayer("mouseover") and UnitReaction("mouseover", "player") ~= 2 then
-		return
-	else
-		self.scanner:ClearLines()
-		self.scanner:SetUnit("mouseover")
-
-		local name = _G["Enhanced_ScanningTooltipTextLeft1"]:GetText()
-		if not name then return end
-		local description = _G["Enhanced_ScanningTooltipTextLeft2"]:GetText()
-		-- print(description)
-		if not description then return end
-
-		if match(description, UNIT_LEVEL_TEMPLATE) or find(description, "труп существа") then return end
-
-		name = gsub(gsub((name), "|c........", "" ), "|r", "")
-		if name ~= UnitName("mouseover") then return end
-		if UnitPlayerControlled("mouseover") then return end
-
-		if not npcTitleMap[description] then
-			tinsert(EnhancedDB.NPCList, description)
-			npcTitleMap[description] = #EnhancedDB.NPCList
-		end
-
-		if EnhancedDB.UnitTitle[name] ~= npcTitleMap[description] then
-			EnhancedDB.UnitTitle[name] = npcTitleMap[description]
-			UpdateNameplateByName(name)
+	if not UnitExists("mouseover") or not NP.Plates then return end
+	local guid = UnitGUID("mouseover")
+	if not guid then return end
+	for frame in pairs(NP.Plates) do
+		if frame.unitGUID == guid then
+			ScanPlateTitle(frame)
+			if NP.UpdatePlateName then NP:UpdatePlateName(frame) end
+			break
 		end
 	end
 end
@@ -139,7 +142,7 @@ local function Update_NameHook(self, frame)
 		elseif frame.Title then
 			frame.Title:Hide()
 		end
-	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]] then
+	elseif (frame.UnitType == "FRIENDLY_NPC" or frame.UnitType == "ENEMY_NPC") and frame.npcTitle then
 		if not frame.Title then
 			frame.Title = frame.RaisedElement:CreateFontString(nil, "OVERLAY")
 			frame.Title:SetWordWrap(false)
@@ -167,7 +170,7 @@ local function Update_NameHook(self, frame)
 
 		frame.Title:SetPoint("TOP", frame.Name, "BOTTOM")
 		if separatorMap[db.separator] then
-			frame.Title:SetFormattedText(separatorMap[db.separator], EnhancedDB.NPCList[EnhancedDB.UnitTitle[frame.UnitName]])
+			frame.Title:SetFormattedText(separatorMap[db.separator], frame.npcTitle)
 			frame.Title:Show()
 		end
 	elseif frame.Title then
@@ -411,6 +414,10 @@ end
 
 local function NamePlateCallBackHook(self, nameplate, event, unit)
 	if event == 'NAME_PLATE_UNIT_ADDED' then
+		if E.db.enhanced.nameplates.titleCache then
+			ScanPlateTitle(nameplate)
+			Update_NameHook(NP, nameplate)
+		end
 		if E.db.enhanced.nameplates.chatBubblesEnable then
 			if nameplate.bubbleFrame then
 				nameplate.bubbleFrame = nil
@@ -430,6 +437,7 @@ local function NamePlateCallBackHook(self, nameplate, event, unit)
 			end
 		end
 	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
+		nameplate.npcTitle = nil
 		if nameplate.bubbleFrame then
 			nameplate.bubbleFrame:Hide()
 		end

@@ -19,11 +19,8 @@ local UnitInRaid = UnitInRaid
 local UnitIsPlayer = UnitIsPlayer
 local UnitName = UnitName
 local UnitPlayerControlled = UnitPlayerControlled
-local UnitReaction = UnitReaction
 local ICON_LIST = ICON_LIST
 local ICON_TAG_LIST = ICON_TAG_LIST
-
-local npcTitleMap = {}
 
 local function ScanPlateTitle(frame)
 	if not frame.unit or not ENP.scanner then return end
@@ -44,15 +41,6 @@ local function ScanPlateTitle(frame)
 		return
 	end
 	frame.npcTitle = description
-end
-
-local function UpdateNameplateByName(name)
-	if not NP.Plates or not next(NP.Plates) then return end
-	for frame in pairs(NP.Plates) do
-		if frame.UnitName == name and not NP:Health_IsVisible(frame) then
-			NP:Update_Name(frame)
-		end
-	end
 end
 
 function ENP:UPDATE_MOUSEOVER_UNIT()
@@ -498,13 +486,7 @@ function ENP:Initialize()
 
 	EnhancedDB.UnitTitle = EnhancedDB.UnitTitle or {}
 
-	if EnhancedDB.NPCList then
-		for i, npcTitle in ipairs(EnhancedDB.NPCList) do
-			npcTitleMap[npcTitle] = i
-		end
-	else
-		EnhancedDB.NPCList = {}
-	end
+	EnhancedDB.NPCList = EnhancedDB.NPCList or {}
 
 	ENP:UpdateAllSettings()
 end
